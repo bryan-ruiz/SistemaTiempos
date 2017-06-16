@@ -7,7 +7,9 @@ package views;
 
 import java.awt.Button;
 import java.awt.Color;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JList;
 
 /**
  *
@@ -19,6 +21,8 @@ public class Selling extends javax.swing.JFrame {
      * Creates new form Selling
      */
     JButton button;
+    DefaultListModel numbers = new DefaultListModel();
+    DefaultListModel money = new DefaultListModel();
     
     public Selling() {
         initComponents();
@@ -191,12 +195,14 @@ public class Selling extends javax.swing.JFrame {
         btn2000 = new javax.swing.JButton();
         btn3000 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jlNumbers = new javax.swing.JList<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        jlMoney = new javax.swing.JList<>();
         jLabel5 = new javax.swing.JLabel();
         btnPay = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        lblTotalAmount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -1186,24 +1192,16 @@ public class Selling extends javax.swing.JFrame {
             }
         });
 
-        jList1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane1.setViewportView(jList1);
+        jlNumbers.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jlNumbers.setToolTipText("");
+        jScrollPane1.setViewportView(jlNumbers);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Numeros");
 
-        jList2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList2);
+        jlMoney.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jlMoney.setEnabled(false);
+        jScrollPane2.setViewportView(jlMoney);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Plata");
@@ -1214,6 +1212,12 @@ public class Selling extends javax.swing.JFrame {
                 btnPayActionPerformed(evt);
             }
         });
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("Total:");
+
+        lblTotalAmount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTotalAmount.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1503,7 +1507,11 @@ public class Selling extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(288, 288, 288)
+                                .addGap(51, 51, 51)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblTotalAmount)
+                                .addGap(116, 116, 116)
                                 .addComponent(btnPay)))
                         .addGap(159, 159, 159))))
         );
@@ -1690,10 +1698,13 @@ public class Selling extends javax.swing.JFrame {
                                     .addComponent(jLabel5))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2))
+                                    .addComponent(jScrollPane1)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(btnPay)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnPay)
+                                    .addComponent(jLabel6)
+                                    .addComponent(lblTotalAmount))))
                         .addGap(0, 23, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -2337,11 +2348,34 @@ public class Selling extends javax.swing.JFrame {
     private void btn100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100ActionPerformed
         // TODO add your handling code here:
         setbackgroundColorToGreen();
+        if (!numbers.contains(button.getText())) {
+            numbers.addElement(button.getText());
+            money.addElement(100);
+            jlNumbers.setModel(numbers);
+            jlMoney.setModel(money);
+        }
+        else {
+            int position = jlMoney.getLastVisibleIndex();
+            int newTotal = (int) money.get(position) + 100;
+            money.remove(position);
+            money.add(position, newTotal);
+            jlMoney.setModel(money);
+        }
+        int total = 0;
+        for (int i = 0; i < money.getSize(); i++) {
+            total += (int) money.get(i);
+        }
+        lblTotalAmount.setText(String.valueOf(total));
     }//GEN-LAST:event_btn100ActionPerformed
 
     private void btn200ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn200ActionPerformed
         // TODO add your handling code here:
         setbackgroundColorToGreen();
+        int position = jlNumbers.getSelectedIndex();
+        numbers.remove(position);
+        money.remove(position);
+        jlNumbers.setModel(numbers);
+        jlMoney.setModel(money);
     }//GEN-LAST:event_btn200ActionPerformed
 
     private void btn300ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn300ActionPerformed
@@ -2559,15 +2593,17 @@ public class Selling extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JList<String> jlMoney;
+    private javax.swing.JList<String> jlNumbers;
     private javax.swing.JLabel lblCompanyName;
+    private javax.swing.JLabel lblTotalAmount;
     private javax.swing.JTextField tfSelectedNumber;
     // End of variables declaration//GEN-END:variables
 }
