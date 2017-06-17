@@ -7,6 +7,7 @@ package views;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import sistematiempos.AppStrings;
 import sun.security.util.Password;
 
 /**
@@ -18,6 +19,8 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    private static AppStrings appStrings = AppStrings.getInstance();
+    
     public Login() {
         initComponents();
     }
@@ -100,7 +103,7 @@ public class Login extends javax.swing.JFrame {
             dispose();
         }
         else {
-            JOptionPane.showMessageDialog(null, "Contraseña no valida.");
+            JOptionPane.showMessageDialog(null, appStrings.getPasswordError());
         }
     }//GEN-LAST:event_btnAccessActionPerformed
 
