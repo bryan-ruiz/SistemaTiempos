@@ -7,7 +7,7 @@ package views;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import sistematiempos.AppStrings;
+import sistematiempos.SpanishLanguage;
 import sun.security.util.Password;
 
 /**
@@ -19,7 +19,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    private static AppStrings appStrings = AppStrings.getInstance();
+    private static SpanishLanguage appStrings = SpanishLanguage.getInstance();
     
     public Login() {
         initComponents();

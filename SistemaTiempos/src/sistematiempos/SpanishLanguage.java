@@ -25,4 +25,14 @@ public class SpanishLanguage {
         }
         return instance;
     }
+
+    public String getPasswordError() {
+        return passwordError;
+    }
+
+    public String getNotNumberError() {
+        return notNumberError;
+    }
+    
+    
 }

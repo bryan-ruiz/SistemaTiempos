@@ -11,7 +11,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import sistematiempos.AppStrings;
+import sistematiempos.SpanishLanguage;
 
 /**
  *
@@ -25,7 +25,7 @@ public class Selling extends javax.swing.JFrame {
     private JButton button;
     private DefaultListModel numbers = new DefaultListModel();
     private DefaultListModel money = new DefaultListModel();
-    private static AppStrings appStrings = AppStrings.getInstance();
+    private static SpanishLanguage appStrings = SpanishLanguage.getInstance();
     
     public Selling() {
         initComponents();
