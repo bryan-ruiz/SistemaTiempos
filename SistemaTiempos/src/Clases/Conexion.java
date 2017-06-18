@@ -22,7 +22,7 @@ public class Conexion {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;        
-    private String msAccDB = "C:/Users/Joha/Documents/SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void conexionBase(){
@@ -58,8 +58,8 @@ public class Conexion {
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
             resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+tiqueteN);                         
-            while(resultSet.next()) {                
-                nuevo= new NumerosVendidos(resultSet.getInt(3), resultSet.getInt(1), resultSet.getInt(2));
+            while(resultSet.next()) {                       
+                nuevo= new NumerosVendidos(resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4));                
                 lista.add(nuevo);
             }            
         }
@@ -78,8 +78,8 @@ public class Conexion {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tiquete order by numero desc");
-            while(resultSet.next()) {
+            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tiquete order by idTiquete desc");
+            while(resultSet.next()) {                
                 nuevo= new Tiquete(resultSet.getInt(4),resultSet.getString(1),
                         resultSet.getInt(3),resultSet.getInt(3));                                
             }            

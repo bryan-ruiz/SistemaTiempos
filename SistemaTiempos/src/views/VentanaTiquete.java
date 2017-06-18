@@ -57,6 +57,7 @@ public class VentanaTiquete extends javax.swing.JFrame {
     public void mostrarInformacionPagar(){
         Conexion con= new Conexion();
         Tiquete tiquete= con.obtenerInformacionTiquete();        
+        
         tiqueteTxt.setText(String.valueOf(tiquete.getNumero()));
         fechaTxt.setText(tiquete.getFechaTiquete()); 
         codigoBarraTxt.setText(String.valueOf(tiquete.getCodigoBarra()));
@@ -64,7 +65,7 @@ public class VentanaTiquete extends javax.swing.JFrame {
         for (int i = 0; i < lista.size(); i++) {
             numeros.addElement(lista.get(i).getNumero());
             plata.addElement(lista.get(i).getPlataVendido());            
-            sumaMontoTotal= lista.get(i).getNumero()+sumaMontoTotal;
+            sumaMontoTotal= lista.get(i).getPlataVendido()+sumaMontoTotal;
         }
         listaNumeros.setModel(numeros);
         listaPlata.setModel(plata);
