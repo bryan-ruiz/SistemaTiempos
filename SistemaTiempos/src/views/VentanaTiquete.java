@@ -8,6 +8,8 @@ package views;
 import Clases.Tiquete;
 import Clases.Conexion;
 import Clases.NumerosVendidos;
+import Clases.Tablero;
+import Clases.TableroNumerosVendidos;
 import Clases.Tiempo;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -23,6 +25,7 @@ public class VentanaTiquete extends javax.swing.JFrame {
      */
     private DefaultListModel numeros = new DefaultListModel();
     private DefaultListModel plata = new DefaultListModel();
+    private String condicionesBD= "";
     private int sumaMontoTotal= 0;
     
     public VentanaTiquete(int accion) {
@@ -36,32 +39,45 @@ public class VentanaTiquete extends javax.swing.JFrame {
     }
     
     public void mostrarInformacionImpresionTotalUnico(){
+        codigoBarraTxt.setVisible(false);
+        fechaLabel.setVisible(false);
+        fechaTxt.setVisible(false);
+        
         Conexion con= new Conexion();
-        Tiquete tiquete= con.obtenerInformacionTiquete();        
-        tiqueteTxt.setText(String.valueOf(tiquete.getNumero()));
-        fechaTxt.setText(tiquete.getFechaTiquete()); 
-        codigoBarraTxt.setText(String.valueOf(tiquete.getCodigoBarra()));
-        List<NumerosVendidos>lista=con.obtenerNumerosVendidosDeUnTiquete(String.valueOf(tiquete.getNumero()));                
+        Tablero tablero= con.obtenerInformacionTablero();        
+        String idTablero=String.valueOf(tablero.getIdTablero());        
+        
+        tiqueteLaabel.setText("Tablero");        
+        tiqueteTxt.setText(idTablero);                        
+        tiempoTxt.setText(tablero.getTiempo());
+        
+        List<TableroNumerosVendidos>lista=con.obtenerNumerosVendidosDeUnTablero(idTablero);        
         for (int i = 0; i < lista.size(); i++) {
             numeros.addElement(lista.get(i).getNumero());
-            plata.addElement(lista.get(i).getPlataVendido());            
-            sumaMontoTotal= lista.get(i).getNumero()+sumaMontoTotal;
-        }
+            plata.addElement(lista.get(i).getMonto());            
+            sumaMontoTotal= lista.get(i).getMonto()+sumaMontoTotal;
+        }        
         listaNumeros.setModel(numeros);
         listaPlata.setModel(plata);
-        plataTotalTxt.setText(String.valueOf(sumaMontoTotal));
-        Tiempo tiempo= con.obtenerTiempoTiquete(String.valueOf(tiquete.getNumero()));
-        tiempoTxt.setText(tiempo.getTiempo());
+        plataTotalTxt.setText(String.valueOf(sumaMontoTotal));                
+        
+        condicionesBD= con.obtenerTerminosCondiciones();                
+        condicionesTxt.append(condicionesBD);
     }
     
     public void mostrarInformacionPagar(){
-        Conexion con= new Conexion();
-        Tiquete tiquete= con.obtenerInformacionTiquete();        
+        firmaLabelAbajo.setVisible(false);
+        espacioFirma.setVisible(false);
         
-        tiqueteTxt.setText(String.valueOf(tiquete.getNumero()));
+        Conexion con= new Conexion();                
+        Tiquete tiquete= con.obtenerInformacionTiquete();                
+        String idTiquete=String.valueOf(tiquete.getNumero());                
+        
+        tiqueteTxt.setText(idTiquete);
         fechaTxt.setText(tiquete.getFechaTiquete()); 
         codigoBarraTxt.setText(String.valueOf(tiquete.getCodigoBarra()));
-        List<NumerosVendidos>lista=con.obtenerNumerosVendidosDeUnTiquete(String.valueOf(tiquete.getNumero()));                
+        
+        List<NumerosVendidos>lista=con.obtenerNumerosVendidosDeUnTiquete(idTiquete);                
         for (int i = 0; i < lista.size(); i++) {
             numeros.addElement(lista.get(i).getNumero());
             plata.addElement(lista.get(i).getPlataVendido());            
@@ -70,10 +86,12 @@ public class VentanaTiquete extends javax.swing.JFrame {
         listaNumeros.setModel(numeros);
         listaPlata.setModel(plata);
         plataTotalTxt.setText(String.valueOf(sumaMontoTotal));
-        Tiempo tiempo= con.obtenerTiempoTiquete(String.valueOf(tiquete.getNumero()));
+        
+        Tiempo tiempo= con.obtenerTiempoTiquete(idTiquete);
         tiempoTxt.setText(tiempo.getTiempo());
-        firmaLabelAbajo.setVisible(false);
-        espacioFirma.setVisible(false);
+        
+        condicionesBD= con.obtenerTerminosCondiciones();                
+        condicionesTxt.append(condicionesBD);
     }
     
     

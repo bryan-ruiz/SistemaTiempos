@@ -32,7 +32,5 @@ public class SpanishLanguage {
 
     public String getNotNumberError() {
         return notNumberError;
-    }
-    
-    
+    }       
 }

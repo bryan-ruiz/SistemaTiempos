@@ -49,17 +49,46 @@ public class Conexion {
             sqlex.printStackTrace();
         }        
     }
-    
-    public List<NumerosVendidos>obtenerNumerosVendidosDeUnTablero(String idTablero){        
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//                          TERMINOS Y CONDICIONES
+/////////////////////////////////////////////////////////////////////////////////////////    
+    public String obtenerTerminosCondiciones(){        
         conexionBase();
-        List<NumerosVendidos>lista= new ArrayList<>();
-        NumerosVendidos nuevo= null;
+        String nuevo= "";
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+idTablero);                         
-            while(resultSet.next()) {                       
-                nuevo= new NumerosVendidos(resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4));                
+            resultSet = statement.executeQuery("SELECT TOP 1 * FROM CondicionesTerminos order by id desc");
+            while(resultSet.next()) {                
+                nuevo= resultSet.getString(2);                
+            }            
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            cerrarConexionObtener();    
+        }        
+        return nuevo;
+    }                    
+    
+    
+    
+/////////////////////////////////////////////////////////////////////////////////////////
+//                          TABLERO
+/////////////////////////////////////////////////////////////////////////////////////////
+    
+    public List<TableroNumerosVendidos>obtenerNumerosVendidosDeUnTablero(String idTablero){        
+        conexionBase();
+        List<TableroNumerosVendidos>lista= new ArrayList<>();        
+        TableroNumerosVendidos nuevo= null;
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            resultSet = statement.executeQuery("SELECT * FROM TableroNumerosVendidos where idTablero= "+idTablero);
+            while(resultSet.next()) {         
+                nuevo= new TableroNumerosVendidos(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(4));                                        
                 lista.add(nuevo);
             }            
         }
@@ -72,6 +101,34 @@ public class Conexion {
         return lista;
     }                    
     
+    public Tablero obtenerInformacionTablero(){        
+        conexionBase();
+        Tablero nuevo= null;
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tableros order by idTablero desc");
+            while(resultSet.next()) {
+                nuevo= new Tablero(resultSet.getInt(6),resultSet.getString(1),
+                        resultSet.getString(2), resultSet.getInt(3), resultSet.getString(4), 
+                        resultSet.getString(5));                
+            }            
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            cerrarConexionObtener();    
+        }        
+        return nuevo;
+    }
+
+    
+    
+    
+/////////////////////////////////////////////////////////////////////////////////////////
+//                          TIKETES    
+/////////////////////////////////////////////////////////////////////////////////////////
     
     public List<NumerosVendidos>obtenerNumerosVendidosDeUnTiquete(String tiqueteN){        
         conexionBase();
@@ -136,6 +193,13 @@ public class Conexion {
         }        
         return nuevo;
     }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//                          insertar ejemplo 
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
     
     public void baseEscribirPersonal(String nombre,String apellido, String cargo, String sueldo){                       
         conexionBase();
