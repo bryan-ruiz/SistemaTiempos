@@ -57,7 +57,7 @@ public class Conexion {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("DELETE FROM NumerosVendidos");                         
+            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+tiqueteN);                         
             while(resultSet.next()) {                
                 nuevo= new NumerosVendidos(resultSet.getInt(3), resultSet.getInt(1), resultSet.getInt(2));
                 lista.add(nuevo);
