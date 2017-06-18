@@ -49,7 +49,30 @@ public class Conexion {
             sqlex.printStackTrace();
         }        
     }
-
+    
+    public List<NumerosVendidos>obtenerNumerosVendidosDeUnTablero(String idTablero){        
+        conexionBase();
+        List<NumerosVendidos>lista= new ArrayList<>();
+        NumerosVendidos nuevo= null;
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+idTablero);                         
+            while(resultSet.next()) {                       
+                nuevo= new NumerosVendidos(resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4));                
+                lista.add(nuevo);
+            }            
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            cerrarConexionObtener();    
+        }        
+        return lista;
+    }                    
+    
+    
     public List<NumerosVendidos>obtenerNumerosVendidosDeUnTiquete(String tiqueteN){        
         conexionBase();
         List<NumerosVendidos>lista= new ArrayList<>();
@@ -70,7 +93,8 @@ public class Conexion {
             cerrarConexionObtener();    
         }        
         return lista;
-    }
+    }                
+    
     
     public Tiquete obtenerInformacionTiquete(){        
         conexionBase();
