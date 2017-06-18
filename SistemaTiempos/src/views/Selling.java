@@ -7,6 +7,7 @@ package views;
 
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.event.WindowEvent;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
@@ -2408,6 +2409,10 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnTotalPrintImpressionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTotalPrintImpressionActionPerformed
         // TODO add your handling code here:
+        VentanaTiquete oClienteCrear = new VentanaTiquete(2);
+        oClienteCrear.setAlwaysOnTop(true);
+        oClienteCrear.setVisible(true);
+        oClienteCrear.setLocationRelativeTo(null);        
     }//GEN-LAST:event_btnTotalPrintImpressionActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -2425,6 +2430,10 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         // TODO add your handling code here:
+        VentanaTiquete oClienteCrear = new VentanaTiquete(1);
+        oClienteCrear.setAlwaysOnTop(true);
+        oClienteCrear.setVisible(true);
+        oClienteCrear.setLocationRelativeTo(null);        
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btn100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100ActionPerformed

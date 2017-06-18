@@ -5,19 +5,77 @@
  */
 package views;
 
+import Clases.Tiquete;
+import Clases.Conexion;
+import Clases.NumerosVendidos;
+import Clases.Tiempo;
+import java.util.List;
+import javax.swing.DefaultListModel;
+
 /**
  *
  * @author Joha
  */
 public class VentanaTiquete extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form VentanaTiquete
      */
-    public VentanaTiquete() {
+    private DefaultListModel numeros = new DefaultListModel();
+    private DefaultListModel plata = new DefaultListModel();
+    private int sumaMontoTotal= 0;
+    
+    public VentanaTiquete(int accion) {
         initComponents();
+        if(accion== 1){
+            mostrarInformacionPagar();
+        }                
+        else{
+            mostrarInformacionImpresionTotalUnico();
+        }
     }
-
+    
+    public void mostrarInformacionImpresionTotalUnico(){
+        Conexion con= new Conexion();
+        Tiquete tiquete= con.obtenerInformacionTiquete();        
+        tiqueteTxt.setText(String.valueOf(tiquete.getNumero()));
+        fechaTxt.setText(tiquete.getFechaTiquete()); 
+        codigoBarraTxt.setText(String.valueOf(tiquete.getCodigoBarra()));
+        List<NumerosVendidos>lista=con.obtenerNumerosVendidosDeUnTiquete(String.valueOf(tiquete.getNumero()));                
+        for (int i = 0; i < lista.size(); i++) {
+            numeros.addElement(lista.get(i).getNumero());
+            plata.addElement(lista.get(i).getPlataVendido());            
+            sumaMontoTotal= lista.get(i).getNumero()+sumaMontoTotal;
+        }
+        listaNumeros.setModel(numeros);
+        listaPlata.setModel(plata);
+        plataTotalTxt.setText(String.valueOf(sumaMontoTotal));
+        Tiempo tiempo= con.obtenerTiempoTiquete(String.valueOf(tiquete.getNumero()));
+        tiempoTxt.setText(tiempo.getTiempo());
+    }
+    
+    public void mostrarInformacionPagar(){
+        Conexion con= new Conexion();
+        Tiquete tiquete= con.obtenerInformacionTiquete();        
+        tiqueteTxt.setText(String.valueOf(tiquete.getNumero()));
+        fechaTxt.setText(tiquete.getFechaTiquete()); 
+        codigoBarraTxt.setText(String.valueOf(tiquete.getCodigoBarra()));
+        List<NumerosVendidos>lista=con.obtenerNumerosVendidosDeUnTiquete(String.valueOf(tiquete.getNumero()));                
+        for (int i = 0; i < lista.size(); i++) {
+            numeros.addElement(lista.get(i).getNumero());
+            plata.addElement(lista.get(i).getPlataVendido());            
+            sumaMontoTotal= lista.get(i).getNumero()+sumaMontoTotal;
+        }
+        listaNumeros.setModel(numeros);
+        listaPlata.setModel(plata);
+        plataTotalTxt.setText(String.valueOf(sumaMontoTotal));
+        Tiempo tiempo= con.obtenerTiempoTiquete(String.valueOf(tiquete.getNumero()));
+        tiempoTxt.setText(tiempo.getTiempo());
+        firmaLabelAbajo.setVisible(false);
+        espacioFirma.setVisible(false);
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,7 +102,7 @@ public class VentanaTiquete extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         condicionesTxt = new javax.swing.JTextArea();
         firmaLabelAbajo = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
+        espacioFirma = new javax.swing.JSeparator();
         codigoBarraTxt = new javax.swing.JLabel();
         tiqueteTxt = new javax.swing.JLabel();
         tiempoTxt = new javax.swing.JLabel();
@@ -52,6 +110,7 @@ public class VentanaTiquete extends javax.swing.JFrame {
         plataTotalTxt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         botonImprimir.setText("Imprimir");
         botonImprimir.addActionListener(new java.awt.event.ActionListener() {
@@ -60,6 +119,7 @@ public class VentanaTiquete extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         nombreComercioTxt.setText("Nombre del comercio");
@@ -76,14 +136,20 @@ public class VentanaTiquete extends javax.swing.JFrame {
 
         plataLabel.setText("Plata");
 
+        listaNumeros.setEnabled(false);
+        listaNumeros.setSelectionBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(listaNumeros);
 
+        listaPlata.setEnabled(false);
         jScrollPane2.setViewportView(listaPlata);
 
         totalLabel.setText("Total");
 
+        condicionesTxt.setEditable(false);
         condicionesTxt.setColumns(20);
         condicionesTxt.setRows(5);
+        condicionesTxt.setDisabledTextColor(new java.awt.Color(204, 204, 204));
+        condicionesTxt.setEnabled(false);
         jScrollPane3.setViewportView(condicionesTxt);
 
         firmaLabelAbajo.setText("Firma");
@@ -113,91 +179,88 @@ public class VentanaTiquete extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nombreComercioTxt)
+                        .addGap(72, 72, 72)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tiqueteLaabel)
-                                    .addComponent(tiempoLabel)
-                                    .addComponent(fechaLabel))
-                                .addGap(49, 49, 49)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(fechaTxt)
-                                    .addComponent(tiempoTxt)
-                                    .addComponent(tiqueteTxt)))))
+                                .addComponent(totalLabel)
+                                .addGap(63, 63, 63))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(plataTotalTxt))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(firmaTxt)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(85, 85, 85)
                         .addComponent(firmaLabelAbajo)
                         .addGap(18, 18, 18)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(firmaTxt)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(72, 72, 72)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(totalLabel)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(98, 98, 98)
-                                    .addComponent(numeroLabel)))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(47, 47, 47)
-                                    .addComponent(plataLabel))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(39, 39, 39)
-                                    .addComponent(plataTotalTxt))))))
+                        .addComponent(espacioFirma, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(99, 99, 99)
+                        .addComponent(numeroLabel)
+                        .addGap(79, 79, 79)
+                        .addComponent(plataLabel))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nombreComercioTxt)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(fechaLabel)
+                                    .addComponent(tiempoLabel)
+                                    .addComponent(tiqueteLaabel))
+                                .addGap(33, 33, 33)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(tiempoTxt)
+                                    .addComponent(tiqueteTxt)
+                                    .addComponent(fechaTxt))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(firmaTxt)
+                .addGap(18, 18, 18)
+                .addComponent(nombreComercioTxt)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(firmaTxt)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tiqueteTxt)
+                            .addComponent(tiqueteLaabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tiempoTxt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fechaTxt))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(nombreComercioTxt)
-                        .addGap(29, 29, 29)
+                        .addComponent(tiempoLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fechaLabel)
+                        .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tiqueteLaabel)
-                            .addComponent(tiqueteTxt))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(numeroLabel)
+                            .addComponent(plataLabel))))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tiempoLabel)
-                            .addComponent(tiempoTxt))
+                            .addComponent(totalLabel)
+                            .addComponent(plataTotalTxt))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fechaLabel)
-                            .addComponent(fechaTxt))
-                        .addGap(19, 19, 19)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(plataLabel)
-                            .addComponent(numeroLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(totalLabel)
-                                    .addComponent(plataTotalTxt))
-                                .addGap(18, 18, 18))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(66, 66, 66)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(firmaLabelAbajo)))
+                        .addComponent(espacioFirma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(firmaLabelAbajo, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(45, 45, 45)
                 .addComponent(codigoBarraTxt)
                 .addGap(31, 31, 31))
@@ -208,23 +271,22 @@ public class VentanaTiquete extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(59, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(botonImprimir)
-                        .addGap(46, 46, 46))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(78, 78, 78))))
+                .addGap(61, 61, 61)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(botonImprimir)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botonImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(150, 150, 150))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -260,19 +322,13 @@ public class VentanaTiquete extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(VentanaTiquete.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaTiquete().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonImprimir;
     private javax.swing.JLabel codigoBarraTxt;
     private javax.swing.JTextArea condicionesTxt;
+    private javax.swing.JSeparator espacioFirma;
     private javax.swing.JLabel fechaLabel;
     private javax.swing.JLabel fechaTxt;
     private javax.swing.JLabel firmaLabelAbajo;
@@ -281,7 +337,6 @@ public class VentanaTiquete extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JList<String> listaNumeros;
     private javax.swing.JList<String> listaPlata;
     private javax.swing.JLabel nombreComercioTxt;
