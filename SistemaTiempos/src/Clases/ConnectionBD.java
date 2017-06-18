@@ -5,7 +5,7 @@
  */
 package Clases;
 
-import Clases.Tiquete;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,14 +18,14 @@ import java.util.List;
  *
  * @author Joha
  */
-public class Conexion {
+public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
-    public void conexionBase(){
+    public void bdConnection(){
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         }
@@ -37,7 +37,7 @@ public class Conexion {
         }
     }
     
-    public void cerrarConexionObtener(){        
+    public void closeConnectionGet(){        
         try {
             if(null != connection) {                    
                 resultSet.close();
@@ -53,24 +53,24 @@ public class Conexion {
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TERMINOS Y CONDICIONES
 /////////////////////////////////////////////////////////////////////////////////////////    
-    public String obtenerTerminosCondiciones(){        
-        conexionBase();
-        String nuevo= "";
+    public String getTermsConditions(){        
+        bdConnection();
+        String newElement= "";
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
             resultSet = statement.executeQuery("SELECT TOP 1 * FROM CondicionesTerminos order by id desc");
             while(resultSet.next()) {                
-                nuevo= resultSet.getString(2);                
+                newElement= resultSet.getString(2);                
             }            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
         }
         finally {            
-            cerrarConexionObtener();    
+            closeConnectionGet();    
         }        
-        return nuevo;
+        return newElement;
     }                    
     
     
@@ -79,37 +79,37 @@ public class Conexion {
 //                          TABLERO
 /////////////////////////////////////////////////////////////////////////////////////////
     
-    public List<TableroNumerosVendidos>obtenerNumerosVendidosDeUnTablero(String idTablero){        
-        conexionBase();
-        List<TableroNumerosVendidos>lista= new ArrayList<>();        
-        TableroNumerosVendidos nuevo= null;
+    public List<BoardSoldNumbers>getSoldBoardNumbers(String idBoard){        
+        bdConnection();
+        List<BoardSoldNumbers>list= new ArrayList<>();        
+        BoardSoldNumbers newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM TableroNumerosVendidos where idTablero= "+idTablero);
+            resultSet = statement.executeQuery("SELECT * FROM TableroNumerosVendidos where idTablero= "+idBoard);
             while(resultSet.next()) {         
-                nuevo= new TableroNumerosVendidos(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(4));                                        
-                lista.add(nuevo);
+                newElement= new BoardSoldNumbers(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(4));                                        
+                list.add(newElement);
             }            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
         }
         finally {            
-            cerrarConexionObtener();    
+            closeConnectionGet();    
         }        
-        return lista;
+        return list;
     }                    
     
-    public Tablero obtenerInformacionTablero(){        
-        conexionBase();
-        Tablero nuevo= null;
+    public Board getBoardInformation(){        
+        bdConnection();
+        Board newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
             resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tableros order by idTablero desc");
             while(resultSet.next()) {
-                nuevo= new Tablero(resultSet.getInt(6),resultSet.getString(1),
+                newElement= new Board(resultSet.getInt(6),resultSet.getString(1),
                         resultSet.getString(2), resultSet.getInt(3), resultSet.getString(4), 
                         resultSet.getString(5));                
             }            
@@ -118,9 +118,9 @@ public class Conexion {
             sqlex.printStackTrace();
         }
         finally {            
-            cerrarConexionObtener();    
+            closeConnectionGet();    
         }        
-        return nuevo;
+        return newElement;
     }
 
     
@@ -130,38 +130,38 @@ public class Conexion {
 //                          TIKETES    
 /////////////////////////////////////////////////////////////////////////////////////////
     
-    public List<NumerosVendidos>obtenerNumerosVendidosDeUnTiquete(String tiqueteN){        
-        conexionBase();
-        List<NumerosVendidos>lista= new ArrayList<>();
-        NumerosVendidos nuevo= null;
+    public List<SellNumber>GetNumberSoldFromTiicket(String ticketN){        
+        bdConnection();
+        List<SellNumber>list= new ArrayList<>();
+        SellNumber newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+tiqueteN);                         
+            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+ticketN);                         
             while(resultSet.next()) {                       
-                nuevo= new NumerosVendidos(resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4));                
-                lista.add(nuevo);
+                newElement= new SellNumber(resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4));                
+                list.add(newElement);
             }            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
         }
         finally {            
-            cerrarConexionObtener();    
+            closeConnectionGet();    
         }        
-        return lista;
+        return list;
     }                
     
     
-    public Tiquete obtenerInformacionTiquete(){        
-        conexionBase();
-        Tiquete nuevo= null;
+    public Ticket getTicketInformation(){        
+        bdConnection();
+        Ticket newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
             resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tiquete order by idTiquete desc");
             while(resultSet.next()) {                
-                nuevo= new Tiquete(resultSet.getInt(4),resultSet.getString(1),
+                newElement= new Ticket(resultSet.getInt(4),resultSet.getString(1),
                         resultSet.getInt(3),resultSet.getInt(3));                                
             }            
         }
@@ -169,29 +169,29 @@ public class Conexion {
             sqlex.printStackTrace();
         }
         finally {            
-            cerrarConexionObtener();    
+            closeConnectionGet();    
         }        
-        return nuevo;
+        return newElement;
     }
     
-    public Tiempo obtenerTiempoTiquete(String tiquete){        
-        conexionBase();
-        Tiempo nuevo= null;
+    public Time getTicketTime(String ticket){        
+        bdConnection();
+        Time newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM Tiempos WHERE tiquete="+tiquete);
+            resultSet = statement.executeQuery("SELECT * FROM Tiempos WHERE tiquete="+ticket);
             while(resultSet.next()) {                
-                nuevo= new Tiempo(resultSet.getString(2),resultSet.getInt(1));
+                newElement= new Time(resultSet.getString(2),resultSet.getInt(1));
             }            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
         }
         finally {            
-            cerrarConexionObtener();    
+            closeConnectionGet();    
         }        
-        return nuevo;
+        return newElement;
     }
 
 
@@ -202,7 +202,7 @@ public class Conexion {
 
     
     public void baseEscribirPersonal(String nombre,String apellido, String cargo, String sueldo){                       
-        conexionBase();
+        bdConnection();
         try {            
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            

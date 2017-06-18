@@ -2409,7 +2409,7 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnTotalPrintImpressionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTotalPrintImpressionActionPerformed
         // TODO add your handling code here:
-        VentanaTiquete oClienteCrear = new VentanaTiquete(2);
+        TicketWindowPrint oClienteCrear = new TicketWindowPrint(2);
         oClienteCrear.setAlwaysOnTop(true);
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);        
@@ -2430,7 +2430,7 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         // TODO add your handling code here:
-        VentanaTiquete oClienteCrear = new VentanaTiquete(1);
+        TicketWindowPrint oClienteCrear = new TicketWindowPrint(1);
         oClienteCrear.setAlwaysOnTop(true);
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);        
