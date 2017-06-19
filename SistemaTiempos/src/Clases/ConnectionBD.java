@@ -78,6 +78,17 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TABLERO
 /////////////////////////////////////////////////////////////////////////////////////////
+    public boolean isInList(List<BoardSoldNumbers>list, BoardSoldNumbers object){
+        for(int i=0; i<list.size(); i++){
+            if(list.get(i).getNumber()== object.getNumber()){
+                int money= list.get(i).getMoney()+ object.getMoney();
+                list.get(i).setMoney(money);                
+                return true;
+            }
+        }
+        return false;
+    }
+    
     
     public List<BoardSoldNumbers>getSoldBoardNumbers(String idBoard){        
         bdConnection();
@@ -89,7 +100,9 @@ public class ConnectionBD {
             resultSet = statement.executeQuery("SELECT * FROM TableroNumerosVendidos where idTablero= "+idBoard);
             while(resultSet.next()) {         
                 newElement= new BoardSoldNumbers(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(4));                                        
-                list.add(newElement);
+                if(isInList(list,newElement)== false){
+                    list.add(newElement);
+                }                          
             }            
         }
         catch(SQLException sqlex){
@@ -198,7 +211,6 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          insertar ejemplo 
 /////////////////////////////////////////////////////////////////////////////////////////
-
 
     
     public void baseEscribirPersonal(String nombre,String apellido, String cargo, String sueldo){                       
