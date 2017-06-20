@@ -9,20 +9,12 @@ package Clases;
  *
  * @author Joha
  */
-public class Time {
-    String time;
+public class TicketTime {
     int ticket;
+    String time;
 
-    public Time(String time, int ticket) {
-        this.time = time;
+    public TicketTime(int ticket, String time) {
         this.ticket = ticket;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
         this.time = time;
     }
 
@@ -32,5 +24,13 @@ public class Time {
 
     public void setTicket(int ticket) {
         this.ticket = ticket;
-    }        
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }    
 }

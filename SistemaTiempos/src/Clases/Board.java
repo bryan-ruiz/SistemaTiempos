@@ -10,60 +10,46 @@ package Clases;
  * @author Joha
  */
 public class Board {
-    int idBoard;
-    String closeMorning;
-    String closeNight;
-    int boardNumbers;
-    String time;
+    int board;    
+    String dayClose;
+    String nightClose;
     String store;
+    int stadisticsPer;
+    int barCode;
+    String password;    
 
-    public Board(int idBoard, String closeMorning, String CloseNight, int BoardNumbers, String time, String store) {
-        this.idBoard = idBoard;
-        this.closeMorning = closeMorning;
-        this.closeNight = CloseNight;
-        this.boardNumbers = BoardNumbers;
-        this.time = time;
+    public Board(int board, String dayClose, String nightClose, String store, int stadisticsPer, int barCode, String password) {
+        this.board = board;
+        this.dayClose = dayClose;
+        this.nightClose = nightClose;
         this.store = store;
+        this.stadisticsPer = stadisticsPer;
+        this.barCode = barCode;
+        this.password = password;
     }
 
-    public int getIdTablero() {
-        return idBoard;
+    public int getBoard() {
+        return board;
     }
 
-    public void setIdTablero(int idTablero) {
-        this.idBoard = idTablero;
+    public void setBoard(int board) {
+        this.board = board;
     }
 
-    public String getCloseMorning() {
-        return closeMorning;
+    public String getDayClose() {
+        return dayClose;
     }
 
-    public void setCloseMorning(String closeMorning) {
-        this.closeMorning = closeMorning;
+    public void setDayClose(String dayClose) {
+        this.dayClose = dayClose;
     }
 
-    public String getCloseNight() {
-        return closeNight;
+    public String getNightClose() {
+        return nightClose;
     }
 
-    public void setCloseNight(String closeNight) {
-        this.closeNight = closeNight;
-    }
-
-    public int getBoardNumbers() {
-        return boardNumbers;
-    }
-
-    public void setBoardNumbers(int boardNumbers) {
-        this.boardNumbers = boardNumbers;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
+    public void setNightClose(String nightClose) {
+        this.nightClose = nightClose;
     }
 
     public String getStore() {
@@ -72,5 +58,29 @@ public class Board {
 
     public void setStore(String store) {
         this.store = store;
-    }    
+    }
+
+    public int getStadisticsPer() {
+        return stadisticsPer;
+    }
+
+    public void setStadisticsPer(int stadisticsPer) {
+        this.stadisticsPer = stadisticsPer;
+    }
+
+    public int getBarCode() {
+        return barCode;
+    }
+
+    public void setBarCode(int barCode) {
+        this.barCode = barCode;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }        
 }

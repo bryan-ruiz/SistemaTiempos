@@ -10,47 +10,37 @@ package Clases;
  * @author Joha
  */
 public class Ticket {
-    int number;
-    String ticketDate;
-    int total;
-    int barCode;
+    int ticket;
+    String date;
+    int ticketTotalAmount;
 
-    public Ticket(int number, String ticketDate, int total, int barCode) {
-        this.number = number;
-        this.ticketDate = ticketDate;
-        this.total = total;
-        this.barCode = barCode;
+    public Ticket(int ticket, String date, int ticketTotalAmount) {
+        this.ticket = ticket;
+        this.date = date;
+        this.ticketTotalAmount = ticketTotalAmount;
     }
 
-    public int getNumber() {
-        return number;
+    public int getTicket() {
+        return ticket;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setTicket(int ticket) {
+        this.ticket = ticket;
     }
 
-    public String getTicketDate() {
-        return ticketDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setTicketDate(String ticketDate) {
-        this.ticketDate = ticketDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public int getTotal() {
-        return total;
+    public int getTicketTotalAmount() {
+        return ticketTotalAmount;
     }
 
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public int getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(int barCode) {
-        this.barCode = barCode;
-    }        
+    public void setTicketTotalAmount(int ticketTotalAmount) {
+        this.ticketTotalAmount = ticketTotalAmount;
+    }    
 }

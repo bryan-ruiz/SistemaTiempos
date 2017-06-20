@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Clases;
+package BD;
 
 
+import Clases.Board;
+import Clases.SoldNumbers;
+import Clases.Ticket;
+import Clases.TicketTime;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -53,7 +57,7 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TERMINOS Y CONDICIONES
 /////////////////////////////////////////////////////////////////////////////////////////    
-    public String getTermsConditions(){        
+    /*public String getTermsConditions(){        
         bdConnection();
         String newElement= "";
         try {                                    
@@ -74,15 +78,15 @@ public class ConnectionBD {
     }                    
     
     
-    
+    */
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TABLERO
 /////////////////////////////////////////////////////////////////////////////////////////
-    public boolean isInList(List<BoardSoldNumbers>list, BoardSoldNumbers object){
+    public boolean isInList(List<SoldNumbers>list, SoldNumbers object){
         for(int i=0; i<list.size(); i++){
             if(list.get(i).getNumber()== object.getNumber()){
-                int money= list.get(i).getMoney()+ object.getMoney();
-                list.get(i).setMoney(money);                
+                int money= list.get(i).getMoneySold()+ object.getMoneySold();
+                list.get(i).setMoneySold(money);                
                 return true;
             }
         }
@@ -90,19 +94,20 @@ public class ConnectionBD {
     }
     
     
-    public List<BoardSoldNumbers>getSoldBoardNumbers(String idBoard){        
+    public List<SoldNumbers>getSoldBoardNumbers(String idBoard){        
         bdConnection();
-        List<BoardSoldNumbers>list= new ArrayList<>();        
-        BoardSoldNumbers newElement= null;
+        List<SoldNumbers>list= new ArrayList<>();        
+        SoldNumbers newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM TableroNumerosVendidos where idTablero= "+idBoard);
-            while(resultSet.next()) {         
-                newElement= new BoardSoldNumbers(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(4));                                        
+            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tablero= "+idBoard);
+            while(resultSet.next()) {                                                      
+                newElement= new SoldNumbers(resultSet.getInt(1),resultSet.getInt(2),
+                        resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5));
                 if(isInList(list,newElement)== false){
                     list.add(newElement);
-                }                          
+                }                         
             }            
         }
         catch(SQLException sqlex){
@@ -120,11 +125,12 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tableros order by idTablero desc");
+            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tablero order by tablero desc");
             while(resultSet.next()) {
-                newElement= new Board(resultSet.getInt(6),resultSet.getString(1),
-                        resultSet.getString(2), resultSet.getInt(3), resultSet.getString(4), 
-                        resultSet.getString(5));                
+                newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getInt(5),resultSet.getInt(6),
+                        resultSet.getString(7));                
             }            
         }
         catch(SQLException sqlex){
@@ -143,16 +149,17 @@ public class ConnectionBD {
 //                          TIKETES    
 /////////////////////////////////////////////////////////////////////////////////////////
     
-    public List<SellNumber>GetNumberSoldFromTiicket(String ticketN){        
+    public List<SoldNumbers>GetNumberSoldFromTiicket(String ticketN){        
         bdConnection();
-        List<SellNumber>list= new ArrayList<>();
-        SellNumber newElement= null;
+        List<SoldNumbers>list= new ArrayList<>();
+        SoldNumbers newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
             resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+ticketN);                         
             while(resultSet.next()) {                       
-                newElement= new SellNumber(resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4));                
+                newElement= new SoldNumbers(resultSet.getInt(1), resultSet.getInt(2),
+                        resultSet.getInt(3), resultSet.getInt(4), resultSet.getInt(5));
                 list.add(newElement);
             }            
         }
@@ -172,10 +179,9 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tiquete order by idTiquete desc");
+            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tiquete order by tiquete desc");
             while(resultSet.next()) {                
-                newElement= new Ticket(resultSet.getInt(4),resultSet.getString(1),
-                        resultSet.getInt(3),resultSet.getInt(3));                                
+                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));                        
             }            
         }
         catch(SQLException sqlex){
@@ -187,15 +193,15 @@ public class ConnectionBD {
         return newElement;
     }
     
-    public Time getTicketTime(String ticket){        
+    public TicketTime getTicketTime(String ticket){        
         bdConnection();
-        Time newElement= null;
+        TicketTime newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM Tiempos WHERE tiquete="+ticket);
+            resultSet = statement.executeQuery("SELECT * FROM TiempoTiquete WHERE tiquete="+ticket);
             while(resultSet.next()) {                
-                newElement= new Time(resultSet.getString(2),resultSet.getInt(1));
+                newElement= new TicketTime(resultSet.getInt(2),resultSet.getString(1));
             }            
         }
         catch(SQLException sqlex){

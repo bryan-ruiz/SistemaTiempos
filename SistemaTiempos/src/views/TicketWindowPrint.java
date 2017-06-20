@@ -5,12 +5,12 @@
  */
 package views;
 
-import Clases.Ticket;
-import Clases.ConnectionBD;
-import Clases.SellNumber;
+
+import BD.ConnectionBD;
 import Clases.Board;
-import Clases.BoardSoldNumbers;
-import Clases.Time;
+import Clases.SoldNumbers;
+import Clases.Ticket;
+import Clases.TicketTime;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -44,25 +44,23 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         dateTxt.setVisible(false);
         
         ConnectionBD con= new ConnectionBD();
-        Board board= con.getBoardInformation();        
-        String idBoard=String.valueOf(board.getIdTablero());        
+        Board board= con.getBoardInformation();                
+        String idBoard=String.valueOf(board.getBoard());        
         
         ticketLabel.setText("Tablero");        
         ticketTxt.setText(idBoard);                        
-        timeTxt.setText(board.getTime());
+        storeTxt.setText(board.getStore());
         
-        List<BoardSoldNumbers>list=con.getSoldBoardNumbers(idBoard);        
+        con.getSoldBoardNumbers(idBoard); 
+        List<SoldNumbers>list=con.getSoldBoardNumbers(idBoard);        
         for (int i = 0; i < list.size(); i++) {
             numbersList.addElement(list.get(i).getNumber());
-            moneyList.addElement(list.get(i).getMoney());            
-            totalAmount= list.get(i).getMoney()+totalAmount;
-        }        
+            moneyList.addElement(list.get(i).getMoneySold());            
+            totalAmount= list.get(i).getMoneySold()+totalAmount;
+        }    
         listNumbersTxt.setModel(numbersList);
         listMoneyTxt.setModel(moneyList);
-        totalMoneyTxt.setText(String.valueOf(totalAmount));                
-        
-        conditionsBD= con.getTermsConditions();                
-        conditionsTxt.append(conditionsBD);
+        totalMoneyTxt.setText(String.valueOf(totalAmount));                        
     }
     
     public void showInformationPay(){
@@ -71,27 +69,28 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         
         ConnectionBD con= new ConnectionBD();                
         Ticket ticket= con.getTicketInformation();                
-        String idTicket=String.valueOf(ticket.getNumber());                
+        String idTicket=String.valueOf(ticket.getTicket());                
         
         ticketTxt.setText(idTicket);
-        dateTxt.setText(ticket.getTicketDate()); 
-        barCodeTxt.setText(String.valueOf(ticket.getBarCode()));
+        dateTxt.setText(ticket.getDate());         
         
-        List<SellNumber>lista=con.GetNumberSoldFromTiicket(idTicket);                
+        Board board= con.getBoardInformation();                
+        storeTxt.setText(board.getStore());
+        barCodeTxt.setText(String.valueOf(board.getBarCode()));
+        
+        List<SoldNumbers>lista=con.GetNumberSoldFromTiicket(idTicket);                
         for (int i = 0; i < lista.size(); i++) {
             numbersList.addElement(lista.get(i).getNumber());
-            moneyList.addElement(lista.get(i).getMoneyForSold());            
-            totalAmount= lista.get(i).getMoneyForSold()+totalAmount;
+            moneyList.addElement(lista.get(i).getMoneySold());            
+            totalAmount= lista.get(i).getMoneySold()+totalAmount;
         }
         listNumbersTxt.setModel(numbersList);
         listMoneyTxt.setModel(moneyList);
-        totalMoneyTxt.setText(String.valueOf(totalAmount));
+        totalMoneyTxt.setText(String.valueOf(ticket.getTicketTotalAmount()));
         
-        Time tiempo= con.getTicketTime(idTicket);
+        TicketTime tiempo= con.getTicketTime(idTicket);
         timeTxt.setText(tiempo.getTime());
         
-        conditionsBD= con.getTermsConditions();                
-        conditionsTxt.append(conditionsBD);
     }
     
     
