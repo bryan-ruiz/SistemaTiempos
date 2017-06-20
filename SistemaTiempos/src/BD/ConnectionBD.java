@@ -82,6 +82,28 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TABLERO
 /////////////////////////////////////////////////////////////////////////////////////////
+    public String getTimeFromBoard(String idBoard){
+        String result= "";
+        bdConnection();        
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            resultSet = statement.executeQuery("SELECT TOP 1 * FROM numerosTiempo where tablero= "
+                    + "'"+idBoard+"'"+ " order by id desc");
+            while(resultSet.next()) {
+                result=resultSet.getString(3);                 
+            }            
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            closeConnectionGet();    
+        }                
+        return result;
+    }
+    
+    
     public boolean isInList(List<SoldNumbers>list, SoldNumbers object){
         for(int i=0; i<list.size(); i++){
             if(list.get(i).getNumber()== object.getNumber()){
@@ -108,7 +130,7 @@ public class ConnectionBD {
                 if(isInList(list,newElement)== false){
                     list.add(newElement);
                 }                         
-            }            
+            }                        
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -160,7 +182,9 @@ public class ConnectionBD {
             while(resultSet.next()) {                       
                 newElement= new SoldNumbers(resultSet.getInt(1), resultSet.getInt(2),
                         resultSet.getInt(3), resultSet.getInt(4), resultSet.getInt(5));
-                list.add(newElement);
+                if(isInList(list,newElement)== false){
+                    list.add(newElement);
+                } 
             }            
         }
         catch(SQLException sqlex){

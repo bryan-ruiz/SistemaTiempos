@@ -62,7 +62,5 @@ public class SoldNumbers {
 
     public void setMoneySold(int moneySold) {
         this.moneySold = moneySold;
-    }
-    
-    
+    }        
 }
