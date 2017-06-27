@@ -3,7 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Joha/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/Clases/ConnectionBD.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/views/AdministratorEditOptions.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/sistematiempos/SistemaTiempos.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/BD/ConnectionBD.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/sistematiempos/ChineseLanguage.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/views/ticketCodScanDelete.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/Clases/TimeNumber.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/Clases/SoldNumbers.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/Clases/Ticket.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/views/StadisticsCenter.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/views/TicketWindowPrint.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/sistematiempos/SpanishLanguage.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/views/Login.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/views/Selling.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/Clases/Date.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/Clases/Board.java</file>
+            <file>file:/C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/src/Clases/TicketTime.java</file>
         </group>
     </open-files>
 </project-private>

@@ -16,12 +16,14 @@ public class TimeNumber {
     int totalNumberAmount;
     int board;
 
-    public TimeNumber(int id, int numero, String tiempo, int totalNumberAmount) {
+    public TimeNumber(int id, int numero, String tiempo, int totalNumberAmount, int board) {
         this.id = id;
         this.numero = numero;
         this.tiempo = tiempo;
         this.totalNumberAmount = totalNumberAmount;
+        this.board = board;
     }
+
 
     public int getId() {
         return id;

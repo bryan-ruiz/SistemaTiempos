@@ -10,10 +10,12 @@ package Clases;
  * @author Joha
  */
 public class Date {
+    int id;
     String date;
 
-    public Date(String date) {
+    public Date(int id, String date) {
         this.date = date;
+        this.id = id;
     }
 
     public String getDate() {
@@ -22,6 +24,14 @@ public class Date {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
 }

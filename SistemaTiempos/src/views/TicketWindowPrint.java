@@ -13,6 +13,8 @@ import Clases.Ticket;
 import Clases.TicketTime;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import sistematiempos.ChineseLanguage;
+import sistematiempos.SpanishLanguage;
 
 /**
  *
@@ -25,17 +27,68 @@ public class TicketWindowPrint extends javax.swing.JFrame {
      */
     private DefaultListModel numbersList = new DefaultListModel();
     private DefaultListModel moneyList = new DefaultListModel();
-    private String conditionsBD= "";
+    private String conditionsBD= "", language;
     private int totalAmount= 0;
+    private Board board;
     
     public TicketWindowPrint(int action) {
         initComponents();
-        if(action== 1){
-            showInformationPay();
-        }                
-        else{
+        if(action== -1){
             showInformationPrintTotalU();
+        }                
+        else{            
+            showInformationPay(action);
         }
+    }
+    
+    public void showInformationPay(int idToFindTicket){
+        firmaLabelAbajo.setVisible(false);
+        espacioFirma.setVisible(false);
+        Ticket ticket= null;
+        ConnectionBD con= new ConnectionBD();                
+        if(idToFindTicket== 0){
+            
+            ticket= con.getTicketInformation();                
+        }
+        else{
+            ticket= con.getTicketInformationFind(idToFindTicket);        
+        }
+        
+        String idTicket=String.valueOf(ticket.getTicket());                
+        
+        ticketTxt.setText(idTicket);
+        dateTxt.setText(ticket.getDate());                                 
+        
+        List<SoldNumbers>lista=con.GetNumberSoldFromTiicket(idTicket);                        
+        for (int i = 0; i < lista.size(); i++) {
+            numbersList.addElement(lista.get(i).getNumber());
+            moneyList.addElement(lista.get(i).getMoneySold());            
+            totalAmount= lista.get(i).getMoneySold()+totalAmount;
+        }
+        if(lista.size()>0){
+            int idBoard= lista.get(0).getBoard();
+            Board board= con.getBoardInformationFind(idBoard);
+            barCodeTxt.setText(String.valueOf(board.getBarCode()));
+            storeTxt.setText(board.getStore());        
+        }
+        listNumbersTxt.setModel(numbersList);
+        listMoneyTxt.setModel(moneyList);
+        totalMoneyTxt.setText(String.valueOf(ticket.getTicketTotalAmount()));
+        
+        TicketTime tiempo= con.getTicketTime(idTicket);
+        timeTxt.setText(tiempo.getTime());        
+    }
+    
+    public void setLanguageToChinese() {
+        ChineseLanguage chineseLanguage = ChineseLanguage.getInstance();
+        language = chineseLanguage.getBtnPrint();
+        printButton.setText(language);
+    }
+    
+    public void setLanguageToSpanish() {
+        SpanishLanguage spanishLanguage = SpanishLanguage.getInstance();
+        language = spanishLanguage.getBtnPrint();
+        printButton.setText(language);
     }
     
     public void showInformationPrintTotalU(){
@@ -44,16 +97,16 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         dateTxt.setVisible(false);
         
         ConnectionBD con= new ConnectionBD();
-        Board board= con.getBoardInformation();                
+        board= con.getBoardInformation();                
         String idBoard=String.valueOf(board.getBoard());        
         
         ticketLabel.setText("Tablero");        
         ticketTxt.setText(idBoard);                        
         storeTxt.setText(board.getStore());
-        String boarTime= con. getTimeFromBoard(idBoard);
+        String boarTime= con.getTimeFromBoard(idBoard);
         System.out.println("ressss:   "+boarTime);
         timeTxt.setText(boarTime);
-        con.getSoldBoardNumbers(idBoard); 
+        //con.getSoldBoardNumbers(idBoard); 
         List<SoldNumbers>list=con.getSoldBoardNumbers(idBoard);        
         for (int i = 0; i < list.size(); i++) {
             numbersList.addElement(list.get(i).getNumber());
@@ -74,7 +127,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         String idTicket=String.valueOf(ticket.getTicket());                
         
         ticketTxt.setText(idTicket);
-        dateTxt.setText(ticket.getDate());         
+        dateTxt.setText(String.valueOf(ticket.getDate()));         
         
         Board board= con.getBoardInformation();                
         storeTxt.setText(board.getStore());
@@ -91,7 +144,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         totalMoneyTxt.setText(String.valueOf(ticket.getTicketTotalAmount()));
         
         TicketTime tiempo= con.getTicketTime(idTicket);
-        timeTxt.setText(tiempo.getTime());        
+        timeTxt.setText(tiempo.getTime());      
     }
     
     
@@ -130,7 +183,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         printButton.setText("Imprimir");
@@ -199,53 +252,53 @@ public class TicketWindowPrint extends javax.swing.JFrame {
                             .addGap(18, 18, 18)
                             .addComponent(espacioFirma, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(159, 159, 159)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(91, 91, 91)
-                                    .addComponent(firmaTxt))
+                                    .addGap(58, 58, 58)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(storeTxt)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(timeLabel)
+                                                .addComponent(dateLabel))
+                                            .addGap(35, 35, 35)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(timeTxt)
+                                                .addComponent(dateTxt)))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addComponent(ticketLabel)
+                                            .addGap(33, 33, 33)
+                                            .addComponent(ticketTxt))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(5, 5, 5)
+                                            .addComponent(numberLabel)
+                                            .addGap(71, 71, 71)
+                                            .addComponent(moneyLabel))))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(39, 39, 39)
+                                    .addGap(85, 85, 85)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(totalLabel)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(19, 19, 19)
+                                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel1)
+                                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)))))
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(48, 48, 48)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(10, 10, 10)
+                                            .addGap(115, 115, 115)
+                                            .addComponent(firmaTxt))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(73, 73, 73)
                                             .addComponent(totalMoneyTxt))
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(58, 58, 58)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(storeTxt)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(timeLabel)
-                                        .addComponent(dateLabel))
-                                    .addGap(35, 35, 35)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(timeTxt)
-                                        .addComponent(dateTxt)))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(ticketLabel)
-                                    .addGap(33, 33, 33)
-                                    .addComponent(ticketTxt))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(5, 5, 5)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(85, 85, 85)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(totalLabel)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(19, 19, 19)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)))))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(98, 98, 98)
-                            .addComponent(numberLabel)
-                            .addGap(81, 81, 81)
-                            .addComponent(moneyLabel)))
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGap(10, 10, 10)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(146, 146, 146)
                         .addComponent(barCodeTxt)))
@@ -318,7 +371,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(513, Short.MAX_VALUE)
                 .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(150, 150, 150))
             .addGroup(layout.createSequentialGroup()

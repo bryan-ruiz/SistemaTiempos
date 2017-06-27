@@ -5,6 +5,8 @@
  */
 package views;
 
+import BD.ConnectionBD;
+import Clases.Board;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import sistematiempos.SpanishLanguage;
@@ -24,8 +26,13 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
     }
-    
-    
+    Board board;
+    private String getBoardPassword() {
+        ConnectionBD con= new ConnectionBD();
+        board = con.getBoardInformation();   
+        String password = board.getPassword();
+        return password;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -99,7 +106,14 @@ public class Login extends javax.swing.JFrame {
             selling.setVisible(true);
             selling.setLocationRelativeTo(null);
             selling.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            selling.setCompanyName("Bran-Labs");
+            selling.hideChineseButtons();
+            selling.setLanguageToSpanish();
+            dispose();
+        }
+        else if (getBoardPassword().equals(pwd)) {
+            AdministratorEditOptions administratorEditOptions = new AdministratorEditOptions();
+            administratorEditOptions.setVisible(true);
+            administratorEditOptions.setLocationRelativeTo(null);
             dispose();
         }
         else {
