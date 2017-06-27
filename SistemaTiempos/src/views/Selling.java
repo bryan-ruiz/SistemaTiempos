@@ -2753,19 +2753,19 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         // TODO add your handling code here:
-        Calendar cal = Calendar.getInstance(); 
+        /*Calendar cal = Calendar.getInstance(); 
         String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
         String minute = String.valueOf(cal.get(cal.MINUTE));
         System.out.println(hour);
         //String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
         System.out.println(hour);
         System.out.println(minute);
-        createTicketForPurchase();/*
+        createTicketForPurchase();*/
         TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
         oClienteCrear.setAlwaysOnTop(true);
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);
-        if (language == "spanish") {
+        /*if (language == "spanish") {
             oClienteCrear.setLanguageToSpanish();
         }
         else if (language == "chinese") {

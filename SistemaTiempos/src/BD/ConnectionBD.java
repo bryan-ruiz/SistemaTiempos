@@ -28,6 +28,7 @@ public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;        
+    private int defectMoney= 20000;
     private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
@@ -97,21 +98,21 @@ public class ConnectionBD {
      * @param time
      * @return 
      */
-    public List<SoldNumbers>getSoldBoardNumbersDependingOnTime(String idBoard, String time){        
+    public List<TimeNumber>getSoldBoardNumbersDependingOnTime(String idBoard, String time){        
         bdConnection();
-        List<SoldNumbers>list= new ArrayList<>();        
-        SoldNumbers newElement= null;
+        List<TimeNumber>list= new ArrayList<>();        
+        TimeNumber newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos INNER JOIN Tablero ON Tablero.tablero= "+
-                    "'"+idBoard+"'"+ "=");
-            while(resultSet.next()) {                                                      
-                newElement= new SoldNumbers(resultSet.getInt(1),resultSet.getInt(2),
-                        resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5));
-                if(isInList(list,newElement)== false){
+            resultSet = statement.executeQuery("SELECT * from NumerosTiempo where tablero= "+idBoard+" "
+                    + "and tiempo= '"+time+"'");
+            while(resultSet.next()) {                                                                      
+                newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
+                        resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5));   
+                if(newElement.getTotalNumberAmount() != defectMoney){
                     list.add(newElement);
-                }                         
+                }                
             }                        
         }
         catch(SQLException sqlex){
@@ -147,7 +148,7 @@ public class ConnectionBD {
         }        
         return list;
     }                    
-    
+        
     public Board getBoardInformation(){        
         bdConnection();
         Board newElement= null;
@@ -221,19 +222,24 @@ public class ConnectionBD {
 //                          TIKETES    
 /////////////////////////////////////////////////////////////////////////////////////////
     
+    
     public List<Ticket>GetAllTiicketsBetweenDates(String startDate, String finalDate){        
         bdConnection();
         List<Ticket>list= new ArrayList<>();
         Ticket newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
-            statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM Tiquete where fechaTiquete BETWEEN = "+startDate+"AND"+finalDate);                         
-            while(resultSet.next()) {      
-                
+            statement = connection.createStatement();                        
+            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata FROM Tiquete "
+            + "where fechaTiquete BETWEEN #"+startDate+"# AND #"+finalDate+"#");                        
+            System.out.println("imprimiendo resultados de base"); 
+            while(resultSet.next()) {                      
                 newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));
+                System.out.println(resultSet.getString(1));
+                System.out.println(resultSet.getString(2));                
+                System.out.println(resultSet.getString(3));
                 list.add(newElement);
-            }            
+            } 
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -276,9 +282,9 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tiquete order by tiquete desc");
-            while(resultSet.next()) {                
-                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));                        
+            resultSet = statement.executeQuery("SELECT TOP 1 tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata FROM Tiquete order by tiquete desc");
+            while(resultSet.next()) {                  
+                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));
             }            
         }
         catch(SQLException sqlex){

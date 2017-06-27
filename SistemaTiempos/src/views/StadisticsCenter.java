@@ -7,6 +7,8 @@ package views;
 
 import BD.ConnectionBD;
 import Clases.Board;
+import Clases.Ticket;
+import java.util.List;
 import sistematiempos.ChineseLanguage;
 import sistematiempos.SpanishLanguage;
 
@@ -19,27 +21,84 @@ public class StadisticsCenter extends javax.swing.JFrame {
     /**
      * Creates new form StadisticsCenter
      */
-    private String start, finish, porcentage, total, search;
-    private Board board;
+    private String start, finish, porcentage, total, search,initialDate,finalDate;
+    private Board board;    
     private int percentage, totalBetweenDates;
+
     public StadisticsCenter() {
-        initComponents();
+        initComponents();        
+        getDaysOfComboBox();
         getBoardDataToInform();
+    }
+    
+private void getDaysOfComboBox(){
+        for(int i= 1; i<=31; i++){
+            dayBegin.addItem(String.valueOf(i));
+            dayEnd.addItem(String.valueOf(i));
+        }
+        for(int i= 1; i<=12; i++){
+            monthBegin.addItem(String.valueOf(i));
+            monthEnd.addItem(String.valueOf(i));
+        }
+        for(int i= 2017; i<=2030; i++){
+            yearBegin.addItem(String.valueOf(i));
+            yearEnd.addItem(String.valueOf(i));
+        }
+    }
+    
+    private boolean getFinalAndInitialDates(){
+        if(Integer.parseInt(monthBegin.getSelectedItem().toString())== 2 &&
+            Integer.parseInt(dayBegin.getSelectedItem().toString()) > 28 ||
+            Integer.parseInt(monthEnd.getSelectedItem().toString())== 2 && 
+            Integer.parseInt(dayEnd.getSelectedItem().toString()) > 28){                        
+                menssage.setText("ERROR mes 2 no tiene mas de 28 días");                
+                return false;
+        }         
+        if(Integer.parseInt(monthBegin.getSelectedItem().toString())== 4 ||
+            Integer.parseInt(monthBegin.getSelectedItem().toString())== 6 ||
+            Integer.parseInt(monthBegin.getSelectedItem().toString())== 9 ||
+            Integer.parseInt(monthBegin.getSelectedItem().toString())== 11){
+                if(Integer.parseInt(dayBegin.getSelectedItem().toString()) > 30){
+                    menssage.setText("ERROR mes "+monthBegin.getSelectedItem().toString()+"solo posee 30 dias");                
+                    return false;               
+                }                
+        }
+        if(Integer.parseInt(monthEnd.getSelectedItem().toString())== 4 ||
+            Integer.parseInt(monthEnd.getSelectedItem().toString())== 6 ||
+            Integer.parseInt(monthEnd.getSelectedItem().toString())== 9 ||
+            Integer.parseInt(monthEnd.getSelectedItem().toString())== 11){
+                if(Integer.parseInt(dayEnd.getSelectedItem().toString()) > 30){
+                    menssage.setText("ERROR mes "+monthEnd.getSelectedItem().toString()+" solo posee 30 dias");                
+                    return false;               
+                }   
+        }
+        
+        initialDate= monthBegin.getSelectedItem().toString()+"/"+dayBegin.getSelectedItem().toString()+"/"+yearBegin.getSelectedItem().toString();
+        finalDate= monthEnd.getSelectedItem().toString()+"/"+dayEnd.getSelectedItem().toString()+"/"+yearEnd.getSelectedItem().toString();        
+        return true;        
+    }
+    
+    private void calculatePrcent(){                
+        ConnectionBD con= new ConnectionBD();
+        menssage.setText("");
+        float percentageToUse = (float) percentage;        
+        if(getFinalAndInitialDates()== true){
+            totalBetweenDates=0;        
+            List<Ticket>list= con.GetAllTiicketsBetweenDates(initialDate,finalDate);
+            for (int i = 0; i < list.size(); i++) {
+                totalBetweenDates= totalBetweenDates+ list.get(i).getTicketTotalAmount();
+            }                
+            float total = ((float) totalBetweenDates) * (percentageToUse / 100);
+            tfTotal.setText(String.valueOf(total));   
+        }        
     }
     
     private void getBoardDataToInform() {
         ConnectionBD con= new ConnectionBD();
         board = con.getBoardInformation();
-        percentage = board.getStadisticsPer();
-        float percentageToUse = (float) percentage;
-        //reemplace totalBetweenDates por el total de todos los tiquetes entre las fechas insertadas
-        //empieza
-        totalBetweenDates = 14500;
-        float total = ((float) totalBetweenDates) * (percentageToUse / 100);
+        percentage = board.getStadisticsPer();                
         String percentageToShow = String.valueOf(board.getStadisticsPer());
-        tfPercentage.setText(percentageToShow);
-        tfTotal.setText(String.valueOf(total));
-        //termina
+        tfPercentage.setText(percentageToShow);        
     }
     
     private void setWindowToSelectedLanguage() {
@@ -69,7 +128,7 @@ public class StadisticsCenter extends javax.swing.JFrame {
         search = chineseLanguage.getSearch();
         setWindowToSelectedLanguage();
     }
-    
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -79,18 +138,28 @@ public class StadisticsCenter extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel3 = new javax.swing.JLabel();
+        dayBegin = new javax.swing.JComboBox<>();
         lblStart = new javax.swing.JLabel();
-        tfStart = new javax.swing.JTextField();
+        dayEnd = new javax.swing.JComboBox<>();
         lblTotal = new javax.swing.JLabel();
+        monthBegin = new javax.swing.JComboBox<>();
         tfTotal = new javax.swing.JTextField();
+        monthEnd = new javax.swing.JComboBox<>();
         lblFinish = new javax.swing.JLabel();
-        tfFinish = new javax.swing.JTextField();
+        yearBegin = new javax.swing.JComboBox<>();
         lblPercentage = new javax.swing.JLabel();
-        tfPercentage = new javax.swing.JTextField();
+        yearEnd = new javax.swing.JComboBox<>();
         btnSearch = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        menssage = new javax.swing.JLabel();
+        tfPercentage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+
+        jLabel3.setText("mes");
 
         lblStart.setText("Dia inicio:");
 
@@ -100,8 +169,6 @@ public class StadisticsCenter extends javax.swing.JFrame {
 
         lblPercentage.setText("Porcentaje:");
 
-        tfPercentage.setEnabled(false);
-
         btnSearch.setText("Buscar");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,53 +176,100 @@ public class StadisticsCenter extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("día");
+
+        jLabel2.setText("año");
+
+        menssage.setForeground(new java.awt.Color(204, 0, 0));
+
+        tfPercentage.setText("%");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblPercentage)
-                    .addComponent(lblStart)
-                    .addComponent(lblFinish))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfFinish, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(tfStart, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnSearch)
-                        .addComponent(tfPercentage, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(115, Short.MAX_VALUE)
+                .addContainerGap(273, Short.MAX_VALUE)
                 .addComponent(lblTotal)
                 .addGap(18, 18, 18)
                 .addComponent(tfTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
+                .addGap(109, 109, 109))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(menssage))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(219, 219, 219)
+                        .addComponent(tfPercentage)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(59, 59, 59)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lblPercentage)
+                        .addComponent(lblStart)
+                        .addComponent(lblFinish))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(70, 70, 70)
+                            .addComponent(btnSearch))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(42, 42, 42)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(dayEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dayBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1))
+                            .addGap(29, 29, 29)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(monthBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(monthEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel3))
+                            .addGap(31, 31, 31)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(yearBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(yearEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))))
+                    .addContainerGap(272, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStart)
-                    .addComponent(tfStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFinish)
-                    .addComponent(tfFinish, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPercentage)
-                    .addComponent(tfPercentage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnSearch)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(150, Short.MAX_VALUE)
+                .addComponent(tfPercentage)
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotal)
                     .addComponent(tfTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addComponent(menssage)
+                .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(56, 56, 56)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblStart)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(dayBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(monthBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(yearBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGap(18, 18, 18)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblFinish)
+                        .addComponent(dayEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(monthEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(yearEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addComponent(lblPercentage)
+                    .addGap(18, 18, 18)
+                    .addComponent(btnSearch)
+                    .addContainerGap(94, Short.MAX_VALUE)))
         );
 
         pack();
@@ -163,6 +277,7 @@ public class StadisticsCenter extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+        calculatePrcent();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
@@ -202,13 +317,21 @@ public class StadisticsCenter extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> dayBegin;
+    private javax.swing.JComboBox<String> dayEnd;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblFinish;
     private javax.swing.JLabel lblPercentage;
     private javax.swing.JLabel lblStart;
     private javax.swing.JLabel lblTotal;
-    private javax.swing.JTextField tfFinish;
-    private javax.swing.JTextField tfPercentage;
-    private javax.swing.JTextField tfStart;
+    private javax.swing.JLabel menssage;
+    private javax.swing.JComboBox<String> monthBegin;
+    private javax.swing.JComboBox<String> monthEnd;
+    private javax.swing.JLabel tfPercentage;
     private javax.swing.JTextField tfTotal;
+    private javax.swing.JComboBox<String> yearBegin;
+    private javax.swing.JComboBox<String> yearEnd;
     // End of variables declaration//GEN-END:variables
 }
