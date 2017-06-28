@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -28,12 +29,18 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private DefaultListModel numbersList = new DefaultListModel();
     private DefaultListModel moneyList = new DefaultListModel();
     private int idToFindTicket;
+    private DefaultTableModel tableModel;
     
     public ticketCodScanDelete() {
         initComponents();
         visibleFalseComponents(false);        
     }
-
+    
+    private void removeAllItemsFromList() {
+        String[] headers = {"Numeros","Dinero"};
+        tableModel = new DefaultTableModel(null, headers);
+        jTable1.setModel(tableModel);
+    }
     public void setAll(){
         mensaje.setForeground(Color.red);
         barCodeTxt.setText("");
@@ -44,8 +51,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         mensaje.setText("");
         numbersList= new DefaultListModel();
         moneyList= new DefaultListModel();
-        numbersListTxt.setModel(numbersList);
-        moneyListTxt.setModel(moneyList);        
+        removeAllItemsFromList();
     }
     
     
@@ -86,18 +92,19 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             mensaje.setText("El tiquete no es válido");
             return;
         }                
-        List<SoldNumbers>lista=con.GetNumberSoldFromTiicket(idTicket);                
-        for (int i = 0; i < lista.size(); i++) {
-            numbersList.addElement(lista.get(i).getNumber());
-            moneyList.addElement(lista.get(i).getMoneySold());                        
+        List<SoldNumbers>list=con.GetNumberSoldFromTiicket(idTicket);                
+        for (int i = 0; i < list.size(); i++) {
+            String[] row = new String[2];
+            row[0] = String.valueOf(list.get(i).getNumber());            
+            String showIt = String.valueOf((list.get(i).getMoneySold()));
+            row[1] = showIt;
+            tableModel.addRow(row);                                 
         }
-        if(lista.size()>0){
-            int idBoard= lista.get(0).getBoard();
+        if(list.size()>0){
+            int idBoard= list.get(0).getBoard();
             Board board= con.getBoardInformationFind(idBoard);
             barCodeTxt.setText(String.valueOf(board.getBarCode()));
-        }
-        numbersListTxt.setModel(numbersList);
-        moneyListTxt.setModel(moneyList);
+        }        
         totalTxt.setText(String.valueOf(ticket.getTicketTotalAmount()));        
         
         TicketTime tiempo= con.getTicketTime(idTicket);
@@ -132,13 +139,9 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         timeTxt = new javax.swing.JTextField();
         printButton = new javax.swing.JButton();
         panel = new javax.swing.JPanel();
-        labelNumber = new javax.swing.JLabel();
-        labelMoney = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        moneyListTxt = new javax.swing.JList<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        numbersListTxt = new javax.swing.JList<>();
         deleteButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         mensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -179,16 +182,6 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             }
         });
 
-        labelNumber.setText("Número");
-
-        labelMoney.setText("Plata");
-
-        moneyListTxt.setEnabled(false);
-        jScrollPane2.setViewportView(moneyListTxt);
-
-        numbersListTxt.setEnabled(false);
-        jScrollPane1.setViewportView(numbersListTxt);
-
         deleteButton.setText("Eliminar");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -196,45 +189,51 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
         panelLayout.setHorizontalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLayout.createSequentialGroup()
-                        .addComponent(labelNumber)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(labelMoney)
-                        .addGap(25, 25, 25))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(deleteButton)
-                .addGap(53, 53, 53))
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addGap(93, 93, 93)
+                        .addComponent(deleteButton)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLayout.createSequentialGroup()
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(labelMoney))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labelNumber)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addGap(18, 18, 18)
-                .addComponent(deleteButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(deleteButton))
         );
 
         mensaje.setForeground(new java.awt.Color(255, 0, 0));
@@ -244,20 +243,18 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(labelTicket)
-                        .addGap(18, 18, 18)
-                        .addComponent(idFindTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(findTicketButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addComponent(printButton)))
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addGap(129, 129, 129)
+                .addComponent(labelTicket)
+                .addGap(18, 18, 18)
+                .addComponent(idFindTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(findTicketButton)
+                .addContainerGap(156, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(82, 82, 82)
+                        .addComponent(printButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -276,9 +273,9 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(149, 149, 149)
                         .addComponent(mensaje)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,13 +285,9 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                     .addComponent(findTicketButton)
                     .addComponent(idFindTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTicket))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(28, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                         .addComponent(mensaje)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -318,7 +311,11 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                             .addComponent(labelDate))
                         .addGap(60, 60, 60)
                         .addComponent(printButton)
-                        .addGap(44, 44, 44))))
+                        .addGap(44, 44, 44))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -396,19 +393,15 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton findTicketButton;
     private javax.swing.JTextField idFindTxt;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelBarCode;
     private javax.swing.JLabel labelDate;
     private javax.swing.JLabel labelIdTicket;
-    private javax.swing.JLabel labelMoney;
-    private javax.swing.JLabel labelNumber;
     private javax.swing.JLabel labelTicket;
     private javax.swing.JLabel labelTime;
     private javax.swing.JLabel labelTotal;
     private javax.swing.JLabel mensaje;
-    private javax.swing.JList<String> moneyListTxt;
-    private javax.swing.JList<String> numbersListTxt;
     private javax.swing.JPanel panel;
     private javax.swing.JButton printButton;
     private javax.swing.JTextField ticketIdTxt;

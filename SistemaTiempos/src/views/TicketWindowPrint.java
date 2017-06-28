@@ -122,7 +122,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     }
     
     private void listOfNumbers(ConnectionBD con){        
-        totalAmount= 0;
+        totalAmount= 0;        
         if(selectCheckBox()== false){
             return;
         }

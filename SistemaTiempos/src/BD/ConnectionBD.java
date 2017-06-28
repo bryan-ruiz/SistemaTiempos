@@ -100,14 +100,22 @@ public class ConnectionBD {
      */
     public List<TimeNumber>getSoldBoardNumbersDependingOnTime(String idBoard, String time){        
         bdConnection();
+        System.out.println("Entro a funcion de baase");
         List<TimeNumber>list= new ArrayList<>();        
         TimeNumber newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * from NumerosTiempo where tablero= "+idBoard+" "
-                    + "and tiempo= '"+time+"'");
+            String query="SELECT * from NumerosTiempo where tablero= "+idBoard+" "
+                    + "and tiempo= '"+time+"'";
+            System.out.println(query);
+            resultSet = statement.executeQuery(query);
             while(resultSet.next()) {                                                                      
+                System.out.println(resultSet.getString(1));
+                System.out.println(resultSet.getString(2));
+                System.out.println(resultSet.getString(3));
+                System.out.println(resultSet.getString(4));
+                System.out.println(resultSet.getString(5));
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5));   
                 if(newElement.getTotalNumberAmount() != defectMoney){
@@ -302,7 +310,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM Tiquete WHERE tiquete="+id);
+            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata FROM Tiquete WHERE tiquete="+id);
             while(resultSet.next()) {                
                 newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));                        
             }            
@@ -512,20 +520,19 @@ public class ConnectionBD {
     public void createTicket(String date, int ticketTotalMoney, String time, List<Integer>numbersList, List<Integer>numbersMoneyList, int board){                       
         bdConnection();
         try {  
-            connection = DriverManager.getConnection(dbURL);             
-            statement = connection.createStatement();            
+            connection = DriverManager.getConnection(dbURL);
+            statement = connection.createStatement();
             String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata)"
-                    + "values('"+date+"','"+ticketTotalMoney+"')";            
-            statement.executeUpdate(sql);  
+                    + "values('"+date+"','"+ticketTotalMoney+"')";
+            statement.executeUpdate(sql);
             System.out.println("ticket is added");
             Ticket ticket = getTicketInformation();
             createTicketTime(ticket.getTicket(), time);
             for (int i = 0; i < numbersList.size(); i++) {
-                int id =  numbersList.get(i);
-                System.out.println("--------------");
-                System.out.println(numbersList.get(i));
-                System.out.println(numbersMoneyList.get(i));
+                TimeNumber timeNumber = getBoardNumberPricing(board, time, numbersList.get(i));
                 createSoldNumber(numbersList.get(i), ticket.getTicket(), board, numbersMoneyList.get(i));
+                int money = timeNumber.getTotalNumberAmount() - numbersMoneyList.get(i);
+                updateTimeNumber(board, time, numbersList.get(i), money);
             }
             System.out.println("DONE!");
         }

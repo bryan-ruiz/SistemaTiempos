@@ -34,10 +34,12 @@ public class Selling extends javax.swing.JFrame {
      */
     private JButton button;
     private Board board;
+    private String checkBoxTimeselected;
     private List<Integer>numbersList, moneyList;
     private DefaultListModel numbers = new DefaultListModel();
     private DefaultListModel money = new DefaultListModel();
     private DefaultTableModel tableModel;
+    private String idBoard;
     private static SpanishLanguage spanishStrings = SpanishLanguage.getInstance();
     private static ChineseLanguage chineseStrings = ChineseLanguage.getInstance();
     private String notNumberErrorString, btnScanCodeBarString, btnTotalUniquePrintString, 
@@ -47,8 +49,456 @@ public class Selling extends javax.swing.JFrame {
     
     public Selling() {
         initComponents();
-        getBoardDataToInform();       
+        getBoardDataToInform();               
+    }                    
+
+    private void setbackgroundColorToGreen(JButton buttonParam) {        
+        if(checkBoxTimeselected.equals("Dia")){
+            buttonParam.setBackground(Color.GREEN);
+        }
+        else if(checkBoxTimeselected.equals("Noche")){
+            buttonParam.setBackground(Color.BLUE);
+        }             
     }
+    
+    private void setColorsToNull(){
+        btn00.setBackground(null);
+        btn01.setBackground(null);
+        btn02.setBackground(null);
+        btn03.setBackground(null);
+        btn04.setBackground(null);
+        btn05.setBackground(null);
+        btn06.setBackground(null);
+        btn07.setBackground(null);
+        btn08.setBackground(null);
+        btn09.setBackground(null);
+        btn10.setBackground(null);
+        btn11.setBackground(null);
+        btn12.setBackground(null);
+        btn13.setBackground(null);
+        btn14.setBackground(null);
+        btn15.setBackground(null);
+        btn16.setBackground(null);
+        btn17.setBackground(null);
+        btn18.setBackground(null);
+        btn19.setBackground(null);
+        btn20.setBackground(null);
+        btn21.setBackground(null);
+        btn22.setBackground(null);
+        btn23.setBackground(null);
+        btn24.setBackground(null);
+        btn25.setBackground(null);
+        btn26.setBackground(null);
+        btn27.setBackground(null);
+        btn28.setBackground(null);
+        btn29.setBackground(null);
+        btn30.setBackground(null);        
+        btn31.setBackground(null);
+        btn32.setBackground(null);
+        btn33.setBackground(null);
+        btn34.setBackground(null);
+        btn35.setBackground(null);
+        btn36.setBackground(null);
+        btn37.setBackground(null);
+        btn38.setBackground(null);
+        btn39.setBackground(null);
+        btn40.setBackground(null);
+        btn41.setBackground(null);
+        btn42.setBackground(null);
+        btn43.setBackground(null);
+        btn44.setBackground(null);
+        btn45.setBackground(null);
+        btn46.setBackground(null);
+        btn47.setBackground(null);
+        btn48.setBackground(null);
+        btn49.setBackground(null);
+        btn50.setBackground(null);
+        btn51.setBackground(null);
+        btn52.setBackground(null);
+        btn53.setBackground(null);
+        btn54.setBackground(null);
+        btn55.setBackground(null);
+        btn56.setBackground(null);
+        btn57.setBackground(null);
+        btn58.setBackground(null);
+        btn59.setBackground(null);
+        btn60.setBackground(null);
+        btn61.setBackground(null);
+        btn62.setBackground(null);
+        btn63.setBackground(null);
+        btn64.setBackground(null);
+        btn65.setBackground(null);
+        btn66.setBackground(null);
+        btn67.setBackground(null);
+        btn68.setBackground(null);
+        btn69.setBackground(null);
+        btn70.setBackground(null);
+        btn71.setBackground(null);
+        btn72.setBackground(null);
+        btn73.setBackground(null);
+        btn74.setBackground(null);
+        btn75.setBackground(null);
+        btn76.setBackground(null);
+        btn77.setBackground(null);
+        btn78.setBackground(null);
+        btn79.setBackground(null);
+        btn80.setBackground(null);
+        btn81.setBackground(null);
+        btn82.setBackground(null);
+        btn83.setBackground(null);
+        btn84.setBackground(null);
+        btn85.setBackground(null);
+        btn86.setBackground(null);
+        btn87.setBackground(null);
+        btn88.setBackground(null);
+        btn89.setBackground(null);
+        btn90.setBackground(null);
+        btn91.setBackground(null);
+        btn92.setBackground(null);
+        btn93.setBackground(null);
+        btn94.setBackground(null);
+        btn95.setBackground(null);
+        btn96.setBackground(null);
+        btn97.setBackground(null);
+        btn98.setBackground(null);
+        btn99.setBackground(null);        
+    }
+    
+    
+    private void soldNumbersOfTableSetColors(){
+        setColorsToNull();
+        ConnectionBD con= new ConnectionBD();        
+        System.out.print("Entro a función "+ idBoard);
+        numbersList= new ArrayList<>();
+        if(selectCheckBox()== false){
+            System.out.print("  Entro a función salio return ");
+            return;
+        }       
+        System.out.print(" tiempo: "+ checkBoxTimeselected);
+        List<TimeNumber>list=con.getSoldBoardNumbersDependingOnTime(idBoard,checkBoxTimeselected);  
+        System.out.print(" largo de lista: "+ list.size());
+        for (int i = 0; i < list.size(); i++) { 
+            System.out.print(list.get(i).getNumero());
+            numbersList.add(list.get(i).getNumero());
+        }        
+        System.out.print("Salio de for");
+        if(numbersList.contains(0)){
+            setbackgroundColorToGreen(btn00);
+        }
+        if(numbersList.contains(1)){
+            System.out.print("entro1");
+            setbackgroundColorToGreen(btn01);
+        }
+        if(numbersList.contains(2)){
+            setbackgroundColorToGreen(btn02);
+        }
+        if(numbersList.contains(3)){
+            setbackgroundColorToGreen(btn03);
+        }
+        if(numbersList.contains(4)){
+            setbackgroundColorToGreen(btn04);
+        }
+        if(numbersList.contains(5)){
+            setbackgroundColorToGreen(btn05);            
+        }
+        if(numbersList.contains(6)){
+            setbackgroundColorToGreen(btn06);            
+        }
+        if(numbersList.contains(7)){
+            setbackgroundColorToGreen(btn07);
+        }
+        if(numbersList.contains(8)){
+            setbackgroundColorToGreen(btn08);
+        }
+        if(numbersList.contains(9)){
+            setbackgroundColorToGreen(btn09);
+        }
+        if(numbersList.contains(10)){
+            setbackgroundColorToGreen(btn10);
+        }
+        if(numbersList.contains(11)){
+            setbackgroundColorToGreen(btn11);
+        }
+        if(numbersList.contains(12)){
+            setbackgroundColorToGreen(btn12);
+        }
+        if(numbersList.contains(13)){
+            setbackgroundColorToGreen(btn13);
+        }
+        if(numbersList.contains(14)){
+            setbackgroundColorToGreen(btn14);
+        }
+        if(numbersList.contains(15)){
+            setbackgroundColorToGreen(btn15);
+        }
+        if(numbersList.contains(16)){
+            setbackgroundColorToGreen(btn16);
+        }        
+        if(numbersList.contains(17)){
+            setbackgroundColorToGreen(btn17);
+        }
+        if(numbersList.contains(18)){
+            setbackgroundColorToGreen(btn18);
+        }
+        if(numbersList.contains(19)){
+            setbackgroundColorToGreen(btn19);
+        }
+        if(numbersList.contains(20)){
+            setbackgroundColorToGreen(btn20);
+        }
+        if(numbersList.contains(21)){
+            setbackgroundColorToGreen(btn21);
+        }
+        if(numbersList.contains(22)){
+            setbackgroundColorToGreen(btn22);
+        }
+        if(numbersList.contains(23)){
+            setbackgroundColorToGreen(btn23);
+        }
+        if(numbersList.contains(24)){
+            setbackgroundColorToGreen(btn24);
+        }
+        if(numbersList.contains(25)){
+            setbackgroundColorToGreen(btn25);
+        }
+        if(numbersList.contains(26)){
+            setbackgroundColorToGreen(btn26);
+        }
+        if(numbersList.contains(27)){
+            setbackgroundColorToGreen(btn27);
+        }
+        if(numbersList.contains(28)){
+            setbackgroundColorToGreen(btn28);
+        }
+        if(numbersList.contains(29)){
+            setbackgroundColorToGreen(btn29);
+        }
+        if(numbersList.contains(30)){
+            setbackgroundColorToGreen(btn30);
+        }
+        if(numbersList.contains(31)){
+            setbackgroundColorToGreen(btn31);
+        }
+        if(numbersList.contains(32)){
+            setbackgroundColorToGreen(btn32);
+        }
+        if(numbersList.contains(33)){
+            setbackgroundColorToGreen(btn33);
+        }
+        if(numbersList.contains(34)){
+            setbackgroundColorToGreen(btn34);
+        }
+        if(numbersList.contains(35)){
+            setbackgroundColorToGreen(btn35);
+        }
+        if(numbersList.contains(36)){
+            setbackgroundColorToGreen(btn36);
+        }
+        if(numbersList.contains(37)){
+            setbackgroundColorToGreen(btn37);
+        }
+        if(numbersList.contains(38)){
+            setbackgroundColorToGreen(btn38);
+        }
+        if(numbersList.contains(39)){
+            setbackgroundColorToGreen(btn39);
+        }
+        if(numbersList.contains(40)){
+            setbackgroundColorToGreen(btn40);
+        }
+        if(numbersList.contains(41)){
+            setbackgroundColorToGreen(btn41);
+        }
+        if(numbersList.contains(42)){
+            setbackgroundColorToGreen(btn42);
+        }
+        if(numbersList.contains(43)){
+            setbackgroundColorToGreen(btn43);
+        }
+        if(numbersList.contains(44)){
+            setbackgroundColorToGreen(btn44);
+        }
+        if(numbersList.contains(45)){
+            setbackgroundColorToGreen(btn45);
+        }
+        if(numbersList.contains(46)){
+            setbackgroundColorToGreen(btn46);
+        }
+        if(numbersList.contains(47)){
+            setbackgroundColorToGreen(btn47);
+        }
+        if(numbersList.contains(48)){
+            setbackgroundColorToGreen(btn48);
+        }
+        if(numbersList.contains(49)){
+            setbackgroundColorToGreen(btn49);
+        }
+        if(numbersList.contains(50)){
+            setbackgroundColorToGreen(btn50);
+        }
+        if(numbersList.contains(51)){
+            setbackgroundColorToGreen(btn51);
+        }
+        if(numbersList.contains(52)){
+            setbackgroundColorToGreen(btn52);
+        }
+        if(numbersList.contains(53)){
+            setbackgroundColorToGreen(btn53);
+        }
+        if(numbersList.contains(54)){
+            setbackgroundColorToGreen(btn54);
+        }
+        if(numbersList.contains(55)){
+            setbackgroundColorToGreen(btn55);
+        }
+        if(numbersList.contains(56)){
+            setbackgroundColorToGreen(btn56);
+        }
+        if(numbersList.contains(57)){
+            setbackgroundColorToGreen(btn57);
+        }
+        if(numbersList.contains(58)){
+            setbackgroundColorToGreen(btn58);
+        }
+        if(numbersList.contains(59)){
+            setbackgroundColorToGreen(btn59);
+        }
+        if(numbersList.contains(60)){
+            setbackgroundColorToGreen(btn60);
+        }
+        if(numbersList.contains(61)){
+            setbackgroundColorToGreen(btn61);
+        }
+        if(numbersList.contains(62)){
+            setbackgroundColorToGreen(btn62);
+        }
+        if(numbersList.contains(63)){
+            setbackgroundColorToGreen(btn63);
+        }
+        if(numbersList.contains(64)){
+            setbackgroundColorToGreen(btn64);
+        }
+        if(numbersList.contains(65)){
+            setbackgroundColorToGreen(btn65);
+        }
+        if(numbersList.contains(66)){
+            setbackgroundColorToGreen(btn66);
+        }
+        if(numbersList.contains(67)){
+            setbackgroundColorToGreen(btn67);
+        }
+        if(numbersList.contains(68)){
+            setbackgroundColorToGreen(btn68);
+        }
+        if(numbersList.contains(69)){
+            setbackgroundColorToGreen(btn69);
+        }
+        if(numbersList.contains(70)){
+            setbackgroundColorToGreen(btn70);
+        }
+        if(numbersList.contains(71)){
+            setbackgroundColorToGreen(btn71);
+        }
+        if(numbersList.contains(72)){
+            setbackgroundColorToGreen(btn72);
+        }
+        if(numbersList.contains(73)){
+            setbackgroundColorToGreen(btn73);
+        }
+        if(numbersList.contains(74)){
+            setbackgroundColorToGreen(btn74);
+        }
+        if(numbersList.contains(75)){
+            setbackgroundColorToGreen(btn75);
+        }
+        if(numbersList.contains(76)){
+            setbackgroundColorToGreen(btn76);
+        }
+        if(numbersList.contains(77)){
+            setbackgroundColorToGreen(btn77);
+        }
+        if(numbersList.contains(78)){
+            setbackgroundColorToGreen(btn78);
+        }
+        if(numbersList.contains(79)){
+            setbackgroundColorToGreen(btn79);
+        }
+        if(numbersList.contains(80)){
+            setbackgroundColorToGreen(btn80);
+        }
+        if(numbersList.contains(81)){
+            setbackgroundColorToGreen(btn81);
+        }
+        if(numbersList.contains(82)){
+            setbackgroundColorToGreen(btn82);
+        }
+        if(numbersList.contains(83)){
+            setbackgroundColorToGreen(btn83);
+        }
+        if(numbersList.contains(84)){
+            setbackgroundColorToGreen(btn84);
+        }
+        if(numbersList.contains(85)){
+            setbackgroundColorToGreen(btn85);
+        }
+        if(numbersList.contains(86)){
+            setbackgroundColorToGreen(btn86);
+        }
+        if(numbersList.contains(87)){
+            setbackgroundColorToGreen(btn87);
+        }
+        if(numbersList.contains(88)){
+            setbackgroundColorToGreen(btn88);
+        }
+        if(numbersList.contains(89)){
+            setbackgroundColorToGreen(btn89);
+        }
+        if(numbersList.contains(90)){
+            setbackgroundColorToGreen(btn90);
+        }
+        if(numbersList.contains(91)){
+            setbackgroundColorToGreen(btn91);
+        }
+        if(numbersList.contains(92)){
+            setbackgroundColorToGreen(btn92);
+        }
+        if(numbersList.contains(93)){
+            setbackgroundColorToGreen(btn93);
+        }
+        if(numbersList.contains(94)){
+            setbackgroundColorToGreen(btn94);
+        }
+        if(numbersList.contains(95)){
+            setbackgroundColorToGreen(btn95);
+        }
+        if(numbersList.contains(96)){
+            setbackgroundColorToGreen(btn96);
+        }
+        if(numbersList.contains(97)){
+            setbackgroundColorToGreen(btn97);
+        }
+        if(numbersList.contains(98)){
+            setbackgroundColorToGreen(btn98);
+        }
+        if(numbersList.contains(99)){
+            setbackgroundColorToGreen(btn99);
+        }        
+    }
+        
+    public boolean selectCheckBox(){
+        if(cbMorning.isSelected() ){            
+            checkBoxTimeselected= "Dia";
+            return true;
+        }
+        else if (cbNight.isSelected()){
+            checkBoxTimeselected= "Noche";
+            return true;
+        }
+        else{
+            return false;
+        }        
+    }
+    
     private void setCurrentTime() {
         if (cbMorning.isSelected()) {
             boardCurrentTime = "Dia";
@@ -58,6 +508,7 @@ public class Selling extends javax.swing.JFrame {
         }
         System.out.println(boardCurrentTime);
     }
+    
     private void getBoardDataToInform() {
         ConnectionBD con= new ConnectionBD();
         board = con.getBoardInformation();
@@ -66,6 +517,8 @@ public class Selling extends javax.swing.JFrame {
         String storeName = board.getStore();
         tfMorningClosingTime.setText(morningClosing);
         tfNightClosingTime.setText(nightClosing);
+        idBoard= String.valueOf(board.getBoard());
+        soldNumbersOfTableSetColors();
     }
     
     private void getBoardNumberPrice() {
@@ -202,11 +655,7 @@ public class Selling extends javax.swing.JFrame {
         setAllToSelectedLanguage();
         language = "chinese";
     }
-    
-    
-    private void setbackgroundColorToGreen() {
-        button.setBackground(Color.GREEN);
-    }
+            
     
     private void showSelectedNumber() {
         tfSelectedNumber.setText(button.getText());
@@ -743,7 +1192,7 @@ public class Selling extends javax.swing.JFrame {
             }
         });
 
-        btn29.setBackground(new java.awt.Color(0, 204, 204));
+        btn29.setBackground(new java.awt.Color(255, 255, 255));
         btn29.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         btn29.setText("29");
         btn29.addActionListener(new java.awt.event.ActionListener() {
@@ -904,7 +1353,7 @@ public class Selling extends javax.swing.JFrame {
             }
         });
 
-        btn49.setBackground(new java.awt.Color(255, 255, 0));
+        btn49.setBackground(new java.awt.Color(255, 255, 255));
         btn49.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         btn49.setText("49");
         btn49.addActionListener(new java.awt.event.ActionListener() {
@@ -1379,6 +1828,7 @@ public class Selling extends javax.swing.JFrame {
         lblBettingPeriod.setText("Periodo de apuestas:");
 
         bgPeriodType.add(cbMorning);
+        cbMorning.setSelected(true);
         cbMorning.setText("Día");
         cbMorning.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2753,24 +3203,24 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         // TODO add your handling code here:
-        /*Calendar cal = Calendar.getInstance(); 
+        Calendar cal = Calendar.getInstance(); 
         String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
         String minute = String.valueOf(cal.get(cal.MINUTE));
         System.out.println(hour);
         //String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
         System.out.println(hour);
         System.out.println(minute);
-        createTicketForPurchase();*/
+        createTicketForPurchase();
         TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
         oClienteCrear.setAlwaysOnTop(true);
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);
-        /*if (language == "spanish") {
+        if (language == "spanish") {
             oClienteCrear.setLanguageToSpanish();
         }
         else if (language == "chinese") {
             oClienteCrear.setLanguageToChinese();
-        }*/
+        }
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
@@ -2826,11 +3276,13 @@ public class Selling extends javax.swing.JFrame {
     private void cbMorningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMorningActionPerformed
         // TODO add your handling code here:
         setCurrentTime();
+        soldNumbersOfTableSetColors();
     }//GEN-LAST:event_cbMorningActionPerformed
 
     private void cbNightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNightActionPerformed
         // TODO add your handling code here:
         setCurrentTime();
+        soldNumbersOfTableSetColors();
     }//GEN-LAST:event_cbNightActionPerformed
 
     private void btnRemoveAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAllActionPerformed
