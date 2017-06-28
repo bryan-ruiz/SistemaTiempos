@@ -57,7 +57,7 @@ public class Selling extends javax.swing.JFrame {
             buttonParam.setBackground(Color.GREEN);
         }
         else if(checkBoxTimeselected.equals("Noche")){
-            buttonParam.setBackground(Color.BLUE);
+            buttonParam.setBackground(Color.BLUE); //CAMBIAR COLOR A UN AZUL MAS CLARO
         }             
     }
     
@@ -518,6 +518,7 @@ public class Selling extends javax.swing.JFrame {
         tfMorningClosingTime.setText(morningClosing);
         tfNightClosingTime.setText(nightClosing);
         idBoard= String.valueOf(board.getBoard());
+        setCurrentTime();
         soldNumbersOfTableSetColors();
     }
     
@@ -542,13 +543,15 @@ public class Selling extends javax.swing.JFrame {
         String currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
         System.out.println(currentDate);
         int totalValue = Integer.parseInt(lblTotalAmount.getText());
-        //con.createTicket(currentDate, totalValue, boardCurrentTime, numbersList, moneyList, board.getBoard());
-        System.out.println("{{{{{{{{{{{{{{{{{{{");
+        System.out.println("HACIA BD");
+        //String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
+        con.createTicket(totalValue, boardCurrentTime, numbersList, moneyList, board.getBoard());
+        System.out.println("{{{{{{{{SALE DE BD{{{{{{{{{{{");
         System.out.println(board.getBoard());
         System.out.println(Integer.parseInt(button.getText()));
         System.out.println(boardCurrentTime);
         System.out.println("{{{{{{{{{---------{{{{{{{{{{");
-        con.updateTimeNumber(board.getBoard(), boardCurrentTime, Integer.parseInt(button.getText()), 430);
+        //con.updateTimeNumber(board.getBoard(), boardCurrentTime, Integer.parseInt(button.getText()), 430);
     }
     
     private void setAllToSelectedLanguage() {
@@ -1921,7 +1924,7 @@ public class Selling extends javax.swing.JFrame {
 
         tfNightClosingTime.setText("jLabel2");
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -1943,6 +1946,7 @@ public class Selling extends javax.swing.JFrame {
                 "Title 1", "Title 2"
             }
         ));
+        jTable1.setRowHeight(28);
         jScrollPane2.setViewportView(jTable1);
 
         btnRemoveAll.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -3207,11 +3211,14 @@ public class Selling extends javax.swing.JFrame {
         String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
         String minute = String.valueOf(cal.get(cal.MINUTE));
         System.out.println(hour);
-        //String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
+        String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
+        //if (tfMorningClosingTime)
         System.out.println(hour);
         System.out.println(minute);
+        System.out.println(hora);
+        System.out.println("INICIANDO");
         createTicketForPurchase();
-        TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
+        /*TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
         oClienteCrear.setAlwaysOnTop(true);
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);
@@ -3220,7 +3227,7 @@ public class Selling extends javax.swing.JFrame {
         }
         else if (language == "chinese") {
             oClienteCrear.setLanguageToChinese();
-        }
+        }*/
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
@@ -3234,7 +3241,6 @@ public class Selling extends javax.swing.JFrame {
             int money = Integer.parseInt(tvMoney.getText());
             setPriceToNumber(money);
             getTotalAndShowIT();
-            tvMoney.setText("");
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);

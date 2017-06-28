@@ -7,19 +7,23 @@ package BD;
 
 
 import Clases.Board;
-import Clases.Date;
 import Clases.SoldNumbers;
 import Clases.Ticket;
 import Clases.TicketTime;
 import Clases.TimeNumber;
 import java.sql.Connection;
+import java.sql.*;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Date;
 /**
  *
  * @author Joha
@@ -29,7 +33,7 @@ public class ConnectionBD {
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private int defectMoney= 20000;
-    private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -517,13 +521,19 @@ public class ConnectionBD {
         }             
     }
     
-    public void createTicket(String date, int ticketTotalMoney, String time, List<Integer>numbersList, List<Integer>numbersMoneyList, int board){                       
+    public void createTicket(int ticketTotalMoney, String time, List<Integer>numbersList, List<Integer>numbersMoneyList, int board){                       
         bdConnection();
         try {  
             connection = DriverManager.getConnection(dbURL);
             statement = connection.createStatement();
+            System.out.println("..bd...");
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = new Date();
+            System.out.println("..ooooo...");
+            String p = new String(dateFormat.format(date));
+            System.out.println(p);
             String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata)"
-                    + "values('"+date+"','"+ticketTotalMoney+"')";
+                    + "values('"+p+"','"+ticketTotalMoney+"')";
             statement.executeUpdate(sql);
             System.out.println("ticket is added");
             Ticket ticket = getTicketInformation();
@@ -535,6 +545,7 @@ public class ConnectionBD {
                 updateTimeNumber(board, time, numbersList.get(i), money);
             }
             System.out.println("DONE!");
+            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
