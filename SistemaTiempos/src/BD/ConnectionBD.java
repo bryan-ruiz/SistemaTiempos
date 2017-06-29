@@ -34,7 +34,11 @@ public class ConnectionBD {
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private int defectMoney= 20000;
+<<<<<<< HEAD
     private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
+=======
+    private String msAccDB = "C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
+>>>>>>> origin/master
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -365,7 +369,13 @@ public class ConnectionBD {
             String sql = "UPDATE Tablero SET cierreDia = '"+morningClosingTime+"', cierreNoche = '"+nightClosingTime+
                     "', comercio = '"+companyName+"', porcentajeEstadistico = '"+percentage+"', codigoBarra = '" + barCode+
                     "', contrasena = '" + password + "', fecha = '" + date + "', precioNumeros = '" + pricing + "' WHERE tablero = " + idBoard;                        
-            statement.executeUpdate(sql);            
+            statement.executeUpdate(sql); 
+            Board board = getBoardInformation();
+            for (int i = 0; i < 100; i++) {
+                updateTimeNumber(board.getBoard(), "Dia", i, pricing);
+                updateTimeNumber(board.getBoard(), "Noche", i, pricing);
+            }
+            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
