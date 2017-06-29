@@ -34,7 +34,7 @@ public class ConnectionBD {
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private int defectMoney= 20000;
-    private String msAccDB = "E:/A. proyectochinos/actual/SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
