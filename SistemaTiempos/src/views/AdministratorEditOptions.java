@@ -9,6 +9,7 @@ import BD.ConnectionBD;
 import Clases.Board;
 import java.awt.Color;
 import java.util.Calendar;
+import javax.swing.JOptionPane;
 import sistematiempos.ChineseLanguage;
 import sistematiempos.SpanishLanguage;
 
@@ -41,6 +42,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         Calendar cal=Calendar.getInstance(); 
         String currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
         con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, codeBarNumber, adminPassword, currentDate, priceForNumber);
+        JOptionPane.showMessageDialog(null, "Listo");
     }
     
     private void getBoardDataToInform() {
