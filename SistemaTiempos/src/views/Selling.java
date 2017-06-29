@@ -3231,7 +3231,7 @@ public class Selling extends javax.swing.JFrame {
         int currentHour = 0;
         int appMinute = 0;
         int currentMinute = 0;
-        
+        boolean error = false;
         if (cbMorning.isSelected()) {
             String morningSplitHour[] = tfMorningClosingTime.getText().split(":");
             appHour = Integer.parseInt(morningSplitHour[0]);
@@ -3256,22 +3256,26 @@ public class Selling extends javax.swing.JFrame {
             }
             else {
                 //fuera de tiempo
+                error = true;
             }
         }
         else {
             //fuera de tiempo
+            error = true;
         }
-        createTicketForPurchase();
-        TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
-        oClienteCrear.setAlwaysOnTop(true);
-        oClienteCrear.setVisible(true);
-        oClienteCrear.setLocationRelativeTo(null);
-        if (language == "spanish") {
-            oClienteCrear.setLanguageToSpanish();
+        if (error == false) {
+            TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
+            oClienteCrear.setAlwaysOnTop(true);
+            oClienteCrear.setVisible(true);
+            oClienteCrear.setLocationRelativeTo(null);
+            if (language == "spanish") {
+                oClienteCrear.setLanguageToSpanish();
+            }
+            else if (language == "chinese") {
+                oClienteCrear.setLanguageToChinese();
+            }
         }
-        else if (language == "chinese") {
-            oClienteCrear.setLanguageToChinese();
-        }
+        
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
