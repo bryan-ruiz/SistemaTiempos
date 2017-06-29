@@ -713,6 +713,10 @@ public class Selling extends javax.swing.JFrame {
     }
     
     private void removeAllItemsFromList() {
+        tfSelectedNumber.setText("");
+        priceAct.setText("");
+        lblTotalQuantityNumber.setText("0");
+        lblTotalAmount.setText("0");
         String[] headers = {lblNumbersListString,lblMoneyString};
         tableModel = new DefaultTableModel(null, headers);
         jTable1.setModel(tableModel);
@@ -3361,14 +3365,16 @@ public class Selling extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPayChineseActionPerformed
 
     private void cbMorningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMorningActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
         setCurrentTime();
+        removeAllItemsFromList();        
         soldNumbersOfTableSetColors();
     }//GEN-LAST:event_cbMorningActionPerformed
 
     private void cbNightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNightActionPerformed
         // TODO add your handling code here:
         setCurrentTime();
+        removeAllItemsFromList();
         soldNumbersOfTableSetColors();
     }//GEN-LAST:event_cbNightActionPerformed
 
