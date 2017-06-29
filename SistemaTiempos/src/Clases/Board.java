@@ -17,8 +17,10 @@ public class Board {
     int stadisticsPer;
     int barCode;
     String password;    
+    String date;
+    int numbersPrincing;
 
-    public Board(int board, String dayClose, String nightClose, String store, int stadisticsPer, int barCode, String password) {
+    public Board(int board, String dayClose, String nightClose, String store, int stadisticsPer, int barCode, String password, String date, int numbersPrincing) {
         this.board = board;
         this.dayClose = dayClose;
         this.nightClose = nightClose;
@@ -26,6 +28,16 @@ public class Board {
         this.stadisticsPer = stadisticsPer;
         this.barCode = barCode;
         this.password = password;
+        this.date = date;
+        this.numbersPrincing = numbersPrincing;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public int getNumbersPrincing() {
+        return numbersPrincing;
     }
 
     public int getBoard() {

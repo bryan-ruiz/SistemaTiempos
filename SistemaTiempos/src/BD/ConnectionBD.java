@@ -173,7 +173,8 @@ public class ConnectionBD {
                 newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
                         resultSet.getString(3), resultSet.getString(4),
                         resultSet.getInt(5),resultSet.getInt(6),
-                        resultSet.getString(7));                
+                        resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));   
+                System.out.println("++HHH++");
             }            
         }
         catch(SQLException sqlex){
@@ -196,7 +197,7 @@ public class ConnectionBD {
                 newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
                         resultSet.getString(3), resultSet.getString(4),
                         resultSet.getInt(5),resultSet.getInt(6),
-                        resultSet.getString(7));                
+                        resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));                
             }            
         }
         catch(SQLException sqlex){
@@ -356,14 +357,14 @@ public class ConnectionBD {
     
     
     public void updateBoard(int idBoard, String morningClosingTime, String nightClosingTime, 
-            String companyName, int percentage, int barCode, String password){                       
+            String companyName, int percentage, int barCode, String password, String date, int pricing){                       
         bdConnection();
         try {            
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
             String sql = "UPDATE Tablero SET cierreDia = '"+morningClosingTime+"', cierreNoche = '"+nightClosingTime+
                     "', comercio = '"+companyName+"', porcentajeEstadistico = '"+percentage+"', codigoBarra = '" + barCode+
-                    "', contrasena = '" + password + "' WHERE tablero = " + idBoard;                        
+                    "', contrasena = '" + password + "', fecha = '" + date + "', precioNumeros = '" + pricing + "' WHERE tablero = " + idBoard;                        
             statement.executeUpdate(sql);            
         }
         catch(SQLException sqlex){
@@ -439,32 +440,6 @@ public class ConnectionBD {
             }
         }             
     }   
-
-    /*public void createDate(String date) {
-        bdConnection();
-        try {            
-            connection = DriverManager.getConnection(dbURL);             
-            statement = connection.createStatement();            
-            String sql = "INSERT INTO Fecha(fecha)"
-                    + "values('"+date+"')";            
-            statement.executeUpdate(sql);  
-            System.out.println("date is added");           
-        }
-        catch(SQLException sqlex){
-            sqlex.printStackTrace();
-        }
-        finally {            
-            try {
-                if(null != connection) {                                        
-                    statement.close();                    
-                    connection.close();
-                }
-            }
-            catch (SQLException sqlex) {
-                sqlex.printStackTrace();
-            }
-        }
-    }*/
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          insertar  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -476,8 +451,6 @@ public class ConnectionBD {
             String sql = "INSERT INTO NumerosVendidos(numero, tiquete, tablero, plataVendido)" 
                         + "values('"+number+"','"+ticket+"','"+board+"','"+money+"')";            
             statement.executeUpdate(sql);  
-            System.out.println("number is added");
-            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -500,11 +473,9 @@ public class ConnectionBD {
         try {  
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
-            String sql = "INSERT INTO TiempoTiquete(tiquete, tiempo)"
-                    + "values('"+ticket+"','"+time+"')";            
-            statement.executeUpdate(sql);  
-            System.out.println("ticketTime is added");
-            
+            String sql = "INSERT INTO TiempoTiquete(tiquete, tiempo)"   
+                    + "values('"+ticket+"','"+time+"')";                
+            statement.executeUpdate(sql);   
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -529,28 +500,17 @@ public class ConnectionBD {
             statement = connection.createStatement();                        
             Calendar cal=Calendar.getInstance(); 
             String currentDate =(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.DATE)+"/"+cal.get(cal.YEAR);
-            System.out.println(currentDate);
             String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata)"
                     + "values(#"+currentDate+"#,'"+ticketTotalMoney+"')";
             statement.executeUpdate(sql);
-            System.out.println("ticket is added");
             Ticket ticket = getTicketInformation();
             createTicketTime(ticket.getTicket(), time);
-            System.out.println("ticket is added FOR NOW");
-            System.out.println(numbersList.size());
             for (int i = 0; i < numbersList.size(); i++) {
-                System.out.println("FOR DB");
                 TimeNumber timeNumber = getBoardNumberPricing(board, time, numbersList.get(i));
-                System.out.println("1!");
                 createSoldNumber(numbersList.get(i), ticket.getTicket(), board, numbersMoneyList.get(i));
-                System.out.println("2!");
                 int money = timeNumber.getTotalNumberAmount() - numbersMoneyList.get(i);
-                System.out.println("3!");
                 updateTimeNumber(board, time, numbersList.get(i), money);
-                System.out.println("4!");
             }
-            System.out.println("DONE!");
-            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -568,17 +528,14 @@ public class ConnectionBD {
         }             
     }
     
-    /*public void createSoldNumbers(int number, int ticket, int board, int price){                       
+    public void createTimeNumbers(int number, String time, int totalMoney, int board){                       
         bdConnection();
-        try {  
-            //createDate(date);
+        try {                          
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
-            String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata)"
-                    + "values('"+date+"','"+ticketTotalMoney+"')";            
-            statement.executeUpdate(sql);  
-            System.out.println("ticket is added");
-            
+            String sql = "INSERT INTO NumerosTiempo(numero, tiempo, totalPlataNumero, tablero)"
+                    + "values('"+number+"','"+time+"','"+totalMoney+"','"+board+"')";   
+            statement.executeUpdate(sql);   
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -594,17 +551,24 @@ public class ConnectionBD {
                 sqlex.printStackTrace();
             }
         }             
-    }  
+    }
     
-    public void baseEscribirPersonal(String nombre,String apellido, String cargo, String sueldo){                       
+    public void createBoard(String morningClosing, String nightClose, String companyName, int percentage, int codeBar,
+            String password, String date, int numberPricing){                       
         bdConnection();
-        try {            
+        try {                          
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
-            String sql = "INSERT INTO Personal(nom_per,ape_per,carg_per,suel_per)"
-                    + "values('"+nombre+"','"+apellido+"','"+cargo
-            +"','"+sueldo+"')";            
-           statement.executeUpdate(sql);             
+            String sql = "INSERT INTO Tablero(cierreDia, cierreNoche, comercio, porcentajeEstadistico, codigoBarra, "
+                    + "contrasena, fecha, precioNumeros)"
+                    + "values('"+morningClosing+"','"+nightClose+"','"+companyName+"','"+percentage+"','"+codeBar+"','"
+                    +password+"','"+date+"','"+numberPricing+"')"; 
+            statement.executeUpdate(sql);   
+            Board board = getBoardInformation();
+            for (int i = 0; i < 100; i++) {
+                createTimeNumbers(i, "Dia", numberPricing, board.getBoard());
+                createTimeNumbers(i, "Noche", numberPricing, board.getBoard());
+            }
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -620,5 +584,5 @@ public class ConnectionBD {
                 sqlex.printStackTrace();
             }
         }             
-    }       */
+    }
 }

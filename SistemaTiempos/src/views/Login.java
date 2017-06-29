@@ -7,6 +7,7 @@ package views;
 
 import BD.ConnectionBD;
 import Clases.Board;
+import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import sistematiempos.SpanishLanguage;
@@ -22,16 +23,33 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     private static SpanishLanguage appStrings = SpanishLanguage.getInstance();
-    
+    private Board board;
+    private String pass, currentDate;
     public Login() {
         initComponents();
     }
-    Board board;
-    private String getBoardPassword() {
+    
+    private void getBoardPassword() {
+        System.out.println("iini");
         ConnectionBD con= new ConnectionBD();
         board = con.getBoardInformation();   
         String password = board.getPassword();
-        return password;
+        System.out.println("tt");
+        System.out.println(board.getDate());
+        System.out.println("trrt");
+        pass = password;
+    }
+    
+    private void createBoard(boolean isOnNullState) {
+        System.out.println("iini");
+        ConnectionBD con= new ConnectionBD();
+        if (isOnNullState) {
+            con.createBoard("12:30", "19:00", "FENG", 15, 1234567890, "123", currentDate, 20000);   
+        }
+        else {
+            con.createBoard(board.getDayClose(), board.getNightClose(), board.getStore(), board.getStadisticsPer()
+                    , board.getBarCode(), board.getPassword(), currentDate, board.getNumbersPrincing());   
+        }
     }
 
     /**
@@ -100,7 +118,23 @@ public class Login extends javax.swing.JFrame {
 
     private void btnAccessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccessActionPerformed
         // TODO add your handling code here:
+        System.out.println("!!!!");
+        System.out.println("00");
+        getBoardPassword();
         String pwd = new String(etPassword.getPassword());
+        System.out.println("+++++++");
+        Calendar cal=Calendar.getInstance(); 
+        System.out.println("++********+++");
+        currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
+        System.out.println(currentDate);
+        System.out.println(board.getDate());
+        if (board == null) {
+            createBoard(true);
+        }
+        else if (!board.getDate().equals(currentDate)) {
+            createBoard(false);
+            System.out.println("no SON IGUALES!!!!");
+        }
         if (pwd.equals("8888")) {
             Selling selling = new Selling();
             selling.setVisible(true);
@@ -110,7 +144,7 @@ public class Login extends javax.swing.JFrame {
             selling.setLanguageToSpanish();
             dispose();
         }
-        else if (getBoardPassword().equals(pwd)) {
+        else if (pass.equals(pwd)) {
             AdministratorEditOptions administratorEditOptions = new AdministratorEditOptions();
             administratorEditOptions.setVisible(true);
             administratorEditOptions.setLocationRelativeTo(null);

@@ -3224,15 +3224,43 @@ public class Selling extends javax.swing.JFrame {
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         // TODO add your handling code here:
         Calendar cal = Calendar.getInstance(); 
-        String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
-        String minute = String.valueOf(cal.get(cal.MINUTE));
-        System.out.println(hour);
-        String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
-        //if (tfMorningClosingTime)
-        System.out.println(hour);
-        System.out.println(minute);
-        System.out.println(hora);
-        System.out.println("INICIANDO");
+        String hour = "19";//String.valueOf(cal.get(cal.HOUR_OF_DAY));
+        String minute = "50";//String.valueOf(cal.get(cal.MINUTE));
+        String hora = "12:20";//cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
+        int appHour = 0;
+        int currentHour = 0;
+        int appMinute = 0;
+        int currentMinute = 0;
+        
+        if (cbMorning.isSelected()) {
+            String morningSplitHour[] = tfMorningClosingTime.getText().split(":");
+            appHour = Integer.parseInt(morningSplitHour[0]);
+            currentHour = Integer.parseInt(hour);
+            appMinute = Integer.parseInt(morningSplitHour[1]);
+            currentMinute = Integer.parseInt(minute);
+        }
+        else if (cbNight.isSelected()) {
+            String nightSplitHour[] = tfNightClosingTime.getText().split(":");
+            appHour = Integer.parseInt(nightSplitHour[0]);
+            currentHour = Integer.parseInt(hour);
+            appMinute = Integer.parseInt(nightSplitHour[1]);
+            currentMinute = Integer.parseInt(minute);
+        }
+        if (currentHour < appHour) {
+            createTicketForPurchase();
+        }
+        else if (currentHour == appHour) {
+
+            if (currentMinute < appMinute) {
+                createTicketForPurchase();
+            }
+            else {
+                //fuera de tiempo
+            }
+        }
+        else {
+            //fuera de tiempo
+        }
         createTicketForPurchase();
         TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
         oClienteCrear.setAlwaysOnTop(true);
