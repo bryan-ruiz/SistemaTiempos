@@ -35,7 +35,7 @@ public class Selling extends javax.swing.JFrame {
     private JButton button;
     private Board board;
     private String checkBoxTimeselected;
-    private List<Integer>numbersList, moneyList;
+    private List<Integer>numbersList, numberTable, moneyTable;
     private DefaultListModel numbers = new DefaultListModel();
     private DefaultListModel money = new DefaultListModel();
     private DefaultTableModel tableModel;
@@ -545,7 +545,21 @@ public class Selling extends javax.swing.JFrame {
         int totalValue = Integer.parseInt(lblTotalAmount.getText());
         System.out.println("HACIA BD");
         //String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
-        con.createTicket(totalValue, boardCurrentTime, numbersList, moneyList, board.getBoard());
+        moneyTable = new ArrayList<>();
+        numberTable = new ArrayList<>();
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            System.out.println("en for descomp");
+            int moneyForThisRow = Integer.parseInt((String) tableModel.getValueAt(i, 1));
+            moneyTable.add(moneyForThisRow);
+            System.out.println(moneyForThisRow);
+            System.out.println("en comp");
+            int numberForThisRow = Integer.parseInt((String) tableModel.getValueAt(i, 0));
+            numberTable.add(numberForThisRow);
+            System.out.println(numberForThisRow);
+            System.out.println("####------------#######--------###");
+        }
+        System.out.println("entrando en BD");
+        con.createTicket(totalValue, boardCurrentTime, numberTable, moneyTable, board.getBoard());
         System.out.println("{{{{{{{{SALE DE BD{{{{{{{{{{{");
         System.out.println(board.getBoard());
         System.out.println(Integer.parseInt(button.getText()));
@@ -687,8 +701,9 @@ public class Selling extends javax.swing.JFrame {
     
     private void getTotalAndShowIT() {
         int total = 0;
-        for (int i = 0; i < money.getSize(); i++) {
-            total += (int) money.get(i);
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            int totalForThisNumber = Integer.parseInt((String) tableModel.getValueAt(i, 1));
+            total += totalForThisNumber;
         }
         lblTotalAmount.setText(String.valueOf(total));
     }
@@ -705,6 +720,7 @@ public class Selling extends javax.swing.JFrame {
                 //tableModel.addRow(row);
                 String showIt = String.valueOf(total + price);
                 tableModel.setValueAt(showIt, i, 1);
+                
                 found = true;
             }
         }
@@ -3218,7 +3234,7 @@ public class Selling extends javax.swing.JFrame {
         System.out.println(hora);
         System.out.println("INICIANDO");
         createTicketForPurchase();
-        /*TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
+        TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
         oClienteCrear.setAlwaysOnTop(true);
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);
@@ -3227,12 +3243,13 @@ public class Selling extends javax.swing.JFrame {
         }
         else if (language == "chinese") {
             oClienteCrear.setLanguageToChinese();
-        }*/
+        }
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
         removeItemFromList();
+        getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -3294,6 +3311,7 @@ public class Selling extends javax.swing.JFrame {
     private void btnRemoveAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAllActionPerformed
         // TODO add your handling code here:
         removeAllItemsFromList();
+        getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveAllActionPerformed
 
     private void btnRemoveAllChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAllChineseActionPerformed

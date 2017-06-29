@@ -34,7 +34,7 @@ public class ConnectionBD {
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private int defectMoney= 20000;
-    private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -473,8 +473,8 @@ public class ConnectionBD {
         try {  
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
-            String sql = "INSERT INTO NumerosVendidos(numero, tiquete, tablero, plataVendido)"
-                    + "values('"+number+"','"+ticket+"','"+board+"','"+money+"')";            
+            String sql = "INSERT INTO NumerosVendidos(numero, tiquete, tablero, plataVendido)" 
+                        + "values('"+number+"','"+ticket+"','"+board+"','"+money+"')";            
             statement.executeUpdate(sql);  
             System.out.println("number is added");
             
@@ -530,19 +530,25 @@ public class ConnectionBD {
             Calendar cal=Calendar.getInstance(); 
             String currentDate =(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.DATE)+"/"+cal.get(cal.YEAR);
             System.out.println(currentDate);
-            
             String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata)"
                     + "values(#"+currentDate+"#,'"+ticketTotalMoney+"')";
             statement.executeUpdate(sql);
             System.out.println("ticket is added");
-            /*Ticket ticket = getTicketInformation();
+            Ticket ticket = getTicketInformation();
             createTicketTime(ticket.getTicket(), time);
+            System.out.println("ticket is added FOR NOW");
+            System.out.println(numbersList.size());
             for (int i = 0; i < numbersList.size(); i++) {
+                System.out.println("FOR DB");
                 TimeNumber timeNumber = getBoardNumberPricing(board, time, numbersList.get(i));
+                System.out.println("1!");
                 createSoldNumber(numbersList.get(i), ticket.getTicket(), board, numbersMoneyList.get(i));
+                System.out.println("2!");
                 int money = timeNumber.getTotalNumberAmount() - numbersMoneyList.get(i);
+                System.out.println("3!");
                 updateTimeNumber(board, time, numbersList.get(i), money);
-            }*/
+                System.out.println("4!");
+            }
             System.out.println("DONE!");
             
         }
