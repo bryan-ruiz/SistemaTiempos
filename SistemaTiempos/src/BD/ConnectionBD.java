@@ -34,11 +34,7 @@ public class ConnectionBD {
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private int defectMoney= 20000;
-<<<<<<< HEAD
     private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
-=======
-    private String msAccDB = "C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
->>>>>>> origin/master
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -336,13 +332,17 @@ public class ConnectionBD {
     
     public TicketTime getTicketTime(String ticket){        
         bdConnection();
+        System.out.println("\n\n\n\n________________IMPRIMIENDO 2__________\n\n\n\n");
+        System.out.println(ticket);
         TicketTime newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
             resultSet = statement.executeQuery("SELECT * FROM TiempoTiquete WHERE tiquete="+ticket);
-            while(resultSet.next()) {                
+            while(resultSet.next()) {                    
                 newElement= new TicketTime(resultSet.getInt(2),resultSet.getString(1));
+                System.out.println("\n\n\n\n________________IMPRIMIENDO 3__________\n\n\n\n");
+                System.out.println(newElement.getTime());
             }            
         }
         catch(SQLException sqlex){
@@ -503,15 +503,16 @@ public class ConnectionBD {
         }             
     }
     
-    public void createTicket(int ticketTotalMoney, String time, List<Integer>numbersList, List<Integer>numbersMoneyList, int board){                       
+    public void createTicket(int ticketTotalMoney, String time, List<Integer>numbersList, List<Integer>numbersMoneyList, int board,String hour){                       
         bdConnection();
+        System.out.println("\n\n____________TIEMPO_________\n\n"+time);
         try {                          
             connection = DriverManager.getConnection(dbURL);
             statement = connection.createStatement();                        
             Calendar cal=Calendar.getInstance(); 
             String currentDate =(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.DATE)+"/"+cal.get(cal.YEAR);
-            String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata)"
-                    + "values(#"+currentDate+"#,'"+ticketTotalMoney+"')";
+            String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata,hora)"
+                    + "values(#"+currentDate+"#,'"+ticketTotalMoney+"','"+hour+"')";
             statement.executeUpdate(sql);
             Ticket ticket = getTicketInformation();
             createTicketTime(ticket.getTicket(), time);

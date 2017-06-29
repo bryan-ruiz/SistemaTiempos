@@ -14,6 +14,7 @@ public class Ticket {
     String date;
     int ticketTotalAmount;
     String timeHour;
+    String hour;
 
     public Ticket(int ticket, String date, int ticketTotalAmount, String timeHour) {
         this.ticket = ticket;

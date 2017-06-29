@@ -41,6 +41,8 @@ public class Selling extends javax.swing.JFrame {
     private DefaultListModel money = new DefaultListModel();
     private DefaultTableModel tableModel;
     private String idBoard, lastSave;
+    private int hour, minuts, seconds;
+    private String dayHour;
     private static SpanishLanguage spanishStrings = SpanishLanguage.getInstance();
     private static ChineseLanguage chineseStrings = ChineseLanguage.getInstance();
     private String notNumberErrorString, btnScanCodeBarString, btnTotalUniquePrintString, 
@@ -571,8 +573,13 @@ public class Selling extends javax.swing.JFrame {
             System.out.println(numberForThisRow);
             System.out.println("####------------#######--------###");
         }
-        System.out.println("entrando en BD");        
-        con.createTicket(totalValue, boardCurrentTime, numberTable, moneyTable, board.getBoard());
+        System.out.println("entrando en BD");
+        Calendar calendario = new GregorianCalendar();
+        hour =calendario.get(Calendar.HOUR_OF_DAY);
+        minuts = calendario.get(Calendar.MINUTE);
+        seconds = calendario.get(Calendar.SECOND);
+        dayHour= hour+": "+minuts+": "+seconds;        
+        con.createTicket(totalValue, boardCurrentTime, numberTable, moneyTable, board.getBoard(),dayHour);
         System.out.println("{{{{{{{{SALE DE BD{{{{{{{{{{{");
         System.out.println(board.getBoard());
         System.out.println(Integer.parseInt(button.getText()));

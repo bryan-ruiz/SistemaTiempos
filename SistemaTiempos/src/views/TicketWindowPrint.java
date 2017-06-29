@@ -89,8 +89,11 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         }
         
         totalMoneyTxt.setText(String.valueOf(ticket.getTicketTotalAmount()));
-        
+        System.out.println("\n\n\n\n________________IMPRIMIENDO 0__________\n\n\n\n");
+        System.out.println(idTicket);
         TicketTime tiempo= con.getTicketTime(idTicket);
+        System.out.println("\n\n\n\n________________IMPRIMIENDO 1__________\n\n\n\n");
+        System.out.println("TiempoSetear: "+tiempo.getTime());
         timeTxt.setText(tiempo.getTime());        
     }
     
@@ -301,31 +304,32 @@ public class TicketWindowPrint extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(timeTxt)
                                     .addComponent(dateLabel)
                                     .addComponent(ticketLabel))
-                                .addGap(35, 35, 35)
+                                .addGap(29, 29, 29)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(timeLabel)
-                                    .addComponent(ticketTxt)
-                                    .addComponent(dateTxt)))
-                            .addComponent(storeTxt, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dateTxt)
+                                    .addComponent(ticketTxt))
+                                .addGap(20, 20, 20))
+                            .addComponent(storeTxt, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(88, 88, 88)
-                                        .addComponent(firmaTxt))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(96, 96, 96)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(checkNight)
-                                            .addComponent(checkDay))))
-                                .addGap(75, 75, 75))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(hourTxt)
-                                .addGap(139, 139, 139))))
+                                .addComponent(timeLabel)
+                                .addGap(31, 31, 31)
+                                .addComponent(timeTxt)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addGap(88, 88, 88)
+                                    .addComponent(firmaTxt))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                    .addGap(96, 96, 96)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(checkNight)
+                                        .addComponent(checkDay))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(hourTxt)))
+                        .addGap(75, 75, 75))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(totalLabel)
                         .addGap(114, 114, 114)
@@ -363,8 +367,8 @@ public class TicketWindowPrint extends javax.swing.JFrame {
                             .addComponent(ticketLabel))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(timeLabel)
-                            .addComponent(timeTxt))))
+                            .addComponent(timeTxt)
+                            .addComponent(timeLabel))))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dateLabel)
