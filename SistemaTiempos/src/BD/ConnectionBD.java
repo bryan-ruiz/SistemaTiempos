@@ -22,6 +22,7 @@ import java.text.FieldPosition;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 /**
@@ -33,7 +34,7 @@ public class ConnectionBD {
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private int defectMoney= 20000;
-    private String msAccDB = "C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -523,27 +524,25 @@ public class ConnectionBD {
     
     public void createTicket(int ticketTotalMoney, String time, List<Integer>numbersList, List<Integer>numbersMoneyList, int board){                       
         bdConnection();
-        try {  
+        try {                          
             connection = DriverManager.getConnection(dbURL);
-            statement = connection.createStatement();
-            System.out.println("..bd...");
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = new Date();
-            System.out.println("..ooooo...");
-            String p = new String(dateFormat.format(date));
-            System.out.println(p);
+            statement = connection.createStatement();                        
+            Calendar cal=Calendar.getInstance(); 
+            String currentDate =(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.DATE)+"/"+cal.get(cal.YEAR);
+            System.out.println(currentDate);
+            
             String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata)"
-                    + "values('"+p+"','"+ticketTotalMoney+"')";
+                    + "values(#"+currentDate+"#,'"+ticketTotalMoney+"')";
             statement.executeUpdate(sql);
             System.out.println("ticket is added");
-            Ticket ticket = getTicketInformation();
+            /*Ticket ticket = getTicketInformation();
             createTicketTime(ticket.getTicket(), time);
             for (int i = 0; i < numbersList.size(); i++) {
                 TimeNumber timeNumber = getBoardNumberPricing(board, time, numbersList.get(i));
                 createSoldNumber(numbersList.get(i), ticket.getTicket(), board, numbersMoneyList.get(i));
                 int money = timeNumber.getTotalNumberAmount() - numbersMoneyList.get(i);
                 updateTimeNumber(board, time, numbersList.get(i), money);
-            }
+            }*/
             System.out.println("DONE!");
             
         }
