@@ -13,11 +13,13 @@ public class Ticket {
     int ticket;
     String date;
     int ticketTotalAmount;
+    String timeHour;
 
-    public Ticket(int ticket, String date, int ticketTotalAmount) {
+    public Ticket(int ticket, String date, int ticketTotalAmount, String timeHour) {
         this.ticket = ticket;
         this.date = date;
         this.ticketTotalAmount = ticketTotalAmount;
+        this.timeHour = timeHour;
     }
 
     public int getTicket() {
@@ -42,5 +44,13 @@ public class Ticket {
 
     public void setTicketTotalAmount(int ticketTotalAmount) {
         this.ticketTotalAmount = ticketTotalAmount;
+    }
+
+    public String getTimeHour() {
+        return timeHour;
+    }
+
+    public void setTimeHour(String timeHour) {
+        this.timeHour = timeHour;
     }    
 }

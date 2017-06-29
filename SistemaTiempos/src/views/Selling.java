@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -39,7 +40,7 @@ public class Selling extends javax.swing.JFrame {
     private DefaultListModel numbers = new DefaultListModel();
     private DefaultListModel money = new DefaultListModel();
     private DefaultTableModel tableModel;
-    private String idBoard;
+    private String idBoard, lastSave;
     private static SpanishLanguage spanishStrings = SpanishLanguage.getInstance();
     private static ChineseLanguage chineseStrings = ChineseLanguage.getInstance();
     private String notNumberErrorString, btnScanCodeBarString, btnTotalUniquePrintString, 
@@ -162,8 +163,7 @@ public class Selling extends javax.swing.JFrame {
         btn97.setBackground(null);
         btn98.setBackground(null);
         btn99.setBackground(null);        
-    }
-    
+    }    
     
     private void soldNumbersOfTableSetColors(){
         setColorsToNull();
@@ -522,11 +522,8 @@ public class Selling extends javax.swing.JFrame {
         soldNumbersOfTableSetColors();
     }
     
-    private void getBoardNumberPrice() {
+    private void getBoardNumberPriceFromDB(int numberToFind){
         ConnectionBD con= new ConnectionBD();
-        int numberToFind = Integer.parseInt(button.getText());
-        System.out.println(numberToFind);
-        System.out.println(boardCurrentTime);
         TimeNumber timeNumber = con.getBoardNumberPricing(board.getBoard(), boardCurrentTime, numberToFind);
         String morningClosing = timeNumber.getTiempo();
         int idb = timeNumber.getBoard();
@@ -534,8 +531,24 @@ public class Selling extends javax.swing.JFrame {
         int n = timeNumber.getNumero();
         int t = timeNumber.getTotalNumberAmount();
         System.out.println(idb + ", "+ idn+ ", "+ n+ ", "+ t);
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            if (tableModel.getValueAt(i, 0).equals(button.getText())) {                
+                int total = Integer.parseInt((String) tableModel.getValueAt(i, 1));
+                System.out.println(total);
+                t= t- total;                
+            }        
+        }
         lblTotalQuantityNumber.setText(String.valueOf(t));
+        
     }
+    
+    private void getBoardNumberPrice() {        
+        int numberToFind = Integer.parseInt(button.getText());
+        System.out.println(numberToFind);
+        System.out.println(boardCurrentTime);
+        getBoardNumberPriceFromDB(numberToFind);
+    }
+    
     
     public void createTicketForPurchase(){
         ConnectionBD con= new ConnectionBD();
@@ -558,14 +571,13 @@ public class Selling extends javax.swing.JFrame {
             System.out.println(numberForThisRow);
             System.out.println("####------------#######--------###");
         }
-        System.out.println("entrando en BD");
+        System.out.println("entrando en BD");        
         con.createTicket(totalValue, boardCurrentTime, numberTable, moneyTable, board.getBoard());
         System.out.println("{{{{{{{{SALE DE BD{{{{{{{{{{{");
         System.out.println(board.getBoard());
         System.out.println(Integer.parseInt(button.getText()));
         System.out.println(boardCurrentTime);
         System.out.println("{{{{{{{{{---------{{{{{{{{{{");
-        //con.updateTimeNumber(board.getBoard(), boardCurrentTime, Integer.parseInt(button.getText()), 430);
     }
     
     private void setAllToSelectedLanguage() {
@@ -680,11 +692,11 @@ public class Selling extends javax.swing.JFrame {
     }
     
     private void showSelectedMoney(int money) {
-        if (tvMoney.getText().equals("")) {
-            tvMoney.setText("0");
+        if (priceAct.getText().equals("")) {
+            priceAct.setText("0");
         }
-        int total = Integer.parseInt(tvMoney.getText()) + money;
-        tvMoney.setText(String.valueOf(total));
+        int total = Integer.parseInt(priceAct.getText()) + money;
+        priceAct.setText(String.valueOf(total));
     }
     
     private void removeItemFromList() {
@@ -708,19 +720,15 @@ public class Selling extends javax.swing.JFrame {
         lblTotalAmount.setText(String.valueOf(total));
     }
     
-    private void setPriceToNumber(int price) {
-        //setbackgroundColorToGreen();
+    private void setPriceToNumber(int price) {        
         boolean found = false;
         for (int i = 0; i < tableModel.getRowCount(); i++) {
-            if (tableModel.getValueAt(i, 0).equals(button.getText())) {
-                System.out.println("+++++++++++++++++++++++++++++++++++++++---------------,,,,,,,,,,,,,.................");
+            if (tableModel.getValueAt(i, 0).equals(button.getText())) {                
                 int total = Integer.parseInt((String) tableModel.getValueAt(i, 1));
-                System.out.println(total);
-                System.out.println("+++++++++++++++++++++++++++++++++++++++---------------,,,,,,,,,,,,,.................");
-                //tableModel.addRow(row);
-                String showIt = String.valueOf(total + price);
-                tableModel.setValueAt(showIt, i, 1);
-                
+                System.out.println(total);                                
+                String showIt = String.valueOf(total + price);                
+                tableModel.setValueAt(showIt, i, 1);                
+                selectCheckBox();                                                
                 found = true;
             }
         }
@@ -730,20 +738,8 @@ public class Selling extends javax.swing.JFrame {
             String showIt = String.valueOf(price);
             row[1] = showIt;
             tableModel.addRow(row); 
-        }
-        /*if (!numbers.contains(button.getText())) {
-            numbers.addElement(button.getText());
-            money.addElement(price);
-            jlNumbers.setModel(numbers);
-            jlMoney.setModel(money);
-        }
-        else {
-            int position = jlMoney.getLastVisibleIndex();
-            int newTotal = (int) money.get(position) + price;
-            money.remove(position);
-            money.add(position, newTotal);
-            jlMoney.setModel(money);
-        }*/
+            selectCheckBox();                                
+        }        
     }
     
 
@@ -886,7 +882,7 @@ public class Selling extends javax.swing.JFrame {
         lblTotalAmount = new javax.swing.JLabel();
         btnRemove = new javax.swing.JButton();
         lblTotalQuantityNumber = new javax.swing.JLabel();
-        tvMoney = new javax.swing.JTextField();
+        priceAct = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         btnSaveChinese = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -2250,7 +2246,7 @@ public class Selling extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTotalQuantityNumber)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(tvMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(priceAct, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSave)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2479,7 +2475,7 @@ public class Selling extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblMoney)
-                            .addComponent(tvMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(priceAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSaveChinese, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
@@ -3149,61 +3145,73 @@ public class Selling extends javax.swing.JFrame {
 
     private void btn100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(100);
     }//GEN-LAST:event_btn100ActionPerformed
 
     private void btn200ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn200ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(200);
     }//GEN-LAST:event_btn200ActionPerformed
 
     private void btn300ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn300ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(300);
     }//GEN-LAST:event_btn300ActionPerformed
 
     private void btn400ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn400ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(400);
     }//GEN-LAST:event_btn400ActionPerformed
 
     private void btn500ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn500ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(500);
     }//GEN-LAST:event_btn500ActionPerformed
 
     private void btn600ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn600ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(600);
     }//GEN-LAST:event_btn600ActionPerformed
 
     private void btn700ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn700ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(700);
     }//GEN-LAST:event_btn700ActionPerformed
 
     private void btn800ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn800ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(800);
     }//GEN-LAST:event_btn800ActionPerformed
 
     private void btn900ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn900ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(900);
     }//GEN-LAST:event_btn900ActionPerformed
 
     private void btn1000ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1000ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(1000);
     }//GEN-LAST:event_btn1000ActionPerformed
 
     private void btn2000ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2000ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(2000);
     }//GEN-LAST:event_btn2000ActionPerformed
 
     private void btn5000ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5000ActionPerformed
         // TODO add your handling code here:
+        priceAct.setText("");
         showSelectedMoney(5000);
     }//GEN-LAST:event_btn5000ActionPerformed
 
@@ -3223,10 +3231,11 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
         // TODO add your handling code here:
+        // TODO add your handling code here:
         Calendar cal = Calendar.getInstance(); 
-        String hour = "19";//String.valueOf(cal.get(cal.HOUR_OF_DAY));
-        String minute = "50";//String.valueOf(cal.get(cal.MINUTE));
-        String hora = "12:20";//cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
+        String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
+        String minute = String.valueOf(cal.get(cal.MINUTE));
+        String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
         int appHour = 0;
         int currentHour = 0;
         int appMinute = 0;
@@ -3255,12 +3264,12 @@ public class Selling extends javax.swing.JFrame {
                 createTicketForPurchase();
             }
             else {
-                //fuera de tiempo
+                JOptionPane.showMessageDialog(null, "fuera de tiempo");
                 error = true;
             }
         }
         else {
-            //fuera de tiempo
+            JOptionPane.showMessageDialog(null, "fuera de tiempo");
             error = true;
         }
         if (error == false) {
@@ -3275,11 +3284,16 @@ public class Selling extends javax.swing.JFrame {
                 oClienteCrear.setLanguageToChinese();
             }
         }
-        
     }//GEN-LAST:event_btnPayActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
+        if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
+            int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
+            int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
+            priceTotl= priceTotl+total;            
+            lblTotalQuantityNumber.setText(String.valueOf(priceTotl));                        
+        }
         removeItemFromList();
         getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveActionPerformed
@@ -3287,9 +3301,20 @@ public class Selling extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         try {
-            int money = Integer.parseInt(tvMoney.getText());
+            
+            lastSave= tfSelectedNumber.getText();
+            System.out.println(lastSave);
+            int money = Integer.parseInt(priceAct.getText());
+            int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
+            if(priceTotl < money){                
+                JOptionPane.showMessageDialog(null,"ERROR el monto supera al establecido"); //Error por numero inferior..
+                return;
+            }            
+            priceTotl= priceTotl-money;            
+            lblTotalQuantityNumber.setText(String.valueOf(priceTotl));
             setPriceToNumber(money);
             getTotalAndShowIT();
+            
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3299,10 +3324,10 @@ public class Selling extends javax.swing.JFrame {
     private void btnSaveChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChineseActionPerformed
         // TODO add your handling code here:
         try {
-            int money = Integer.parseInt(tvMoney.getText());
+            int money = Integer.parseInt(priceAct.getText());
             setPriceToNumber(money);
             getTotalAndShowIT();
-            tvMoney.setText("");
+            priceAct.setText("");
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3530,9 +3555,9 @@ public class Selling extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotal;
     private javax.swing.JLabel lblTotalAmount;
     private javax.swing.JLabel lblTotalQuantityNumber;
+    private javax.swing.JTextField priceAct;
     private javax.swing.JLabel tfMorningClosingTime;
     private javax.swing.JLabel tfNightClosingTime;
     private javax.swing.JLabel tfSelectedNumber;
-    private javax.swing.JTextField tvMoney;
     // End of variables declaration//GEN-END:variables
 }

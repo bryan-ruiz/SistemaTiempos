@@ -34,7 +34,7 @@ public class ConnectionBD {
     private Statement statement = null;
     private ResultSet resultSet = null;        
     private int defectMoney= 20000;
-    private String msAccDB = "C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "E:/A. proyectochinos/actual/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -244,11 +244,11 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();                        
-            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata FROM Tiquete "
+            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata,hora FROM Tiquete "
             + "where fechaTiquete BETWEEN #"+startDate+"# AND #"+finalDate+"#");                        
             System.out.println("imprimiendo resultados de base"); 
             while(resultSet.next()) {                      
-                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));
+                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),resultSet.getString(4));
                 System.out.println(resultSet.getString(1));
                 System.out.println(resultSet.getString(2));                
                 System.out.println(resultSet.getString(3));
@@ -296,9 +296,9 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata FROM Tiquete order by tiquete desc");
+            resultSet = statement.executeQuery("SELECT TOP 1 tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata,hora FROM Tiquete order by tiquete desc");
             while(resultSet.next()) {                  
-                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));
+                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),resultSet.getString(4));
             }            
         }
         catch(SQLException sqlex){
@@ -316,9 +316,9 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata FROM Tiquete WHERE tiquete="+id);
+            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata,hora FROM Tiquete WHERE tiquete="+id);
             while(resultSet.next()) {                
-                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3));                        
+                newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),resultSet.getString(4));                        
             }            
         }
         catch(SQLException sqlex){
