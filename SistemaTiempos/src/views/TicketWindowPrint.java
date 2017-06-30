@@ -28,10 +28,9 @@ public class TicketWindowPrint extends javax.swing.JFrame {
      * Creates new form VentanaTiquete
      */
     private String language;
-    private int totalAmount= 0;
+    private int pricing, totalAmount= 0;
     private Board board;
     private DefaultTableModel tableModel;
-    private int defectMoney= 20000;
     private String checkBoxTimeselected;
     private String idBoard;
     
@@ -81,6 +80,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         if(list.size()>0){
             int idBoard= list.get(0).getBoard();
             Board board= con.getBoardInformationFind(idBoard);
+            pricing = board.getNumbersPrincing();
             barCodeTxt.setText(String.valueOf(board.getBarCode()));
             storeTxt.setText(board.getStore());        
         }
@@ -120,12 +120,12 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         if(selectCheckBox()== false){
             return;
         }
-        List<TimeNumber>list=con.getSoldBoardNumbersDependingOnTime(idBoard,checkBoxTimeselected);
+        List<TimeNumber>list=con.getSoldBoardNumbersDependingOnTime(idBoard,checkBoxTimeselected, pricing);
         for (int i = 0; i < list.size(); i++) {            
-            totalAmount= totalAmount+ (defectMoney -(list.get(i).getTotalNumberAmount()));
+            totalAmount= totalAmount+ (board.getNumbersPrincing() -(list.get(i).getTotalNumberAmount()));
             String[] row = new String[2];
             row[0] = String.valueOf(list.get(i).getNumero());            
-            String showIt = String.valueOf(defectMoney-(list.get(i).getTotalNumberAmount()));
+            String showIt = String.valueOf(board.getNumbersPrincing() -(list.get(i).getTotalNumberAmount()));
             row[1] = showIt;
             tableModel.addRow(row);            
         }                 
@@ -136,7 +136,8 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         barCodeTxt.setVisible(false);               
         hourTxt.setVisible(false);
         ConnectionBD con= new ConnectionBD();        
-        board= con.getBoardInformation();                
+        board= con.getBoardInformation();       
+        pricing = board.getNumbersPrincing();
         idBoard=String.valueOf(board.getBoard());        
         dateTxt.setText(board.getDate());
         ticketLabel.setText("Tablero");        

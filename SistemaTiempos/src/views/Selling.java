@@ -41,7 +41,7 @@ public class Selling extends javax.swing.JFrame {
     private DefaultListModel money = new DefaultListModel();
     private DefaultTableModel tableModel;
     private String idBoard, lastSave;
-    private int hour, minuts, seconds;
+    private int hour, minuts, seconds, pricing;
     private String dayHour;
     private static SpanishLanguage spanishStrings = SpanishLanguage.getInstance();
     private static ChineseLanguage chineseStrings = ChineseLanguage.getInstance();
@@ -174,7 +174,7 @@ public class Selling extends javax.swing.JFrame {
         if(selectCheckBox()== false){
             return;
         }       
-        List<TimeNumber>list=con.getSoldBoardNumbersDependingOnTime(idBoard,checkBoxTimeselected);  
+        List<TimeNumber>list=con.getSoldBoardNumbersDependingOnTime(idBoard,checkBoxTimeselected, pricing);  
         for (int i = 0; i < list.size(); i++) { 
             numbersList.add(list.get(i).getNumero());
         }        
@@ -512,6 +512,7 @@ public class Selling extends javax.swing.JFrame {
         tfMorningClosingTime.setText(morningClosing);
         tfNightClosingTime.setText(nightClosing);
         idBoard= String.valueOf(board.getBoard());
+        pricing = board.getNumbersPrincing();
         setCurrentTime();
         soldNumbersOfTableSetColors();
     }
@@ -531,7 +532,6 @@ public class Selling extends javax.swing.JFrame {
             }        
         }
         lblTotalQuantityNumber.setText(String.valueOf(t));
-        
     }
     
     private void getBoardNumberPrice() {        

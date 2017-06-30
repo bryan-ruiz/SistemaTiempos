@@ -32,9 +32,8 @@ import java.util.Date;
 public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
-    private ResultSet resultSet = null;        
-    private int defectMoney= 20000;
-    private String msAccDB = "C:/Users/Joha/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
+    private ResultSet resultSet = null;  
+    private String msAccDB = "C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -98,7 +97,7 @@ public class ConnectionBD {
         return false;
     }
     
-    public List<TimeNumber>getSoldBoardNumbersDependingOnTime(String idBoard, String time){        
+    public List<TimeNumber>getSoldBoardNumbersDependingOnTime(String idBoard, String time, int pricing){        
         bdConnection();
         List<TimeNumber>list= new ArrayList<>();        
         TimeNumber newElement= null;
@@ -108,10 +107,15 @@ public class ConnectionBD {
             String query="SELECT * from NumerosTiempo where tablero= "+idBoard+" "
                     + "and tiempo= '"+time+"'";
             resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {                                   
+            System.out.println("111111111");
+            System.out.println("222222222222");
+            while(resultSet.next()) {        
+                System.out.println("333333333");
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
-                        resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5));   
-                if(newElement.getTotalNumberAmount() != defectMoney){
+                        resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5)); 
+                System.out.println("++++++++++++");
+                if(newElement.getTotalNumberAmount() != pricing){
+                    System.out.println("tiene");
                     list.add(newElement);
                 }                
             }                        
