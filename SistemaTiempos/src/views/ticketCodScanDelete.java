@@ -41,6 +41,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         tableModel = new DefaultTableModel(null, headers);
         jTable1.setModel(tableModel);
     }
+    
     public void setAll(){
         mensaje.setForeground(Color.red);
         barCodeTxt.setText("");
@@ -54,23 +55,17 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         removeAllItemsFromList();
     }
     
-    
     public void visibleFalseComponents(boolean bool){
         labelBarCode.setVisible(bool);
         barCodeTxt.setVisible(bool);
-        
         labelDate.setVisible(bool);
-        dateTxt.setVisible(bool);                
-        
+        dateTxt.setVisible(bool);    
         labelIdTicket.setVisible(bool);
         ticketIdTxt.setVisible(bool);
-        
         labelTime.setVisible(bool);
         timeTxt.setVisible(bool);
-        
         labelTotal.setVisible(bool);
-        totalTxt.setVisible(bool);        
-        
+        totalTxt.setVisible(bool);  
         deleteButton.setVisible(bool);
         printButton.setVisible(bool);             
         panel.setVisible(bool);
@@ -79,16 +74,13 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     public void findIdTicket(){
         String idTicket= idFindTxt.getText();
         if(idTicket.equals("")){
-            //JOptionPane.showMessageDialog(null,"Se debe de ingresar un dato","Error",JOptionPane.INFORMATION_MESSAGE);
             mensaje.setText("Se debe de ingresar un dato");
             return;            
         }
-        
         idToFindTicket= Integer.parseInt(idTicket);                       
         ConnectionBD con= new ConnectionBD();                                
         Ticket ticket= con.getTicketInformationFind(idToFindTicket);        
         if(ticket== null){            
-            //JOptionPane.showMessageDialog(null,"El tiquete no es válido","Error",JOptionPane.INFORMATION_MESSAGE);
             mensaje.setText("El tiquete no es válido");
             return;
         }                
@@ -105,14 +97,11 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             Board board= con.getBoardInformationFind(idBoard);
             barCodeTxt.setText(String.valueOf(board.getBarCode()));
         }        
-        totalTxt.setText(String.valueOf(ticket.getTicketTotalAmount()));        
-        
+        totalTxt.setText(String.valueOf(ticket.getTicketTotalAmount())); 
         TicketTime tiempo= con.getTicketTime(idTicket);
-        timeTxt.setText(tiempo.getTime());                        
-        
+        timeTxt.setText(tiempo.getTime());                      
         dateTxt.setText(ticket.getDate());                         
-        ticketIdTxt.setText(idTicket);        
-        
+        ticketIdTxt.setText(idTicket);  
         visibleFalseComponents(true);
     }
     /**
@@ -335,13 +324,6 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         visibleFalseComponents(false);
         mensaje.setText("El tiquete ha sido eliminado");
         mensaje.setForeground(Color.green);
-        
-        /*Selling selling = new Selling();
-        selling.setVisible(true);
-        selling.setLocationRelativeTo(null);
-        selling.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        selling.setCompanyName("Bran-Labs");
-        dispose();*/
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed

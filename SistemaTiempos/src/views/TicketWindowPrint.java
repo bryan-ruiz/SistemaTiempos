@@ -46,7 +46,6 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         }
     }
 
-    
     private void removeAllItemsFromList() {
         String[] headers = {"Numeros","Dinero"};
         tableModel = new DefaultTableModel(null, headers);
@@ -67,9 +66,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         else{
             ticket= con.getTicketInformationFind(idToFindTicket);        
         }
-        
-        String idTicket=String.valueOf(ticket.getTicket());                
-        
+        String idTicket=String.valueOf(ticket.getTicket());   
         ticketTxt.setText(idTicket);
         dateTxt.setText(ticket.getDate());                                 
         hourTxt.setText(ticket.getTimeHour());    
@@ -87,13 +84,8 @@ public class TicketWindowPrint extends javax.swing.JFrame {
             barCodeTxt.setText(String.valueOf(board.getBarCode()));
             storeTxt.setText(board.getStore());        
         }
-        
         totalMoneyTxt.setText(String.valueOf(ticket.getTicketTotalAmount()));
-        System.out.println("\n\n\n\n________________IMPRIMIENDO 0__________\n\n\n\n");
-        System.out.println(idTicket);
         TicketTime tiempo= con.getTicketTime(idTicket);
-        System.out.println("\n\n\n\n________________IMPRIMIENDO 1__________\n\n\n\n");
-        System.out.println("TiempoSetear: "+tiempo.getTime());
         timeTxt.setText(tiempo.getTime());        
     }
     
@@ -108,7 +100,6 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         language = spanishLanguage.getBtnPrint();
         printButton.setText(language);
     }
-    
     
     public boolean selectCheckBox(){
         if(checkDay.isSelected() ){
@@ -144,7 +135,6 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     public void showInformationPrintTotalU(){
         barCodeTxt.setVisible(false);               
         hourTxt.setVisible(false);
-        
         ConnectionBD con= new ConnectionBD();        
         board= con.getBoardInformation();                
         idBoard=String.valueOf(board.getBoard());        
@@ -372,9 +362,8 @@ public class TicketWindowPrint extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dateLabel)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(dateTxt)
-                        .addComponent(hourTxt)))
+                    .addComponent(dateTxt)
+                    .addComponent(hourTxt))
                 .addGap(43, 43, 43)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

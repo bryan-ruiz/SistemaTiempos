@@ -10,11 +10,11 @@ package Clases;
  * @author Joha
  */
 public class SoldNumbers {
-    int id;
-    int number;
-    int ticket;
-    int board;
-    int moneySold;
+    private int id;
+    private int number;
+    private int ticket;
+    private int board;
+    private int moneySold;
 
     public SoldNumbers(int id, int number, int ticket, int board, int moneySold) {
         this.id = id;

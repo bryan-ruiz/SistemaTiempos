@@ -10,11 +10,11 @@ package Clases;
  * @author Joha
  */
 public class TimeNumber {
-    int id;
-    int numero;
-    String tiempo;
-    int totalNumberAmount;
-    int board;
+    private int id;
+    private int numero;
+    private String tiempo;
+    private int totalNumberAmount;
+    private int board;
 
     public TimeNumber(int id, int numero, String tiempo, int totalNumberAmount, int board) {
         this.id = id;

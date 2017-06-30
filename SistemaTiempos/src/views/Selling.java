@@ -170,25 +170,18 @@ public class Selling extends javax.swing.JFrame {
     private void soldNumbersOfTableSetColors(){
         setColorsToNull();
         ConnectionBD con= new ConnectionBD();        
-        System.out.print("Entro a función "+ idBoard);
         numbersList= new ArrayList<>();
         if(selectCheckBox()== false){
-            System.out.print("  Entro a función salio return ");
             return;
         }       
-        System.out.print(" tiempo: "+ checkBoxTimeselected);
         List<TimeNumber>list=con.getSoldBoardNumbersDependingOnTime(idBoard,checkBoxTimeselected);  
-        System.out.print(" largo de lista: "+ list.size());
         for (int i = 0; i < list.size(); i++) { 
-            System.out.print(list.get(i).getNumero());
             numbersList.add(list.get(i).getNumero());
         }        
-        System.out.print("Salio de for");
         if(numbersList.contains(0)){
             setbackgroundColorToGreen(btn00);
         }
         if(numbersList.contains(1)){
-            System.out.print("entro1");
             setbackgroundColorToGreen(btn01);
         }
         if(numbersList.contains(2)){
@@ -508,7 +501,6 @@ public class Selling extends javax.swing.JFrame {
         else {
             boardCurrentTime = "Noche";
         }
-        System.out.println(boardCurrentTime);
     }
     
     private void getBoardDataToInform() {
@@ -532,11 +524,9 @@ public class Selling extends javax.swing.JFrame {
         int idn = timeNumber.getId();
         int n = timeNumber.getNumero();
         int t = timeNumber.getTotalNumberAmount();
-        System.out.println(idb + ", "+ idn+ ", "+ n+ ", "+ t);
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (tableModel.getValueAt(i, 0).equals(button.getText())) {                
                 int total = Integer.parseInt((String) tableModel.getValueAt(i, 1));
-                System.out.println(total);
                 t= t- total;                
             }        
         }
@@ -546,45 +536,28 @@ public class Selling extends javax.swing.JFrame {
     
     private void getBoardNumberPrice() {        
         int numberToFind = Integer.parseInt(button.getText());
-        System.out.println(numberToFind);
-        System.out.println(boardCurrentTime);
         getBoardNumberPriceFromDB(numberToFind);
     }
-    
     
     public void createTicketForPurchase(){
         ConnectionBD con= new ConnectionBD();
         Calendar cal=Calendar.getInstance(); 
         String currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
-        System.out.println(currentDate);
         int totalValue = Integer.parseInt(lblTotalAmount.getText());
-        System.out.println("HACIA BD");
-        //String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
         moneyTable = new ArrayList<>();
         numberTable = new ArrayList<>();
         for (int i = 0; i < tableModel.getRowCount(); i++) {
-            System.out.println("en for descomp");
             int moneyForThisRow = Integer.parseInt((String) tableModel.getValueAt(i, 1));
             moneyTable.add(moneyForThisRow);
-            System.out.println(moneyForThisRow);
-            System.out.println("en comp");
             int numberForThisRow = Integer.parseInt((String) tableModel.getValueAt(i, 0));
             numberTable.add(numberForThisRow);
-            System.out.println(numberForThisRow);
-            System.out.println("####------------#######--------###");
         }
-        System.out.println("entrando en BD");
         Calendar calendario = new GregorianCalendar();
         hour =calendario.get(Calendar.HOUR_OF_DAY);
         minuts = calendario.get(Calendar.MINUTE);
         seconds = calendario.get(Calendar.SECOND);
         dayHour= hour+": "+minuts+": "+seconds;        
         con.createTicket(totalValue, boardCurrentTime, numberTable, moneyTable, board.getBoard(),dayHour);
-        System.out.println("{{{{{{{{SALE DE BD{{{{{{{{{{{");
-        System.out.println(board.getBoard());
-        System.out.println(Integer.parseInt(button.getText()));
-        System.out.println(boardCurrentTime);
-        System.out.println("{{{{{{{{{---------{{{{{{{{{{");
     }
     
     private void setAllToSelectedLanguage() {
@@ -607,6 +580,7 @@ public class Selling extends javax.swing.JFrame {
         btnPayChinese.setText(btnPayString);
         btnRemoveAll.setText(btnReset);
         btnRemoveAllChinese.setText(btnReset);
+        
         removeAllItemsFromList();
     }
     
@@ -736,7 +710,6 @@ public class Selling extends javax.swing.JFrame {
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             if (tableModel.getValueAt(i, 0).equals(button.getText())) {                
                 int total = Integer.parseInt((String) tableModel.getValueAt(i, 1));
-                System.out.println(total);                                
                 String showIt = String.valueOf(total + price);                
                 tableModel.setValueAt(showIt, i, 1);                
                 selectCheckBox();                                                
@@ -3312,9 +3285,7 @@ public class Selling extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         try {
-            
             lastSave= tfSelectedNumber.getText();
-            System.out.println(lastSave);
             int money = Integer.parseInt(priceAct.getText());
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             if(priceTotl < money){                

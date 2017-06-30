@@ -10,8 +10,8 @@ package Clases;
  * @author Joha
  */
 public class TicketTime {
-    int ticket;
-    String time;
+    private int ticket;
+    private String time;
 
     public TicketTime(int ticket, String time) {
         this.ticket = ticket;

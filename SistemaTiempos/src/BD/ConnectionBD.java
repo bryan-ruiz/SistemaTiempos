@@ -65,6 +65,7 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TABLERO
 /////////////////////////////////////////////////////////////////////////////////////////
+    
     public String getTimeFromBoard(String idBoard){
         String result= "";
         bdConnection();        
@@ -86,7 +87,6 @@ public class ConnectionBD {
         return result;
     }
     
-    
     public boolean isInList(List<SoldNumbers>list, SoldNumbers object){
         for(int i=0; i<list.size(); i++){
             if(list.get(i).getNumber()== object.getNumber()){
@@ -97,15 +97,9 @@ public class ConnectionBD {
         }
         return false;
     }
-    /**
-     * FALTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * @param idBoard
-     * @param time
-     * @return 
-     */
+    
     public List<TimeNumber>getSoldBoardNumbersDependingOnTime(String idBoard, String time){        
         bdConnection();
-        System.out.println("Entro a funcion de baase");
         List<TimeNumber>list= new ArrayList<>();        
         TimeNumber newElement= null;
         try {                                    
@@ -113,14 +107,8 @@ public class ConnectionBD {
             statement = connection.createStatement();            
             String query="SELECT * from NumerosTiempo where tablero= "+idBoard+" "
                     + "and tiempo= '"+time+"'";
-            System.out.println(query);
             resultSet = statement.executeQuery(query);
-            while(resultSet.next()) {                                                                      
-                System.out.println(resultSet.getString(1));
-                System.out.println(resultSet.getString(2));
-                System.out.println(resultSet.getString(3));
-                System.out.println(resultSet.getString(4));
-                System.out.println(resultSet.getString(5));
+            while(resultSet.next()) {                                   
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5));   
                 if(newElement.getTotalNumberAmount() != defectMoney){
@@ -173,8 +161,7 @@ public class ConnectionBD {
                 newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
                         resultSet.getString(3), resultSet.getString(4),
                         resultSet.getInt(5),resultSet.getInt(6),
-                        resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));   
-                System.out.println("++HHH++");
+                        resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9)); 
             }            
         }
         catch(SQLException sqlex){
@@ -231,11 +218,9 @@ public class ConnectionBD {
         return newElement;
     }
     
-    
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TIKETES    
 /////////////////////////////////////////////////////////////////////////////////////////
-    
     
     public List<Ticket>GetAllTiicketsBetweenDates(String startDate, String finalDate){        
         bdConnection();
@@ -245,13 +230,9 @@ public class ConnectionBD {
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();                        
             resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata,hora FROM Tiquete "
-            + "where fechaTiquete BETWEEN #"+startDate+"# AND #"+finalDate+"#");                        
-            System.out.println("imprimiendo resultados de base"); 
+            + "where fechaTiquete BETWEEN #"+startDate+"# AND #"+finalDate+"#");    
             while(resultSet.next()) {                      
                 newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),resultSet.getString(4));
-                System.out.println(resultSet.getString(1));
-                System.out.println(resultSet.getString(2));                
-                System.out.println(resultSet.getString(3));
                 list.add(newElement);
             } 
         }
@@ -287,8 +268,7 @@ public class ConnectionBD {
             closeConnectionGet();    
         }        
         return list;
-    }                
-    
+    }         
     
     public Ticket getTicketInformation(){        
         bdConnection();
@@ -332,8 +312,6 @@ public class ConnectionBD {
     
     public TicketTime getTicketTime(String ticket){        
         bdConnection();
-        System.out.println("\n\n\n\n________________IMPRIMIENDO 2__________\n\n\n\n");
-        System.out.println(ticket);
         TicketTime newElement= null;
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
@@ -341,8 +319,6 @@ public class ConnectionBD {
             resultSet = statement.executeQuery("SELECT * FROM TiempoTiquete WHERE tiquete="+ticket);
             while(resultSet.next()) {                    
                 newElement= new TicketTime(resultSet.getInt(2),resultSet.getString(1));
-                System.out.println("\n\n\n\n________________IMPRIMIENDO 3__________\n\n\n\n");
-                System.out.println(newElement.getTime());
             }            
         }
         catch(SQLException sqlex){
@@ -354,11 +330,9 @@ public class ConnectionBD {
         return newElement;
     }
 
-
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          actualizar  
 /////////////////////////////////////////////////////////////////////////////////////////
-    
     
     public void updateBoard(int idBoard, String morningClosingTime, String nightClosingTime, 
             String companyName, int percentage, int barCode, String password, String date, int pricing){                       
@@ -375,7 +349,6 @@ public class ConnectionBD {
                 updateTimeNumber(board.getBoard(), "Dia", i, pricing);
                 updateTimeNumber(board.getBoard(), "Noche", i, pricing);
             }
-            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();
@@ -392,7 +365,6 @@ public class ConnectionBD {
             }
         }             
     }   
-    
     
     public void updateTimeNumber(int idBoard, String time, int number, int money){                       
         bdConnection();
@@ -450,9 +422,11 @@ public class ConnectionBD {
             }
         }             
     }   
+    
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          insertar  
 /////////////////////////////////////////////////////////////////////////////////////////
+    
     public void createSoldNumber(int number, int ticket,int board, int money){                       
         bdConnection();
         try {  
@@ -505,7 +479,6 @@ public class ConnectionBD {
     
     public void createTicket(int ticketTotalMoney, String time, List<Integer>numbersList, List<Integer>numbersMoneyList, int board,String hour){                       
         bdConnection();
-        System.out.println("\n\n____________TIEMPO_________\n\n"+time);
         try {                          
             connection = DriverManager.getConnection(dbURL);
             statement = connection.createStatement();                        

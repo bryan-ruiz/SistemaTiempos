@@ -10,15 +10,15 @@ package Clases;
  * @author Joha
  */
 public class Board {
-    int board;    
-    String dayClose;
-    String nightClose;
-    String store;
-    int stadisticsPer;
-    int barCode;
-    String password;    
-    String date;
-    int numbersPrincing;
+    private int board;    
+    private String dayClose;
+    private String nightClose;
+    private String store;
+    private int stadisticsPer;
+    private int barCode;
+    private String password;    
+    private String date;
+    private int numbersPrincing;
 
     public Board(int board, String dayClose, String nightClose, String store, int stadisticsPer, int barCode, String password, String date, int numbersPrincing) {
         this.board = board;

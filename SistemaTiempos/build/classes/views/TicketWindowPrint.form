@@ -194,10 +194,8 @@
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="dateLabel" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                          <Component id="dateTxt" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="hourTxt" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="dateTxt" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="hourTxt" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                   <Component id="jScrollPane3" min="-2" pref="252" max="-2" attributes="0"/>

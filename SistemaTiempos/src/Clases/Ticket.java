@@ -10,11 +10,11 @@ package Clases;
  * @author Joha
  */
 public class Ticket {
-    int ticket;
-    String date;
-    int ticketTotalAmount;
-    String timeHour;
-    String hour;
+    private int ticket;
+    private String date;
+    private int ticketTotalAmount;
+    private String timeHour;
+    private String hour;
 
     public Ticket(int ticket, String date, int ticketTotalAmount, String timeHour) {
         this.ticket = ticket;
