@@ -107,15 +107,10 @@ public class ConnectionBD {
             String query="SELECT * from NumerosTiempo where tablero= "+idBoard+" "
                     + "and tiempo= '"+time+"'";
             resultSet = statement.executeQuery(query);
-            System.out.println("111111111");
-            System.out.println("222222222222");
             while(resultSet.next()) {        
-                System.out.println("333333333");
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5)); 
-                System.out.println("++++++++++++");
                 if(newElement.getTotalNumberAmount() != pricing){
-                    System.out.println("tiene");
                     list.add(newElement);
                 }                
             }                        
