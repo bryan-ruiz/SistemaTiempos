@@ -3257,6 +3257,9 @@ public class Selling extends javax.swing.JFrame {
             error = true;
         }
         if (error == false) {
+            soldNumbersOfTableSetColors();
+            removeAllItemsFromList();
+            getTotalAndShowIT();
             TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
             oClienteCrear.setAlwaysOnTop(true);
             oClienteCrear.setVisible(true);
