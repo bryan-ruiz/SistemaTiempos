@@ -3312,10 +3312,18 @@ public class Selling extends javax.swing.JFrame {
     private void btnSaveChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChineseActionPerformed
         // TODO add your handling code here:
         try {
+            lastSave= tfSelectedNumber.getText();
             int money = Integer.parseInt(priceAct.getText());
+            int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
+            if(priceTotl < money){                
+                JOptionPane.showMessageDialog(null,"ERROR el monto supera al establecido"); //Error por numero inferior..
+                return;
+            }            
+            priceTotl= priceTotl-money;            
+            lblTotalQuantityNumber.setText(String.valueOf(priceTotl));
             setPriceToNumber(money);
             getTotalAndShowIT();
-            priceAct.setText("");
+            
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3324,20 +3332,75 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnRemoveChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveChineseActionPerformed
         // TODO add your handling code here:
+        if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
+            int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
+            int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
+            priceTotl= priceTotl+total;            
+            lblTotalQuantityNumber.setText(String.valueOf(priceTotl));                        
+        }
         removeItemFromList();
+        getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveChineseActionPerformed
 
     private void btnPayChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayChineseActionPerformed
         // TODO add your handling code here:
-        TicketWindowPrint oClienteCrear = new TicketWindowPrint(1);
-        oClienteCrear.setAlwaysOnTop(true);
-        oClienteCrear.setVisible(true);
-        oClienteCrear.setLocationRelativeTo(null);
-        if (language == "spanish") {
-            oClienteCrear.setLanguageToSpanish();
+        Calendar cal = Calendar.getInstance(); 
+        String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
+        String minute = String.valueOf(cal.get(cal.MINUTE));
+        String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
+        int appHour = 0;
+        int currentHour = 0;
+        int appMinute = 0;
+        int currentMinute = 0;
+        boolean error = false;
+        if (cbMorning.isSelected()) {
+            String morningSplitHour[] = tfMorningClosingTime.getText().split(":");
+            appHour = Integer.parseInt(morningSplitHour[0]);
+            currentHour = Integer.parseInt(hour);
+            appMinute = Integer.parseInt(morningSplitHour[1]);
+            currentMinute = Integer.parseInt(minute);
         }
-        else if (language == "chinese") {
-            oClienteCrear.setLanguageToChinese();
+        else if (cbNight.isSelected()) {
+            String nightSplitHour[] = tfNightClosingTime.getText().split(":");
+            appHour = Integer.parseInt(nightSplitHour[0]);
+            currentHour = Integer.parseInt(hour);
+            appMinute = Integer.parseInt(nightSplitHour[1]);
+            currentMinute = Integer.parseInt(minute);
+        }
+        if (currentHour < appHour) {
+            createTicketForPurchase();
+        }
+        else if (currentHour == appHour) {
+            if (currentMinute < appMinute) {
+                createTicketForPurchase();
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "fuera de tiempo");
+                error = true;
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "fuera de tiempo");
+            error = true;
+        }
+        if (tableModel.getRowCount() == 0) {
+            error = true;
+            JOptionPane.showMessageDialog(null, "seleccione numero");
+        }
+        if (error == false) {
+            soldNumbersOfTableSetColors();
+            removeAllItemsFromList();
+            getTotalAndShowIT();
+            TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
+            oClienteCrear.setAlwaysOnTop(true);
+            oClienteCrear.setVisible(true);
+            oClienteCrear.setLocationRelativeTo(null);
+            if (language == "spanish") {
+                oClienteCrear.setLanguageToSpanish();
+            }
+            else if (language == "chinese") {
+                oClienteCrear.setLanguageToChinese();
+            }
         }
     }//GEN-LAST:event_btnPayChineseActionPerformed
 
@@ -3364,6 +3427,7 @@ public class Selling extends javax.swing.JFrame {
     private void btnRemoveAllChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAllChineseActionPerformed
         // TODO add your handling code here:
         removeAllItemsFromList();
+        getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveAllChineseActionPerformed
 
     /**

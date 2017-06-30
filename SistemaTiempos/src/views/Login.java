@@ -25,21 +25,31 @@ public class Login extends javax.swing.JFrame {
     private static SpanishLanguage appStrings = SpanishLanguage.getInstance();
     private Board board;
     private String pass, currentDate;
+    private int boardQuantity;
     
     public Login() {
         initComponents();
+        //++deleteAll();
     }
     
     private void getBoardPassword() {
         ConnectionBD con= new ConnectionBD();
-        board = con.getBoardInformation();   
+        board = con.getBoardInformation(); 
+        boardQuantity = con.countBoardsQuantity();
         String password = board.getPassword();
         pass = password;
     }
     
+    private void deleteAll() {
+        ConnectionBD con= new ConnectionBD();
+        con.deleteAll();  
+    }
+    
     private void createBoard(boolean isOnNullState) {
         ConnectionBD con= new ConnectionBD();
+        System.out.println("asdf");
         if (isOnNullState) {
+            System.out.println("+++");
             con.createBoard("12:30", "19:00", "FENG", 15, 1234567890, "123", currentDate, 20000);   
         }
         else {
@@ -111,7 +121,7 @@ public class Login extends javax.swing.JFrame {
     private void etPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_etPasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_etPasswordActionPerformed
-
+    
     private void btnAccessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccessActionPerformed
         // TODO add your handling code here:
         getBoardPassword();
@@ -122,6 +132,10 @@ public class Login extends javax.swing.JFrame {
             createBoard(true);
         }
         else if (!board.getDate().equals(currentDate)) {
+            if (boardQuantity == 120) {
+                System.out.println("DELETE ALL");
+                deleteAll();
+            }
             createBoard(false);
         }
         if (pwd.equals("8888")) {

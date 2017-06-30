@@ -391,6 +391,38 @@ public class ConnectionBD {
     } 
     
 /////////////////////////////////////////////////////////////////////////////////////////
+//                          tamaño  
+/////////////////////////////////////////////////////////////////////////////////////////
+    
+    public int countBoardsQuantity(){                       
+        bdConnection();
+        try {            
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            resultSet = statement.executeQuery("SELECT COUNT(*) FROM Tablero");
+            while(resultSet.next()) {
+                return 120;//resultSet.getInt(1);
+                //System.out.println(resultSet.getInt(1));
+            }               
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            try {
+                if(null != connection) {                                        
+                    statement.close();                    
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }         
+        return 0;
+    }   
+    
+/////////////////////////////////////////////////////////////////////////////////////////
 //                          eliminar  
 /////////////////////////////////////////////////////////////////////////////////////////
     
@@ -421,6 +453,41 @@ public class ConnectionBD {
             }
         }             
     }   
+    
+    public void deleteAll(){                       
+        bdConnection();
+        try {            
+            Board board = getBoardInformation();
+            connection = DriverManager.getConnection(dbURL);             
+            statement = connection.createStatement();            
+            String sql = "DELETE * FROM Tiquete";                        
+            statement.executeUpdate(sql);            
+            sql = "DELETE * FROM NumerosVendidos";                        
+            statement.executeUpdate(sql);            
+            sql = "DELETE FROM TiempoTiquete";                        
+            statement.executeUpdate(sql);    
+            sql = "DELETE FROM Tablero";                        
+            statement.executeUpdate(sql);
+            sql = "DELETE FROM NumerosTiempo";                        
+            statement.executeUpdate(sql);
+            createBoard(board.getDayClose(), board.getNightClose(), board.getStore(), board.getStadisticsPer(), 
+                    board.getBarCode(), board.getPassword(), "1/1/1", board.getNumbersPrincing());
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            try {
+                if(null != connection) {                                        
+                    statement.close();                    
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }             
+    }
     
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          insertar  
