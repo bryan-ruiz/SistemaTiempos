@@ -464,12 +464,14 @@ public class ConnectionBD {
             statement.executeUpdate(sql);            
             sql = "DELETE * FROM NumerosVendidos";                        
             statement.executeUpdate(sql);            
-            sql = "DELETE FROM TiempoTiquete";                        
+            sql = "DELETE * FROM TiempoTiquete";                        
             statement.executeUpdate(sql);    
-            sql = "DELETE FROM Tablero";                        
+            sql = "DELETE * FROM Tablero";                        
             statement.executeUpdate(sql);
-            sql = "DELETE FROM NumerosTiempo";                        
+            sql = "DELETE * FROM NumerosTiempo";  
+            System.out.println("///////////");
             statement.executeUpdate(sql);
+            System.out.println("elim");
             createBoard(board.getDayClose(), board.getNightClose(), board.getStore(), board.getStadisticsPer(), 
                     board.getBarCode(), board.getPassword(), "1/1/1", board.getNumbersPrincing());
         }
@@ -491,6 +493,44 @@ public class ConnectionBD {
     
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          insertar  
+    
+    
+    
+    public void createTicketQAMorining(int number){                       
+        bdConnection();
+        try {                          
+            connection = DriverManager.getConnection(dbURL);
+            statement = connection.createStatement();                        
+            Calendar cal=Calendar.getInstance(); 
+            String currentDate =(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.DATE)+"/"+cal.get(cal.YEAR);
+            String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata,hora)"
+                + "values(#"+currentDate+"#,'100','00:00')";
+            statement.executeUpdate(sql);
+            Ticket ticket = getTicketInformation();
+            createTicketTime(ticket.getTicket(), "Dia");
+            TimeNumber timeNumber = getBoardNumberPricing(34, "Dia", number);
+            createSoldNumber(number, ticket.getTicket(), 34, 100);
+            int money = timeNumber.getTotalNumberAmount() - 100;
+            updateTimeNumber(34, "Dia", number, money);
+            System.out.println("FUERA");
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            try {
+                if(null != connection) {                                        
+                    statement.close();                    
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }             
+    }
+    
+    
 /////////////////////////////////////////////////////////////////////////////////////////
     
     public void createSoldNumber(int number, int ticket,int board, int money){                       

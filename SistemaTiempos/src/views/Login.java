@@ -7,6 +7,7 @@ package views;
 
 import BD.ConnectionBD;
 import Clases.Board;
+import Clases.TimeNumber;
 import java.util.Calendar;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -47,14 +48,15 @@ public class Login extends javax.swing.JFrame {
     
     private void createBoard(boolean isOnNullState) {
         ConnectionBD con= new ConnectionBD();
-        System.out.println("asdf");
+        System.out.println("crear");
         if (isOnNullState) {
             System.out.println("+++");
             con.createBoard("12:30", "19:00", "FENG", 15, 1234567890, "123", currentDate, 20000);   
         }
         else {
+            System.out.println("#$");
             con.createBoard(board.getDayClose(), board.getNightClose(), board.getStore(), board.getStadisticsPer()
-                    , board.getBarCode(), board.getPassword(), currentDate, board.getNumbersPrincing());   
+                    , board.getBarCode(), board.getPassword(), currentDate, board.getNumbersPrincing());  
         }
     }
 
@@ -132,10 +134,10 @@ public class Login extends javax.swing.JFrame {
             createBoard(true);
         }
         else if (!board.getDate().equals(currentDate)) {
-            if (boardQuantity == 120) {
+            /*if (boardQuantity == 120) {
                 System.out.println("DELETE ALL");
                 deleteAll();
-            }
+            }*/
             createBoard(false);
         }
         if (pwd.equals("8888")) {

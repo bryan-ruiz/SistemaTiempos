@@ -52,15 +52,16 @@ public class Selling extends javax.swing.JFrame {
     
     public Selling() {
         initComponents();
-        getBoardDataToInform();               
-    }                    
-
-    private void setbackgroundColorToGreen(JButton buttonParam) {        
+        getBoardDataToInform();  
+    }           
+    
+    private void setbackgroundColorToGreen(JButton buttonParam) {   
+        
         if(checkBoxTimeselected.equals("Dia")){
             buttonParam.setBackground(Color.GREEN);
         }
         else if(checkBoxTimeselected.equals("Noche")){
-            buttonParam.setBackground(Color.BLUE); //CAMBIAR COLOR A UN AZUL MAS CLARO
+            buttonParam.setBackground(new Color(125,135,255)); //CAMBIAR COLOR A UN AZUL MAS CLARO
         }             
     }
     
@@ -167,7 +168,7 @@ public class Selling extends javax.swing.JFrame {
         btn99.setBackground(null);        
     }    
     
-    private void soldNumbersOfTableSetColors(){
+    public void soldNumbersOfTableSetColors(){
         setColorsToNull();
         ConnectionBD con= new ConnectionBD();        
         numbersList= new ArrayList<>();
@@ -686,7 +687,7 @@ public class Selling extends javax.swing.JFrame {
         jTable1.setModel(tableModel);
     }
     
-    private void removeAllItemsFromList() {
+    public void removeAllItemsFromList() {
         tfSelectedNumber.setText("");
         priceAct.setText("");
         lblTotalQuantityNumber.setText("0");
@@ -3121,10 +3122,11 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnScanBarCodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScanBarCodeActionPerformed
         // TODO add your handling code here:
-        ticketCodScanDelete  oClienteCrear = new ticketCodScanDelete ();
+        ticketCodScanDelete oClienteCrear = new ticketCodScanDelete();
         oClienteCrear.setAlwaysOnTop(true);
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);   
+        oClienteCrear.setSelling(this);
     }//GEN-LAST:event_btnScanBarCodeActionPerformed
 
     private void btn100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100ActionPerformed

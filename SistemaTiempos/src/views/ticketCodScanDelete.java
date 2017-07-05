@@ -10,6 +10,7 @@ import Clases.Board;
 import Clases.SoldNumbers;
 import Clases.Ticket;
 import Clases.TicketTime;
+import Clases.TimeNumber;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -30,10 +31,17 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private DefaultListModel moneyList = new DefaultListModel();
     private int idToFindTicket;
     private DefaultTableModel tableModel;
+    private Ticket ticket;
+    private List<SoldNumbers>list;
+    private Selling currentSelling;
     
     public ticketCodScanDelete() {
         initComponents();
-        visibleFalseComponents(false);        
+        visibleFalseComponents(false); 
+    }
+    
+    public void setSelling(Selling selling) {
+        currentSelling = selling;
     }
     
     private void removeAllItemsFromList() {
@@ -79,12 +87,12 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         }
         idToFindTicket= Integer.parseInt(idTicket);                       
         ConnectionBD con= new ConnectionBD();                                
-        Ticket ticket= con.getTicketInformationFind(idToFindTicket);        
+        ticket= con.getTicketInformationFind(idToFindTicket);        
         if(ticket== null){            
             mensaje.setText("El tiquete no es válido");
             return;
         }                
-        List<SoldNumbers>list=con.GetNumberSoldFromTiicket(idTicket);                
+        list=con.GetNumberSoldFromTiicket(idTicket);                
         for (int i = 0; i < list.size(); i++) {
             String[] row = new String[2];
             row[0] = String.valueOf(list.get(i).getNumber());            
@@ -318,12 +326,21 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:        
-        ConnectionBD con= new ConnectionBD();                                
+        ConnectionBD con= new ConnectionBD();
+        Board board = con.getBoardInformation();
+        TicketTime ticketTime = con.getTicketTime(String.valueOf(ticket.getTicket()));
+        for (int i = 0; i < list.size(); i++) {
+            TimeNumber timeNumber = con.getBoardNumberPricing(board.getBoard(),ticketTime.getTime(), list.get(i).getNumber());
+            int total = timeNumber.getTotalNumberAmount() + list.get(i).getMoneySold();
+            con.updateTimeNumber(board.getBoard(), ticketTime.getTime(), list.get(i).getNumber(), total);
+        }
         con.deleteTicket(idToFindTicket);
         setAll();
         visibleFalseComponents(false);
         mensaje.setText("El tiquete ha sido eliminado");
         mensaje.setForeground(Color.green);
+        currentSelling.removeAllItemsFromList();
+        currentSelling.soldNumbersOfTableSetColors();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
