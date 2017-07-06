@@ -1962,6 +1962,7 @@ public class Selling extends javax.swing.JFrame {
         });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(136, 145));
 
         tfSelectedNumber.setFont(new java.awt.Font("Tahoma", 1, 55)); // NOI18N
         tfSelectedNumber.setText("    ");

@@ -15,18 +15,16 @@ public class Board {
     private String nightClose;
     private String store;
     private int stadisticsPer;
-    private int barCode;
     private String password;    
     private String date;
     private int numbersPrincing;
 
-    public Board(int board, String dayClose, String nightClose, String store, int stadisticsPer, int barCode, String password, String date, int numbersPrincing) {
+    public Board(int board, String dayClose, String nightClose, String store, int stadisticsPer, String password, String date, int numbersPrincing) {
         this.board = board;
         this.dayClose = dayClose;
         this.nightClose = nightClose;
         this.store = store;
         this.stadisticsPer = stadisticsPer;
-        this.barCode = barCode;
         this.password = password;
         this.date = date;
         this.numbersPrincing = numbersPrincing;
@@ -78,14 +76,6 @@ public class Board {
 
     public void setStadisticsPer(int stadisticsPer) {
         this.stadisticsPer = stadisticsPer;
-    }
-
-    public int getBarCode() {
-        return barCode;
-    }
-
-    public void setBarCode(int barCode) {
-        this.barCode = barCode;
     }
 
     public String getPassword() {

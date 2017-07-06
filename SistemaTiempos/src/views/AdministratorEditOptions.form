@@ -50,7 +50,6 @@
                                   <Component id="lblCompanyName" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblPercentage" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblPassword" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblCodeBar" alignment="1" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblPriceForNumbers" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -58,7 +57,6 @@
                                   <Component id="tfName" alignment="0" max="32767" attributes="0"/>
                                   <Component id="tfPercentage" alignment="0" max="32767" attributes="0"/>
                                   <Component id="tfPassword" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="tfCodeBar" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
@@ -137,15 +135,10 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="lblCodeBar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="tfCodeBar" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblPriceForNumbers" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="tfPriceForNumber" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="33" max="32767" attributes="0"/>
+              <EmptySpace pref="71" max="32767" attributes="0"/>
               <Component id="btnSave" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -339,13 +332,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value=":"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lblCodeBar">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Codigo de barras:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="tfCodeBar">
     </Component>
     <Component class="javax.swing.JLabel" name="lblPriceForNumbers">
       <Properties>

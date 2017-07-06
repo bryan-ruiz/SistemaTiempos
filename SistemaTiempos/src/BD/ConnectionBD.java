@@ -71,10 +71,10 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 * FROM numerosTiempo where tablero= "
+            resultSet = statement.executeQuery("SELECT TOP 1 tiempo FROM numerosTiempo where tablero= "
                     + "'"+idBoard+"'"+ " order by id desc");
             while(resultSet.next()) {
-                result=resultSet.getString(3);                 
+                result=resultSet.getString(1);                 
             }            
         }
         catch(SQLException sqlex){
@@ -104,7 +104,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            String query="SELECT * from NumerosTiempo where tablero= "+idBoard+" "
+            String query="SELECT id,numero,tiempo,totalPlataNumero,tablero from NumerosTiempo where tablero= "+idBoard+" "
                     + "and tiempo= '"+time+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()) {        
@@ -131,7 +131,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tablero= "+idBoard);
+            resultSet = statement.executeQuery("SELECT id,numero,tiquete,tablero,plataVendido FROM NumerosVendidos where tablero= "+idBoard);
             while(resultSet.next()) {                                                      
                 newElement= new SoldNumbers(resultSet.getInt(1),resultSet.getInt(2),
                         resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5));
@@ -155,12 +155,13 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 * FROM Tablero order by tablero desc");
+            resultSet = statement.executeQuery("SELECT TOP 1 tablero,cierreDia,cierreNoche,comercio,porcentajeEstadistico,"
+                    + "contrasena,fecha,precioNumeros FROM Tablero order by tablero desc");
             while(resultSet.next()) {
                 newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
                         resultSet.getString(3), resultSet.getString(4),
-                        resultSet.getInt(5),resultSet.getInt(6),
-                        resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9)); 
+                        resultSet.getInt(5), resultSet.getString(6), 
+                        resultSet.getString(7), resultSet.getInt(8)); 
             }            
         }
         catch(SQLException sqlex){
@@ -178,12 +179,13 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM Tablero WHERE tablero= "+id);
+            resultSet = statement.executeQuery("SELECT tablero,cierreDia,cierreNoche,comercio,porcentajeEstadistico,"
+                    + "contrasena,fecha,precioNumeros FROM Tablero WHERE tablero= "+id);
             while(resultSet.next()) {
                 newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
                         resultSet.getString(3), resultSet.getString(4),
-                        resultSet.getInt(5),resultSet.getInt(6),
-                        resultSet.getString(7), resultSet.getString(8), resultSet.getInt(9));                
+                        resultSet.getInt(5), resultSet.getString(6), 
+                        resultSet.getString(7), resultSet.getInt(8));                
             }            
         }
         catch(SQLException sqlex){
@@ -201,7 +203,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM NumerosTiempo WHERE tablero= '"+board+
+            resultSet = statement.executeQuery("SELECT id,numero,tiempo,totalPlataNumero,tablero FROM NumerosTiempo WHERE tablero= '"+board+
                     "' AND numero = '"+ number+"' AND tiempo = '" + time+"'");
             while(resultSet.next()) {
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3), resultSet.getInt(4),
@@ -251,7 +253,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM NumerosVendidos where tiquete= "+ticketN);                         
+            resultSet = statement.executeQuery("SELECT id,numero,tiquete,tablero,plataVendido FROM NumerosVendidos where tiquete= "+ticketN);                         
             while(resultSet.next()) {                       
                 newElement= new SoldNumbers(resultSet.getInt(1), resultSet.getInt(2),
                         resultSet.getInt(3), resultSet.getInt(4), resultSet.getInt(5));
@@ -315,9 +317,9 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT * FROM TiempoTiquete WHERE tiquete="+ticket);
+            resultSet = statement.executeQuery("SELECT tiquete,tiempo FROM TiempoTiquete WHERE tiquete="+ticket);
             while(resultSet.next()) {                    
-                newElement= new TicketTime(resultSet.getInt(2),resultSet.getString(1));
+                newElement= new TicketTime(resultSet.getInt(1),resultSet.getString(2));
             }            
         }
         catch(SQLException sqlex){
@@ -334,14 +336,13 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
     
     public void updateBoard(int idBoard, String morningClosingTime, String nightClosingTime, 
-            String companyName, int percentage, int barCode, String password, String date, int pricing){                       
+            String companyName, int percentage, String password, String date, int pricing){                       
         bdConnection();
         try {            
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
             String sql = "UPDATE Tablero SET cierreDia = '"+morningClosingTime+"', cierreNoche = '"+nightClosingTime+
-                    "', comercio = '"+companyName+"', porcentajeEstadistico = '"+percentage+"', codigoBarra = '" + barCode+
-                    "', contrasena = '" + password + "', fecha = '" + date + "', precioNumeros = '" + pricing + "' WHERE tablero = " + idBoard;                        
+                    "', comercio = '"+companyName+"', porcentajeEstadistico = '"+percentage+"', contrasena = '" + password + "', fecha = '" + date + "', precioNumeros = '" + pricing + "' WHERE tablero = " + idBoard;                        
             statement.executeUpdate(sql); 
             Board board = getBoardInformation();
             for (int i = 0; i < 100; i++) {
@@ -391,38 +392,6 @@ public class ConnectionBD {
     } 
     
 /////////////////////////////////////////////////////////////////////////////////////////
-//                          tamaño  
-/////////////////////////////////////////////////////////////////////////////////////////
-    
-    public int countBoardsQuantity(){                       
-        bdConnection();
-        try {            
-            connection = DriverManager.getConnection(dbURL);            
-            statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT COUNT(*) FROM Tablero");
-            while(resultSet.next()) {
-                return 120;//resultSet.getInt(1);
-                //System.out.println(resultSet.getInt(1));
-            }               
-        }
-        catch(SQLException sqlex){
-            sqlex.printStackTrace();
-        }
-        finally {            
-            try {
-                if(null != connection) {                                        
-                    statement.close();                    
-                    connection.close();
-                }
-            }
-            catch (SQLException sqlex) {
-                sqlex.printStackTrace();
-            }
-        }         
-        return 0;
-    }   
-    
-/////////////////////////////////////////////////////////////////////////////////////////
 //                          eliminar  
 /////////////////////////////////////////////////////////////////////////////////////////
     
@@ -454,42 +423,6 @@ public class ConnectionBD {
         }             
     }   
     
-    public void deleteAll(){                       
-        bdConnection();
-        try {            
-            Board board = getBoardInformation();
-            connection = DriverManager.getConnection(dbURL);             
-            statement = connection.createStatement();            
-            String sql = "DELETE * FROM Tiquete";                        
-            statement.executeUpdate(sql);            
-            sql = "DELETE * FROM NumerosVendidos";                        
-            statement.executeUpdate(sql);            
-            sql = "DELETE * FROM TiempoTiquete";                        
-            statement.executeUpdate(sql);    
-            sql = "DELETE * FROM Tablero";                        
-            statement.executeUpdate(sql);
-            sql = "DELETE * FROM NumerosTiempo";  
-            System.out.println("///////////");
-            statement.executeUpdate(sql);
-            System.out.println("elim");
-            createBoard(board.getDayClose(), board.getNightClose(), board.getStore(), board.getStadisticsPer(), 
-                    board.getBarCode(), board.getPassword(), "1/1/1", board.getNumbersPrincing());
-        }
-        catch(SQLException sqlex){
-            sqlex.printStackTrace();
-        }
-        finally {            
-            try {
-                if(null != connection) {                                        
-                    statement.close();                    
-                    connection.close();
-                }
-            }
-            catch (SQLException sqlex) {
-                sqlex.printStackTrace();
-            }
-        }             
-    }
     
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          insertar  
@@ -643,15 +576,15 @@ public class ConnectionBD {
         }             
     }
     
-    public void createBoard(String morningClosing, String nightClose, String companyName, int percentage, int codeBar,
+    public void createBoard(String morningClosing, String nightClose, String companyName, int percentage,
             String password, String date, int numberPricing){                       
         bdConnection();
         try {                          
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
-            String sql = "INSERT INTO Tablero(cierreDia, cierreNoche, comercio, porcentajeEstadistico, codigoBarra, "
+            String sql = "INSERT INTO Tablero(cierreDia, cierreNoche, comercio, porcentajeEstadistico, "
                     + "contrasena, fecha, precioNumeros)"
-                    + "values('"+morningClosing+"','"+nightClose+"','"+companyName+"','"+percentage+"','"+codeBar+"','"
+                    + "values('"+morningClosing+"','"+nightClose+"','"+companyName+"','"+percentage+"','"
                     +password+"','"+date+"','"+numberPricing+"')"; 
             statement.executeUpdate(sql);   
             Board board = getBoardInformation();

@@ -5,6 +5,7 @@
  */
 package Clases;
 
+
 import br.com.adilson.util.Extenso;
 import br.com.adilson.util.PrinterMatrix;
 import java.io.FileInputStream;
@@ -29,44 +30,159 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TicketPrinter {
     public static void imprimirFactura(String idTicket,String store,String time,String date, String hour,
-       int tipo,String barCode,DefaultTableModel tableModel,String totalAmount) throws IOException{
+       int tipo,DefaultTableModel tableModel,String totalAmount) throws IOException{       
        PrinterMatrix printer = new PrinterMatrix();
        Extenso e = new Extenso();
        e.setNumber(101.85);       
-       int cantidad= tableModel.getRowCount()/8;
-       printer.setOutSize(9+cantidad, 80);       
-       String printOpt= "   Tiquete #: " + idTicket+"\n"+
-               "    Tiempo: " + time+"\n"+
-               "    Fecha/Hora: "+date+"  "+hour+"\n";                      
-       printer.printTextWrap(1, 1, 1, 50, "    "+store);
-       printer.printTextWrap(2, 4, 1, 80, printOpt);       
-       printer.printTextWrap(3, 4, 1, 80, "    Numero\t\t\tPlata\n");             
-       int cont= 4;       
-       String soldNunInf="      ";
-       int conta= 0;       
-       for (int i = 0; i < tableModel.getRowCount(); i++){           
-           soldNunInf=soldNunInf+tableModel.getValueAt(i, 0)+"\t\t\t" +tableModel.getValueAt(i, 1)+"\n";
-           conta++;           
-       }       
-       cont= cont+(conta/8)+1;
-       printer.printTextWrap(4,cont , 3, 80, soldNunInf);
-       printer.printTextWrap(cont, cont, 1, 80, "    "+"Total:");
-       printer.printTextWrap(cont, cont, 30, 80, " "+totalAmount);
+       int cantidad= tableModel.getRowCount()/5;
+       if(tipo== -1){
+           printer.setOutSize(12+cantidad, 80);       
+       }
+       else{
+           printer.setOutSize(8+cantidad, 80); 
+       }
        
+       String printOpt= "Tiquete #: " + idTicket+"\n"+
+               "  Tiempo: " + time+"\n";                                         
+       if(tipo == -1){
+           printOpt= printOpt+"  Fecha: "+date+"\n";            
+           printer.printTextWrap(1, 1, 2, 50,store+"\t\tFirma");
+       }
+       else{
+           printOpt= printOpt+"  Fecha/Hora: "+date+"  "+hour+"\n"; 
+           printer.printTextWrap(1, 1, 2, 50,store);
+       }       
+       printer.printTextWrap(2, 4, 2, 80, printOpt);              
+       String soldNunInf="";
+       int cont= 3;                     
+       for(int i = 0; i < tableModel.getRowCount();){                                            
+           for(int j= 0; j<5 ;j++){
+               System.out.println("\n\n\n................PROBANDO.............................\n\n\n");
+               if(i>=tableModel.getRowCount()){
+                   break;
+               }                  
+               soldNunInf=soldNunInf+"Numero "+tableModel.getValueAt(i, 0)+"\t" +tableModel.getValueAt(i, 1)+"\n  ";
+               i++;   
+               System.out.println("--------++---------"+soldNunInf+"--------++---------");
+           }              
+           printer.printTextWrap(cont,cont, 2, 80, soldNunInf);
+           cont++; 
+           soldNunInf="";
+       }       
+       printer.printTextWrap(cont, cont, 2, 80, "Total:"+"   "+totalAmount);              
+       if(tipo!= -1){
+           String conditions=  "   "+"** TIENE 7 DIAS PARA COBRAR"+"\n"+
+                 "      "+"** NO SE ACEPTAN RECLAMOS";              
+           String cond2="   "+"** REVISE ANTES DE PAGAR"+"\n"+               
+                      "      "+"** SIN TIQUETE NO HAY PAGO";  
+           printer.printTextWrap(cont+1, cont+2, 3, 80, conditions);
+           cont++;
+           printer.printTextWrap(cont+1, cont+3, 3, 80, cond2);                  
+       }
+       if(tipo== -1){           
+           String firma="\n    "+"Firma: "+"_______________________\n";
+           cont++;
+           printer.printTextWrap(cont+1, cont+1, 3, 80, firma);       
+       }
+       printer.toFile("impresion.txt");
+       FileInputStream inputStream = null;       
+        try {
+            inputStream = new FileInputStream("impresion.txt");
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        if (inputStream == null) {
+            return;
+        }                        
+        DocFlavor docFormat = DocFlavor.INPUT_STREAM.AUTOSENSE;
+        Doc document = new SimpleDoc(inputStream, docFormat, null);
+        PrintRequestAttributeSet attributeSet = new HashPrintRequestAttributeSet();
+        PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
+        
+        if (defaultPrintService != null) {
+            DocPrintJob printJob = defaultPrintService.createPrintJob();            
+            try {
+                printJob.print(document, attributeSet);
+                if(tipo!= -1){
+                    try{                    
+                        int width = Math.round(MediaSize.ISO.A4.getX(MediaSize.MM));//nuevo
+                        int height = Math.round(MediaSize.ISO.A4.getY(MediaSize.MM));//nuevo                      
+                        attributeSet.add(new MediaPrintableArea((float)0.5, (float)0.5, width, height-270, MediaPrintableArea.MM));//nuevo
+                        attributeSet.add(new Copies(1));                     
+                        printJob = defaultPrintService.createPrintJob();
+                        FileInputStream fileInputStream= new FileInputStream("C:/Users/Joha/Desktop/codBarras.png");//nuevo
+                        Doc doc = new SimpleDoc(fileInputStream, DocFlavor.INPUT_STREAM.PNG, null);//nuevo                    
+                        printJob.print(doc, attributeSet);                                        
+                        fileInputStream.close();                    
+                    }
+                    catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }                                
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            System.err.println("No existen impresoras instaladas");
+        }
+        inputStream.close();                        
+          
+    } /*FUNCIONA BIEN EL COD DE BARRAS*/  
+    
+    
+    /*
+    public static void imprimirFactura(String idTicket,String store,String time,String date, String hour,
+       int tipo,String barCode,DefaultTableModel tableModel,String totalAmount) throws IOException{       
+       PrinterMatrix printer = new PrinterMatrix();
+       Extenso e = new Extenso();
+       e.setNumber(101.85);       
+       int cantidad= tableModel.getRowCount()/5;
+       if(tipo== -1){
+           printer.setOutSize(12+cantidad, 80);       
+       }
+       else{
+           printer.setOutSize(8+cantidad, 80); 
+       }
+       
+       String printOpt= "Tiquete #: " + idTicket+"\n"+
+               "  Tiempo: " + time+"\n"+
+               "  Fecha/Hora: "+date+"  "+hour+"\n";                      
+       if(tipo == -1){
+           printer.printTextWrap(1, 1, 2, 50,store+"\t\tFirma");
+       }
+       else{
+           printer.printTextWrap(1, 1, 2, 50,store);
+       }       
+       printer.printTextWrap(2, 4, 2, 80, printOpt);              
+       String soldNunInf="";
+       int cont= 3;                     
+       for(int i = 0; i < tableModel.getRowCount();){                                            
+           for(int j= 0; j<5 ;j++){                              
+               if(i>=tableModel.getRowCount()){
+                   break;
+               }                  
+               soldNunInf=soldNunInf+"Numero "+tableModel.getValueAt(i, 0)+"\t" +tableModel.getValueAt(i, 1)+"\n  ";
+               i++;               
+           }              
+           printer.printTextWrap(cont,cont, 2, 80, soldNunInf);
+           cont++; 
+           soldNunInf="";
+       }       
+       printer.printTextWrap(cont, cont, 2, 80, "Total:"+"   "+totalAmount);              
        String conditions=  "   "+"** TIENE 7 DIAS PARA COBRAR"+"\n"+
-               "      "+"** NO SE ACEPTAN RECLAMOS";              
+                 "      "+"** NO SE ACEPTAN RECLAMOS";              
        String cond2="   "+"** REVISE ANTES DE PAGAR"+"\n"+               
-               "      "+"** SIN TIQUETE NO HAY PAGO"+"\n\n\n";                             
-       String firma="    "+"Firma: "+"_______________________\n";                           
+                 "      "+"** SIN TIQUETE NO HAY PAGO";  
        printer.printTextWrap(cont+1, cont+2, 3, 80, conditions);
        cont++;
-       printer.printTextWrap(cont+1, cont+3, 3, 80, cond2);
-       cont++;
-       printer.printTextWrap(cont+1, cont+1, 3, 80, firma);
-       
-       
+       printer.printTextWrap(cont+1, cont+3, 3, 80, cond2);                  
+       if(tipo== -1){
+           String firma="\n    "+"Firma: "+"_______________________\n";
+           cont++;
+           printer.printTextWrap(cont+1, cont+1, 3, 80, firma);       
+       }
        printer.toFile("impresion.txt");
-        FileInputStream inputStream = null;       
+       FileInputStream inputStream = null;       
        try {
             inputStream = new FileInputStream("impresion.txt");
         } catch (FileNotFoundException ex) {
@@ -82,25 +198,25 @@ public class TicketPrinter {
         PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
         
         if (defaultPrintService != null) {
-            DocPrintJob printJob = defaultPrintService.createPrintJob();
+            DocPrintJob printJob = defaultPrintService.createPrintJob();            
             try {
                 printJob.print(document, attributeSet);
-                try{
-                    
-                    int width = Math.round(MediaSize.ISO.A4.getX(MediaSize.MM));//nuevo
-                    int height = Math.round(MediaSize.ISO.A4.getY(MediaSize.MM));//nuevo                      
-                    attributeSet.add(new MediaPrintableArea(1, (float)0.01, width-60, height-255, MediaPrintableArea.MM));//nuevo                
-                    attributeSet.add(new Copies(1));                     
-                    printJob = defaultPrintService.createPrintJob();
-                    FileInputStream fileInputStream= new FileInputStream("C:/Users/Joha/Desktop/codigoDeBarras.png");//nuevo
-                    Doc doc = new SimpleDoc(fileInputStream, DocFlavor.INPUT_STREAM.PNG, null);//nuevo                    
-                    printJob.print(doc, attributeSet);                                        
-                    fileInputStream.close();                    
-                }
-                catch(Exception ex) {
-                    ex.printStackTrace();
-                }
-                
+                if(tipo!= -1){
+                    try{                    
+                        int width = Math.round(MediaSize.ISO.A4.getX(MediaSize.MM));//nuevo
+                        int height = Math.round(MediaSize.ISO.A4.getY(MediaSize.MM));//nuevo                      
+                        attributeSet.add(new MediaPrintableArea(1, (float)0.005, width, height-270, MediaPrintableArea.MM));//nuevo
+                        attributeSet.add(new Copies(1));                     
+                        printJob = defaultPrintService.createPrintJob();
+                        FileInputStream fileInputStream= new FileInputStream("C:/Users/Joha/Desktop/codBar1.png");//nuevo
+                        Doc doc = new SimpleDoc(fileInputStream, DocFlavor.INPUT_STREAM.PNG, null);//nuevo                    
+                        printJob.print(doc, attributeSet);                                        
+                        fileInputStream.close();                    
+                    }
+                    catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }                                
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -109,5 +225,6 @@ public class TicketPrinter {
         }
         inputStream.close();                        
           
-    } /*FUNCIONA BIEN EL COD DE BARRAS*/
+    } /*FUNCIONA BIEN EL COD DE BARRAS*/  
+    
 }

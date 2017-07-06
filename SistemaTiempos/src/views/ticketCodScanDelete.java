@@ -9,10 +9,14 @@ import BD.ConnectionBD;
 import Clases.Board;
 import Clases.SoldNumbers;
 import Clases.Ticket;
+import Clases.TicketPrinter;
 import Clases.TicketTime;
 import Clases.TimeNumber;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -33,7 +37,9 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
     private Ticket ticket;
     private List<SoldNumbers>list;
+    private String hour;
     private Selling currentSelling;
+    private String store;
     
     public ticketCodScanDelete() {
         initComponents();
@@ -52,7 +58,6 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     
     public void setAll(){
         mensaje.setForeground(Color.red);
-        barCodeTxt.setText("");
         dateTxt.setText("");                
         ticketIdTxt.setText("");
         timeTxt.setText("");
@@ -64,8 +69,6 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     }
     
     public void visibleFalseComponents(boolean bool){
-        labelBarCode.setVisible(bool);
-        barCodeTxt.setVisible(bool);
         labelDate.setVisible(bool);
         dateTxt.setVisible(bool);    
         labelIdTicket.setVisible(bool);
@@ -103,13 +106,14 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         if(list.size()>0){
             int idBoard= list.get(0).getBoard();
             Board board= con.getBoardInformationFind(idBoard);
-            barCodeTxt.setText(String.valueOf(board.getBarCode()));
+            store=board.getStore();
         }        
         totalTxt.setText(String.valueOf(ticket.getTicketTotalAmount())); 
         TicketTime tiempo= con.getTicketTime(idTicket);
         timeTxt.setText(tiempo.getTime());                      
-        dateTxt.setText(ticket.getDate());                         
+        dateTxt.setText(ticket.getDate());                                 
         ticketIdTxt.setText(idTicket);  
+        hour= ticket.getTimeHour();
         visibleFalseComponents(true);
     }
     /**
@@ -126,12 +130,10 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         findTicketButton = new javax.swing.JButton();
         labelTime = new javax.swing.JLabel();
         labelIdTicket = new javax.swing.JLabel();
-        labelBarCode = new javax.swing.JLabel();
         labelTotal = new javax.swing.JLabel();
         labelDate = new javax.swing.JLabel();
         dateTxt = new javax.swing.JTextField();
         ticketIdTxt = new javax.swing.JTextField();
-        barCodeTxt = new javax.swing.JTextField();
         totalTxt = new javax.swing.JTextField();
         timeTxt = new javax.swing.JTextField();
         printButton = new javax.swing.JButton();
@@ -156,8 +158,6 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
 
         labelIdTicket.setText("Tiquete");
 
-        labelBarCode.setText("Código Barras");
-
         labelTotal.setText("Total");
 
         labelDate.setText("Fecha");
@@ -165,8 +165,6 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         dateTxt.setEditable(false);
 
         ticketIdTxt.setEditable(false);
-
-        barCodeTxt.setEditable(false);
 
         totalTxt.setEditable(false);
 
@@ -253,18 +251,16 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                         .addGap(82, 82, 82)
                         .addComponent(printButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
+                        .addGap(75, 75, 75)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(labelDate)
                             .addComponent(labelTime)
                             .addComponent(labelTotal)
-                            .addComponent(labelBarCode)
                             .addComponent(labelIdTicket))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(dateTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                             .addComponent(timeTxt, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(barCodeTxt, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ticketIdTxt, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(totalTxt, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(layout.createSequentialGroup()
@@ -284,29 +280,25 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                     .addComponent(labelTicket))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                         .addComponent(mensaje)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ticketIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelIdTicket))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(barCodeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelBarCode))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelTotal))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(timeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelTime))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelDate))
-                        .addGap(60, 60, 60)
+                            .addComponent(labelTotal)
+                            .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelTime)
+                            .addComponent(timeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelDate)
+                            .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(86, 86, 86)
                         .addComponent(printButton)
                         .addGap(44, 44, 44))
                     .addGroup(layout.createSequentialGroup()
@@ -345,10 +337,13 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         // TODO add your handling code here:    
-        TicketWindowPrint oClienteCrear = new TicketWindowPrint(idToFindTicket);
-        oClienteCrear.setAlwaysOnTop(true);
-        oClienteCrear.setVisible(true);
-        oClienteCrear.setLocationRelativeTo(null);        
+        TicketPrinter ticketPrinter= new TicketPrinter();
+        try {
+            ticketPrinter.imprimirFactura(ticketIdTxt.getText(),store,timeTxt.getText(),dateTxt.getText(), hour,
+                    idToFindTicket, tableModel, totalTxt.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(TicketWindowPrint.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_printButtonActionPerformed
 
     /**
@@ -387,14 +382,12 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField barCodeTxt;
     private javax.swing.JTextField dateTxt;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton findTicketButton;
     private javax.swing.JTextField idFindTxt;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel labelBarCode;
     private javax.swing.JLabel labelDate;
     private javax.swing.JLabel labelIdTicket;
     private javax.swing.JLabel labelTicket;

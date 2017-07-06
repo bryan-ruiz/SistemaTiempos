@@ -35,13 +35,12 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         String morningClosing = cbMorningHour.getSelectedItem().toString() + ":" +cbMorningMinutes.getSelectedItem().toString();
         String nightClosing = cbNightHour.getSelectedItem().toString() + ":" +cbNightMinutes.getSelectedItem().toString();
         int percentageNumber = Integer.parseInt(tfPercentage.getText());
-        int codeBarNumber = Integer.parseInt(tfCodeBar.getText());
         String companyName = tfName.getText();
         String adminPassword = new String(tfPassword.getPassword());
         int priceForNumber = Integer.parseInt(tfPriceForNumber.getText());
         Calendar cal=Calendar.getInstance(); 
         String currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
-        con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, codeBarNumber, adminPassword, currentDate, priceForNumber);
+        con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, adminPassword, currentDate, priceForNumber);
         JOptionPane.showMessageDialog(null, "Listo");
     }
     
@@ -51,7 +50,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         String morningClosing = board.getDayClose();
         String nightClosing = board.getNightClose();
         String storeName = board.getStore();
-        int boardCodeBar = board.getBarCode();
         int stadisticsPercentage = board.getStadisticsPer();
         int pricing = board.getNumbersPrincing();
         String cdate = board.getDate();
@@ -69,7 +67,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         cbNightMinutes.setSelectedItem(minute);
         tfPercentage.setText(String.valueOf(stadisticsPercentage));
         tfPassword.setText(password);
-        tfCodeBar.setText(String.valueOf(boardCodeBar));
         tfPriceForNumber.setText(String.valueOf(pricing));
     }
 
@@ -81,7 +78,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         lblPercentage.setText(percentage);
         lblPassword.setText(password);
         btnSave.setText(save);
-        lblCodeBar.setText(codeBar);
     }
     
     private void setWindowToSpanish(){
@@ -145,8 +141,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         cbNightHour = new javax.swing.JComboBox<>();
         cbNightMinutes = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        lblCodeBar = new javax.swing.JLabel();
-        tfCodeBar = new javax.swing.JTextField();
         lblPriceForNumbers = new javax.swing.JLabel();
         tfPriceForNumber = new javax.swing.JTextField();
 
@@ -202,8 +196,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
 
         jLabel2.setText(":");
 
-        lblCodeBar.setText("Codigo de barras:");
-
         lblPriceForNumbers.setText("Precio para numeros:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -222,14 +214,12 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                                     .addComponent(lblCompanyName)
                                     .addComponent(lblPercentage)
                                     .addComponent(lblPassword)
-                                    .addComponent(lblCodeBar)
                                     .addComponent(lblPriceForNumbers))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(tfName)
                                     .addComponent(tfPercentage)
                                     .addComponent(tfPassword)
-                                    .addComponent(tfCodeBar)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
@@ -289,13 +279,9 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                     .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCodeBar)
-                    .addComponent(tfCodeBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPriceForNumbers)
                     .addComponent(tfPriceForNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addComponent(btnSave)
                 .addContainerGap())
         );
@@ -364,7 +350,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbSpanish;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel lblCodeBar;
     private javax.swing.JLabel lblCompanyName;
     private javax.swing.JLabel lblMorningClosingTime;
     private javax.swing.JLabel lblNameBoth1;
@@ -373,7 +358,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPercentage;
     private javax.swing.JLabel lblPriceForNumbers;
-    private javax.swing.JTextField tfCodeBar;
     private javax.swing.JTextField tfName;
     private javax.swing.JPasswordField tfPassword;
     private javax.swing.JTextField tfPercentage;
