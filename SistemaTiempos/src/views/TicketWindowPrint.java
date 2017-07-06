@@ -10,9 +10,13 @@ import BD.ConnectionBD;
 import Clases.Board;
 import Clases.SoldNumbers;
 import Clases.Ticket;
+import Clases.TicketPrinter;
 import Clases.TicketTime;
 import Clases.TimeNumber;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import sistematiempos.ChineseLanguage;
@@ -418,6 +422,13 @@ public class TicketWindowPrint extends javax.swing.JFrame {
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         // TODO add your handling code here:
+        TicketPrinter ticketPrinter= new TicketPrinter();
+        try {
+            ticketPrinter.imprimirFactura(ticketTxt.getText(),storeTxt.getText(),timeTxt.getText(),dateTxt.getText(), hourTxt.getText(),
+                    1,barCodeTxt.getText(), tableModel, totalMoneyTxt.getText());
+        } catch (IOException ex) {
+            Logger.getLogger(TicketWindowPrint.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_printButtonActionPerformed
 
     private void checkNightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkNightActionPerformed
