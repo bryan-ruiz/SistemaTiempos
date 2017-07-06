@@ -1877,7 +1877,7 @@ public class Selling extends javax.swing.JFrame {
 
         lblTotal.setText("Total:");
 
-        lblTotalAmount.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTotalAmount.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblTotalAmount.setText("0");
 
         btnRemove.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -1888,7 +1888,7 @@ public class Selling extends javax.swing.JFrame {
             }
         });
 
-        lblTotalQuantityNumber.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblTotalQuantityNumber.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblTotalQuantityNumber.setText("0");
 
         btnSave.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -3287,16 +3287,6 @@ public class Selling extends javax.swing.JFrame {
             getTotalAndShowIT();
             JOptionPane.showMessageDialog(null, "Pago listo. Imprima el tiquete.");
             isTicketPaid = true;
-            /*TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
-            oClienteCrear.setAlwaysOnTop(true);
-            oClienteCrear.setVisible(true);
-            oClienteCrear.setLocationRelativeTo(null);
-            if (language == "spanish") {
-                oClienteCrear.setLanguageToSpanish();
-            }
-            else if (language == "chinese") {
-                oClienteCrear.setLanguageToChinese();
-            }*/
         }
     }//GEN-LAST:event_btnPayActionPerformed
 
@@ -3392,11 +3382,11 @@ public class Selling extends javax.swing.JFrame {
             currentMinute = Integer.parseInt(minute);
         }
         if (currentHour < appHour) {
-            createTicketForPurchase();
+            error = false;
         }
         else if (currentHour == appHour) {
             if (currentMinute < appMinute) {
-                createTicketForPurchase();
+                error = false;
             }
             else {
                 JOptionPane.showMessageDialog(null, "fuera de tiempo");
@@ -3412,19 +3402,12 @@ public class Selling extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "seleccione numero");
         }
         if (error == false) {
+            createTicketForPurchase();
             soldNumbersOfTableSetColors();
             removeAllItemsFromList();
             getTotalAndShowIT();
-            TicketWindowPrint oClienteCrear = new TicketWindowPrint(0);
-            oClienteCrear.setAlwaysOnTop(true);
-            oClienteCrear.setVisible(true);
-            oClienteCrear.setLocationRelativeTo(null);
-            if (language == "spanish") {
-                oClienteCrear.setLanguageToSpanish();
-            }
-            else if (language == "chinese") {
-                oClienteCrear.setLanguageToChinese();
-            }
+            JOptionPane.showMessageDialog(null, "Pago listo. Imprima el tiquete.");
+            isTicketPaid = true;
         }
     }//GEN-LAST:event_btnPayChineseActionPerformed
 
