@@ -13,7 +13,8 @@ public class ChineseLanguage {
     private String passwordError, notNumberError, btnScanCodeBar, btnTotalUniquePrint, btnStadisticsString, lblMorningClosingString,
             lblNightClosingString, lblPeriodString, lblDayString, lblNightString, lblMoneyString, btnSaveString, lblNumbersListString,
             btnRemoveString, lblTotalString, btnPayString, lblNumberMoneyString, btnPrint, lblCompanyName, lblPercentage, lblPassword,
-            startDate, finishDate, search, lblCodeBar, btnReset;
+            startDate, finishDate, search, lblCodeBar, btnReset, lblDay, lblMonth, lblYear, lblTicket, 
+            btnSearch, lblTime, lblDate, btnDelete;
     private static ChineseLanguage instance = null;
     
     private ChineseLanguage() {
@@ -44,6 +45,46 @@ public class ChineseLanguage {
         this.search = "搜索";
         this.lblCodeBar = "条形码:";
         this.btnReset = "重置";
+        this.lblDay = "Diaa";
+        this.lblMonth = "Mess";
+        this.lblYear = "Añoo";
+        this.lblTicket = "Tiquetee";
+        this.btnSearch = "Buscarr";
+        this.lblTime = "Tiempoo";
+        this.lblDate = "Fechaa";
+        this.btnDelete = "Eliminarr";    
+    }
+
+    public String getLblDay() {
+        return lblDay;
+    }
+
+    public String getLblMonth() {
+        return lblMonth;
+    }
+
+    public String getBtnSearch() {
+        return btnSearch;
+    }
+
+    public String getLblTime() {
+        return lblTime;
+    }
+
+    public String getLblDate() {
+        return lblDate;
+    }
+
+    public String getBtnDelete() {
+        return btnDelete;
+    }
+
+    public String getLblTicket() {
+        return lblTicket;
+    }
+
+    public String getLblYear() {
+        return lblYear;
     }
 
     public String getLblNumberMoneyString() {

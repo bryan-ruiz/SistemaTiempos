@@ -21,7 +21,7 @@ public class StadisticsCenter extends javax.swing.JFrame {
     /**
      * Creates new form StadisticsCenter
      */
-    private String start, finish, porcentage, total, search,initialDate,finalDate;
+    private String start, finish, porcentage, total, search,initialDate,finalDate, day, month, year;
     private Board board;    
     private int percentage, totalBetweenDates;
 
@@ -107,6 +107,9 @@ private void getDaysOfComboBox(){
         lblPercentage.setText(porcentage);
         lblTotal.setText(total);
         btnSearch.setText(search);
+        lblDay.setText(day);
+        lblMonth.setText(month);
+        lblYear.setText(year);
     }
     
     public void setLanguageToSpanish() {
@@ -116,6 +119,9 @@ private void getDaysOfComboBox(){
         porcentage = spanishLanguage.getLblPercentage();
         total = spanishLanguage.getLblTotalString();
         search = spanishLanguage.getSearch();
+        day = spanishLanguage.getLblDay();
+        month = spanishLanguage.getLblMonth();
+        year = spanishLanguage.getLblYear();
         setWindowToSelectedLanguage();
     }
     
@@ -126,6 +132,9 @@ private void getDaysOfComboBox(){
         porcentage = chineseLanguage.getLblPercentage();
         total = chineseLanguage.getLblTotalString();
         search = chineseLanguage.getSearch();
+        day = chineseLanguage.getLblDay();
+        month = chineseLanguage.getLblMonth();
+        year = chineseLanguage.getLblYear();
         setWindowToSelectedLanguage();
     }
         
@@ -138,7 +147,7 @@ private void getDaysOfComboBox(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel3 = new javax.swing.JLabel();
+        lblMonth = new javax.swing.JLabel();
         dayBegin = new javax.swing.JComboBox<>();
         lblStart = new javax.swing.JLabel();
         dayEnd = new javax.swing.JComboBox<>();
@@ -151,15 +160,15 @@ private void getDaysOfComboBox(){
         lblPercentage = new javax.swing.JLabel();
         yearEnd = new javax.swing.JComboBox<>();
         btnSearch = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblDay = new javax.swing.JLabel();
+        lblYear = new javax.swing.JLabel();
         menssage = new javax.swing.JLabel();
         tfPercentage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        jLabel3.setText("mes");
+        lblMonth.setText("mes");
 
         lblStart.setText("Dia inicio:");
 
@@ -176,9 +185,9 @@ private void getDaysOfComboBox(){
             }
         });
 
-        jLabel1.setText("día");
+        lblDay.setText("día");
 
-        jLabel2.setText("año");
+        lblYear.setText("año");
 
         menssage.setForeground(new java.awt.Color(204, 0, 0));
 
@@ -220,17 +229,17 @@ private void getDaysOfComboBox(){
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(dayEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(dayBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jLabel1))
+                                .addComponent(lblDay))
                             .addGap(29, 29, 29)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(monthBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(monthEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3))
+                                .addComponent(lblMonth))
                             .addGap(31, 31, 31)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(yearBegin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(yearEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2))))
+                                .addComponent(lblYear))))
                     .addContainerGap(272, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -249,9 +258,9 @@ private void getDaysOfComboBox(){
                 .addGroup(layout.createSequentialGroup()
                     .addGap(56, 56, 56)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel2))
+                        .addComponent(lblMonth)
+                        .addComponent(lblDay)
+                        .addComponent(lblYear))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(lblStart)
@@ -319,13 +328,13 @@ private void getDaysOfComboBox(){
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> dayBegin;
     private javax.swing.JComboBox<String> dayEnd;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblDay;
     private javax.swing.JLabel lblFinish;
+    private javax.swing.JLabel lblMonth;
     private javax.swing.JLabel lblPercentage;
     private javax.swing.JLabel lblStart;
     private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblYear;
     private javax.swing.JLabel menssage;
     private javax.swing.JComboBox<String> monthBegin;
     private javax.swing.JComboBox<String> monthEnd;

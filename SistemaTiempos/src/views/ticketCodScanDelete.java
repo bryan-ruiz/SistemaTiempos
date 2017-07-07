@@ -21,6 +21,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import sistematiempos.ChineseLanguage;
+import sistematiempos.SpanishLanguage;
 
 /**
  *
@@ -39,11 +41,48 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private List<SoldNumbers>list;
     private String hour;
     private Selling currentSelling;
-    private String store;
+    private String store, lblTicket, btnSearch, lblId, lblTotal, lblTime, lblDate, btnPrint, btnDelete;
     
     public ticketCodScanDelete() {
         initComponents();
         visibleFalseComponents(false); 
+    }
+    
+    private void setWindowToSelectedLanguage() {
+        labelTicket.setText(lblTicket);
+        findTicketButton.setText(btnSearch);
+        labelIdTicket.setText(lblId);
+        labelTotal.setText(lblTotal);
+        labelTime.setText(lblTime);
+        labelDate.setText(lblDate);
+        printButton.setText(btnPrint);
+        deleteButton.setText(btnDelete);
+    }
+    
+    public void setLanguageToSpanish() {
+        SpanishLanguage spanishLanguage = SpanishLanguage.getInstance();
+        lblTicket = spanishLanguage.getLblTicket();
+        btnSearch = spanishLanguage.getBtnSearch();
+        lblId = spanishLanguage.getLblTicket();
+        lblTotal = spanishLanguage.getLblTotalString();
+        lblTime = spanishLanguage.getLblTime();
+        lblDate = spanishLanguage.getLblDate();
+        btnPrint = spanishLanguage.getBtnPrint();
+        btnDelete = spanishLanguage.getBtnDelete();
+        setWindowToSelectedLanguage();
+    }
+    
+    public void setLanguageToChinese() {
+        ChineseLanguage chineseLanguage = ChineseLanguage.getInstance();
+        lblTicket = chineseLanguage.getLblTicket();
+        btnSearch = chineseLanguage.getBtnSearch();
+        lblId = chineseLanguage.getLblTicket();
+        lblTotal = chineseLanguage.getLblTotalString();
+        lblTime = chineseLanguage.getLblTime();
+        lblDate = chineseLanguage.getLblDate();
+        btnPrint = chineseLanguage.getBtnPrint();
+        btnDelete = chineseLanguage.getBtnDelete();
+        setWindowToSelectedLanguage();
     }
     
     public void setSelling(Selling selling) {

@@ -53,7 +53,8 @@ public class Selling extends javax.swing.JFrame {
     private String notNumberErrorString, btnScanCodeBarString, btnTotalUniquePrintString, 
             btnStadisticsString, lblMorningClosingString, lblNightClosingString, lblPeriodString, 
             lblDayString, lblNightString, lblMoneyString, btnSaveString, lblNumbersListString,
-            btnRemoveString, lblTotalString, btnPayString, lblNumberMoneyString, language, boardCurrentTime, btnReset;
+            btnRemoveString, lblTotalString, btnPayString, lblNumberMoneyString, language, boardCurrentTime, btnReset,
+            btnPrint;
     private boolean isTicketPaid = false;
     
     public Selling() {
@@ -587,7 +588,7 @@ public class Selling extends javax.swing.JFrame {
         btnPayChinese.setText(btnPayString);
         btnRemoveAll.setText(btnReset);
         btnRemoveAllChinese.setText(btnReset);
-        
+        printButton.setText(btnPrint);
         removeAllItemsFromList();
     }
     
@@ -609,6 +610,7 @@ public class Selling extends javax.swing.JFrame {
         btnPayString = chineseStrings.getBtnPayString();
         lblNumberMoneyString = chineseStrings.getLblNumberMoneyString();
         btnReset = chineseStrings.getBtnReset();
+        btnPrint = chineseStrings.getBtnPrint();
     }
     
     private void setWindowToSpanish(){
@@ -629,6 +631,7 @@ public class Selling extends javax.swing.JFrame {
         btnPayString = spanishStrings.getBtnPayString();
         lblNumberMoneyString = spanishStrings.getLblNumberMoneyString();
         btnReset = spanishStrings.getBtnReset();
+        btnPrint = spanishStrings.getBtnPrint();
     }
     
     public void showSpanishButtons() {
@@ -3146,6 +3149,12 @@ public class Selling extends javax.swing.JFrame {
         oClienteCrear.setVisible(true);
         oClienteCrear.setLocationRelativeTo(null);   
         oClienteCrear.setSelling(this);
+        if (language == "spanish") {
+            oClienteCrear.setLanguageToSpanish();
+        }
+        else if (language == "chinese") {
+            oClienteCrear.setLanguageToChinese();
+        }
     }//GEN-LAST:event_btnScanBarCodeActionPerformed
 
     private void btn100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn100ActionPerformed

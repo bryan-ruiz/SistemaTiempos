@@ -15,7 +15,8 @@ public class SpanishLanguage {
     private String passwordError, notNumberError, btnScanCodeBar, btnTotalUniquePrint, btnStadisticsString, lblMorningClosingString,
             lblNightClosingString, lblPeriodString, lblDayString, lblNightString, lblMoneyString, btnSaveString, lblNumbersListString,
             btnRemoveString, lblTotalString, btnPayString, lblNumberMoneyString, btnPrint, lblCompanyName, lblPercentage, lblPassword,
-            startDate, finishDate, search, lblCodeBar, btnReset;
+            startDate, finishDate, search, lblCodeBar, btnReset, lblDay, lblMonth, lblYear, lblTicket, 
+            btnSearch, lblTime, lblDate, btnDelete;
     private static SpanishLanguage instance = null;
     
     private SpanishLanguage() {
@@ -46,6 +47,14 @@ public class SpanishLanguage {
         this.search = "Buscar"; 
         this.lblCodeBar = "Codigo de barras:"; 
         this.btnReset = "Reajustar";
+        this.lblDay = "Dia";
+        this.lblMonth = "Mes";
+        this.lblYear = "Año";
+        this.lblTicket = "Tiquete";
+        this.btnSearch = "Buscar";
+        this.lblTime = "Tiempo";
+        this.lblDate = "Fecha";
+        this.btnDelete = "Eliminar";        
     }
     
     public static SpanishLanguage getInstance() {
@@ -53,6 +62,38 @@ public class SpanishLanguage {
             instance = new SpanishLanguage();
         }
         return instance;
+    }
+
+    public String getLblDay() {
+        return lblDay;
+    }
+
+    public String getBtnSearch() {
+        return btnSearch;
+    }
+
+    public String getLblTime() {
+        return lblTime;
+    }
+
+    public String getLblDate() {
+        return lblDate;
+    }
+
+    public String getBtnDelete() {
+        return btnDelete;
+    }
+
+    public String getLblTicket() {
+        return lblTicket;
+    }
+
+    public String getLblMonth() {
+        return lblMonth;
+    }
+
+    public String getLblYear() {
+        return lblYear;
     }
 
     public String getBtnReset() {
