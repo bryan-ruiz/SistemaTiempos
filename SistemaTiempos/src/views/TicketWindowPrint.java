@@ -53,7 +53,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     }
 
     private void removeAllItemsFromList() {
-        String[] headers = {"Numeros","Dinero"};
+        String[] headers = {"Numeros","Plata"};
         tableModel = new DefaultTableModel(null, headers);
         jTable1.setModel(tableModel);
     }
