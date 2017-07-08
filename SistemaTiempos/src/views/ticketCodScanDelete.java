@@ -380,7 +380,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         // TODO add your handling code here: 
         Printsupport ps=new Printsupport();
         Object printitem [][]=ps.getTableData(jTable1,ticketIdTxt.getText(),store,timeTxt.getText(),dateTxt.getText(), hour,
-                -1, totalTxt.getText());
+                0, totalTxt.getText());
         ps.setItems(printitem);
         PrinterJob pj = PrinterJob.getPrinterJob();
         pj.setPrintable(new Printsupport.MyPrintable(),ps.getPageFormat(pj));

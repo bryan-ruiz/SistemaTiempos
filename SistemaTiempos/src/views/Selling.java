@@ -65,6 +65,17 @@ public class Selling extends javax.swing.JFrame {
         getBoardDataToInform();  
     }           
     
+    private void setButtonsAvailableOrNot(boolean bool) {
+        btnSave.setEnabled(bool);
+        btnSaveChinese.setEnabled(bool);
+        btnRemove.setEnabled(bool);
+        btnRemoveChinese.setEnabled(bool);
+        btnPay.setEnabled(bool);
+        btnPayChinese.setEnabled(bool);
+        btnRemoveAll.setEnabled(bool);
+        btnRemoveAllChinese.setEnabled(bool);
+    }
+    
     private void setbackgroundColorToGreen(JButton buttonParam) {   
         
         if(checkBoxTimeselected.equals("Dia")){
@@ -3295,8 +3306,7 @@ public class Selling extends javax.swing.JFrame {
         if (error == false) {
             createTicketForPurchase();
             soldNumbersOfTableSetColors();
-            removeAllItemsFromList();
-            getTotalAndShowIT();
+            setButtonsAvailableOrNot(false);
             JOptionPane.showMessageDialog(null, "Pago listo. Imprima el tiquete.");
             isTicketPaid = true;
         }
@@ -3416,8 +3426,7 @@ public class Selling extends javax.swing.JFrame {
         if (error == false) {
             createTicketForPurchase();
             soldNumbersOfTableSetColors();
-            removeAllItemsFromList();
-            getTotalAndShowIT();
+            setButtonsAvailableOrNot(false);
             JOptionPane.showMessageDialog(null, "Pago listo. Imprima el tiquete.");
             isTicketPaid = true;
         }
@@ -3462,6 +3471,9 @@ public class Selling extends javax.swing.JFrame {
             pj.setPrintable(new MyPrintable(),ps.getPageFormat(pj));
             try {
                 pj.print();
+                removeAllItemsFromList();
+                getTotalAndShowIT();
+                setButtonsAvailableOrNot(true);
             }
             catch (PrinterException ex) {
                 ex.printStackTrace();

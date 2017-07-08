@@ -39,8 +39,8 @@ public class Printsupport {
     static String dateG;
     static String hourG;        
     static int actionG;
-    static ImageIcon printImage = new javax.swing.ImageIcon("C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/codigoBarras.png");
-    static ImageIcon printImage2 = new javax.swing.ImageIcon("C:/Users/Bryan/Documents/GitHub/SistemaTiempos/SistemaTiempos/firma.png");
+    static ImageIcon printImage = new javax.swing.ImageIcon("codigoBarras.png");
+    static ImageIcon printImage2 = new javax.swing.ImageIcon("firma.png");
     static String totalG; 
     static JTable itemsTable;
     public static  int total_item_count=0;
