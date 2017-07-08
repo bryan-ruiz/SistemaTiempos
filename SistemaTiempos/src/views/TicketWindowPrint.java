@@ -128,7 +128,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     }
     
     private void listOfNumbers(ConnectionBD con){        
-        totalAmount= 0;        
+        totalAmount= 0;                
         if(selectCheckBox()== false){
             return;
         }
@@ -142,6 +142,12 @@ public class TicketWindowPrint extends javax.swing.JFrame {
             tableModel.addRow(row);            
         }                 
         totalMoneyTxt.setText(String.valueOf(totalAmount));        
+        if(list.size()== 0){
+            printButton.setEnabled(false);
+        }
+        else{
+            printButton.setEnabled(true);
+        }
     }
     
     public void showInformationPrintTotalU(){         
@@ -152,7 +158,8 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         idBoard=String.valueOf(board.getBoard());        
         dateTxt.setText(board.getDate());
         ticketLabel.setText("Tablero");        
-        ticketTxt.setText(idBoard);                        
+        int numero= Integer.parseInt(idBoard)-1;
+        ticketTxt.setText(String.valueOf(numero));                        
         storeTxt.setText(board.getStore());       
         timeTxt.setText("Dia");                
         listOfNumbers(con);
@@ -270,10 +277,6 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,6 +322,10 @@ public class TicketWindowPrint extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(espacioFirma, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(105, 105, 105))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,7 +354,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
                     .addComponent(dateLabel)
                     .addComponent(dateTxt)
                     .addComponent(hourTxt))
-                .addGap(43, 43, 43)
+                .addGap(29, 29, 29)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -375,7 +382,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 47, Short.MAX_VALUE))
+                .addGap(0, 61, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(255, 255, 255)
                 .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -386,7 +393,8 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:                
+        
         Printsupport ps=new Printsupport();
         Object printitem [][]=ps.getTableData(jTable1,ticketTxt.getText(),storeTxt.getText(),timeTxt.getText(),dateTxt.getText(), hourTxt.getText(),
                 -1, totalMoneyTxt.getText());
@@ -398,7 +406,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         }
         catch (PrinterException ex) {
             ex.printStackTrace();
-        }
+        }       
     }//GEN-LAST:event_printButtonActionPerformed
 
     private void checkNightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkNightActionPerformed

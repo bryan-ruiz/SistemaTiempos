@@ -39,8 +39,8 @@ public class Printsupport {
     static String dateG;
     static String hourG;        
     static int actionG;
-    static ImageIcon printImage = new javax.swing.ImageIcon("E:/SISTEMA TIEMPOS PARA CHINOS/codigoBarras.png");
-    static ImageIcon printImage2 = new javax.swing.ImageIcon("E:/SISTEMA TIEMPOS PARA CHINOS/firma.png");
+    static ImageIcon printImage = new javax.swing.ImageIcon("codigoBarras.png");
+    static ImageIcon printImage2 = new javax.swing.ImageIcon("firma.png");
     static String totalG; 
     static JTable itemsTable;
     public static  int total_item_count=0;
@@ -146,13 +146,14 @@ public class Printsupport {
             g2d.translate((int) pageFormat.getImageableX(),(int) pageFormat.getImageableY());                        
             try{	        
                 int y=40;
-                g2d.drawString(storeG, 40,y);  
-                g2d.drawString("Tiquete: "+ idTiketG, 10, y+20);
+                g2d.drawString(storeG, 40,y);                                  
                 g2d.drawString("Tiempo: "+ timeG, 10, y+35);
                 if(actionG!= -1){
+                    g2d.drawString("Tiquete: "+ idTiketG, 10, y+20);
                     g2d.drawString("Fecha: "+ dateG+"   "+hourG, 10, y+50);
                 }
                 else{
+                    g2d.drawString("Tablero: "+ idTiketG, 10, y+20);
                     g2d.drawString("Fecha: "+ dateG, 10, y+50);
                 }
                 int cH = 0;
