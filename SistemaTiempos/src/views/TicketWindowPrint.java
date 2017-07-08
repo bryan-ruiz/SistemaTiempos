@@ -158,7 +158,8 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         idBoard=String.valueOf(board.getBoard());        
         dateTxt.setText(board.getDate());
         ticketLabel.setText("Tablero");        
-        ticketTxt.setText(idBoard);                        
+        int numero= Integer.parseInt(idBoard)-1;
+        ticketTxt.setText(String.valueOf(numero));                        
         storeTxt.setText(board.getStore());       
         timeTxt.setText("Dia");                
         listOfNumbers(con);
@@ -392,8 +393,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        // TODO add your handling code here:
-        
+        // TODO add your handling code here:                
         
         Printsupport ps=new Printsupport();
         Object printitem [][]=ps.getTableData(jTable1,ticketTxt.getText(),storeTxt.getText(),timeTxt.getText(),dateTxt.getText(), hourTxt.getText(),
