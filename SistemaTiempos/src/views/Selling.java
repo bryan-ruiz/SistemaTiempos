@@ -74,6 +74,13 @@ public class Selling extends javax.swing.JFrame {
         btnPayChinese.setEnabled(bool);
         btnRemoveAll.setEnabled(bool);
         btnRemoveAllChinese.setEnabled(bool);
+        cbChinese.setEnabled(bool);
+        cbSpanish.setEnabled(bool);
+        cbNight.setEnabled(bool);
+        cbMorning.setEnabled(bool);
+        btnStadistics.setEnabled(bool);
+        btnTotalPrintImpression.setEnabled(bool);
+        btnScanBarCode.setEnabled(bool);
     }
     
     private void setbackgroundColorToGreen(JButton buttonParam) {   
