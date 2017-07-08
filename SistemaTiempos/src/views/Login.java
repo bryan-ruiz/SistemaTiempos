@@ -42,13 +42,10 @@ public class Login extends javax.swing.JFrame {
     
     private void createBoard(boolean isOnNullState) {
         ConnectionBD con= new ConnectionBD();
-        System.out.println("crear");
         if (isOnNullState) {
-            System.out.println("+++");
             con.createBoard("12:30", "19:00", "FENG", 15, "123", currentDate, 20000);   
         }
         else {
-            System.out.println("#$");
             con.createBoard(board.getDayClose(), board.getNightClose(), board.getStore(), board.getStadisticsPer()
                     , board.getPassword(), currentDate, board.getNumbersPrincing());  
         }

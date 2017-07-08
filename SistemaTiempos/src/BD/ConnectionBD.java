@@ -25,15 +25,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
+
 /**
  *
  * @author Joha
  */
+
 public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;  
-    private String msAccDB = "SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "C:/Users/Bryan/Desktop/Bran-Labs/SistemaTiempos/Aplcacion ejecutable/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -41,9 +43,6 @@ public class ConnectionBD {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
         }
         catch(ClassNotFoundException cnfex) {
- 
-            System.out.println("Problem in loading or "
-                    + "registering MS Access JDBC driver");
             cnfex.printStackTrace();
         }
     }
@@ -445,7 +444,6 @@ public class ConnectionBD {
             createSoldNumber(number, ticket.getTicket(), 34, 100);
             int money = timeNumber.getTotalNumberAmount() - 100;
             updateTimeNumber(34, "Dia", number, money);
-            System.out.println("FUERA");
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();

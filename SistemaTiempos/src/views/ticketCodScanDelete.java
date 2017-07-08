@@ -7,12 +7,14 @@ package views;
 
 import BD.ConnectionBD;
 import Clases.Board;
+import Clases.Printsupport;
 import Clases.SoldNumbers;
 import Clases.Ticket;
-import Clases.TicketPrinter;
 import Clases.TicketTime;
 import Clases.TimeNumber;
 import java.awt.Color;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -375,13 +377,18 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        // TODO add your handling code here:    
-        TicketPrinter ticketPrinter= new TicketPrinter();
+        // TODO add your handling code here: 
+        Printsupport ps=new Printsupport();
+        Object printitem [][]=ps.getTableData(jTable1,ticketIdTxt.getText(),store,timeTxt.getText(),dateTxt.getText(), hour,
+                -1, totalTxt.getText());
+        ps.setItems(printitem);
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setPrintable(new Printsupport.MyPrintable(),ps.getPageFormat(pj));
         try {
-            ticketPrinter.imprimirFactura(ticketIdTxt.getText(),store,timeTxt.getText(),dateTxt.getText(), hour,
-                    idToFindTicket, tableModel, totalTxt.getText());
-        } catch (IOException ex) {
-            Logger.getLogger(TicketWindowPrint.class.getName()).log(Level.SEVERE, null, ex);
+            pj.print();
+        }
+        catch (PrinterException ex) {
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_printButtonActionPerformed
 

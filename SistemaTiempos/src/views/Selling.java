@@ -7,13 +7,16 @@ package views;
 
 import BD.ConnectionBD;
 import Clases.Board;
+import Clases.Printsupport;
+import Clases.Printsupport.MyPrintable;
 import Clases.SoldNumbers;
 import Clases.Ticket;
-import Clases.TicketPrinter;
 import Clases.TimeNumber;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,7 +71,7 @@ public class Selling extends javax.swing.JFrame {
             buttonParam.setBackground(Color.GREEN);
         }
         else if(checkBoxTimeselected.equals("Noche")){
-            buttonParam.setBackground(new Color(125,135,255)); //CAMBIAR COLOR A UN AZUL MAS CLARO
+            buttonParam.setBackground(new Color(106, 115, 237)); //CAMBIAR COLOR A UN AZUL MAS CLARO
         }             
     }
     
@@ -3449,15 +3452,21 @@ public class Selling extends javax.swing.JFrame {
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         // TODO add your handling code here:
         if (isTicketPaid) {
-            TicketPrinter ticketPrinter= new TicketPrinter();
+            ConnectionBD con= new ConnectionBD();
+            Ticket ticket= con.getTicketInformation();
+            Printsupport ps=new Printsupport();
+            Object printitem [][]=ps.getTableData(jTable1,String.valueOf(ticket.getTicket()),board.getStore(),boardCurrentTime,ticket.getDate(), ticket.getTimeHour(),
+                    0, String.valueOf(ticket.getTicketTotalAmount()));
+            ps.setItems(printitem);
+            PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setPrintable(new MyPrintable(),ps.getPageFormat(pj));
             try {
-                ConnectionBD con= new ConnectionBD();  
-                Ticket ticket= con.getTicketInformation();                     
-                ticketPrinter.imprimirFactura(String.valueOf(ticket.getTicket()),board.getStore(),boardCurrentTime,ticket.getDate(), ticket.getTimeHour(),
-                    0, tableModel, String.valueOf(ticket.getTicketTotalAmount()));
-            } catch (IOException ex) {
-                Logger.getLogger(TicketWindowPrint.class.getName()).log(Level.SEVERE, null, ex);
+                pj.print();
             }
+            catch (PrinterException ex) {
+                ex.printStackTrace();
+            }
+            isTicketPaid = false;
         }
         else {
             JOptionPane.showMessageDialog(null, "Primero pague un tiquete.");
