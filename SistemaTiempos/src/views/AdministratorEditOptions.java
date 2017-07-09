@@ -127,7 +127,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         SpanishLanguage spanishLanguage = SpanishLanguage.getInstance();
         notValidValue="Error no se permite letras en valores solo numericos";
         outOfRangeNumber="Error número fuera de rangos";
-        whiteSpace= "Error no se puede falta dato para poder cambiar valor de numero";
+        whiteSpace= "Error falta dato para poder cambiar valor de numero";
         okMensage="Se ha realizado correctamente";
         priceForManyNumbers= "Precio de todos los numeros";
         priceForOneNumber= "Precio para un número específico";
