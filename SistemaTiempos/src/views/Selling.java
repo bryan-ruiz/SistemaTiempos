@@ -3321,6 +3321,9 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
+        lastSave= tfSelectedNumber.getText();
+        System.out.println("\n\n\nImprimirndo remove: last save "+ lastSave);        
+        System.out.println("Imprimirndo remove: valor a borrar "+ tableModel.getValueAt(jTable1.getSelectedRow(),0));
         if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
@@ -3333,8 +3336,9 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        try {
+       try {            
             lastSave= tfSelectedNumber.getText();
+            System.out.println("IMPRIMIENDO guardar lastsave: "+lastSave);
             int money = Integer.parseInt(priceAct.getText());
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             if(priceTotl < money){                

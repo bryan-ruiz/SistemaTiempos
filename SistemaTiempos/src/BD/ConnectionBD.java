@@ -35,7 +35,7 @@ public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;  
-    private String msAccDB = "W:/SystemConfigFiles/SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -63,6 +63,27 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          TABLERO
 /////////////////////////////////////////////////////////////////////////////////////////
+    
+     public int gteBoardOfTicket(String ticket){
+        int result= 0;
+        bdConnection();        
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            resultSet = statement.executeQuery("SELECT tablero "
+                    + "FROM NumerosVendidos where tiquete= "+"'"+ticket+"'");
+            while(resultSet.next()) {
+                result=resultSet.getInt(1);                 
+            }            
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            closeConnectionGet();    
+        }                
+        return result;
+    }
     
     public String getTimeFromBoard(String idBoard){
         String result= "";
@@ -103,13 +124,14 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            String query="SELECT id,numero,tiempo,totalPlataNumero,tablero,totalPlataActual from NumerosTiempo where tablero= "+idBoard+" "
+            String query="SELECT id,numero,tiempo,totalPlataNumero,tablero,totalPlata from NumerosTiempo where tablero= "+idBoard+" "
                     + "and tiempo= '"+time+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()) {        
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6)); 
-                if(newElement.getTotalActualAmount() != newElement.getTotalNumberAmount()){
+                if(newElement.getTotal() != newElement.getTotalNumberAmount()){
+                    System.out.print(list);
                     list.add(newElement);
                 }                
             }                        
@@ -202,7 +224,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT id,numero,tiempo,totalPlataNumero,tablero,totalPlataActual FROM NumerosTiempo WHERE tablero= '"+board+
+            resultSet = statement.executeQuery("SELECT id,numero,tiempo,totalPlataNumero,tablero,totalPlata FROM NumerosTiempo WHERE tablero= '"+board+
                     "' AND numero = '"+ number+"' AND tiempo = '" + time+"'");
             while(resultSet.next()) {
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3), resultSet.getInt(4),
@@ -345,8 +367,8 @@ public class ConnectionBD {
             statement.executeUpdate(sql); 
             Board board = getBoardInformation();
             for (int i = 0; i < 100; i++) {
-                updateTimeNumber(board.getBoard(), "Dia", i, pricing);
-                updateTimeNumber(board.getBoard(), "Noche", i, pricing);
+                updateTimeNumberAdmin(board.getBoard(), "Dia", i, pricing);
+                updateTimeNumberAdmin(board.getBoard(), "Noche", i, pricing);
             }
         }
         catch(SQLException sqlex){
@@ -370,7 +392,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            String sql = "UPDATE NumerosTiempo SET totalPlataActual= '" + money + "' WHERE tablero= '"+idBoard+
+            String sql = "UPDATE NumerosTiempo SET totalPlataNumero= '" + money + "' WHERE tablero= '"+idBoard+
                     "' AND numero = '"+ number+"' AND tiempo = '" + time+"'";  
             statement.executeUpdate(sql);   
         }
@@ -390,6 +412,31 @@ public class ConnectionBD {
         }            
     } 
     
+    
+    public void updateTimeNumberAdmin(int idBoard, String time, int number, int money){ 
+        bdConnection();
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            String sql = "UPDATE NumerosTiempo SET totalPlataNumero= '" + money +"', totalPlata= '"+money+"' WHERE tablero= '"+idBoard+
+                    "' AND numero = '"+ number+"' AND tiempo = '" + time+"'";  
+            statement.executeUpdate(sql);   
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            try {
+                if(null != connection) {                                        
+                    statement.close();                    
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }            
+    }
 /////////////////////////////////////////////////////////////////////////////////////////
 //                          eliminar  
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -424,44 +471,7 @@ public class ConnectionBD {
     
     
 /////////////////////////////////////////////////////////////////////////////////////////
-//                          insertar  
-    
-    
-    
-    public void createTicketQAMorining(int number){                       
-        bdConnection();
-        try {                          
-            connection = DriverManager.getConnection(dbURL);
-            statement = connection.createStatement();                        
-            Calendar cal=Calendar.getInstance(); 
-            String currentDate =(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.DATE)+"/"+cal.get(cal.YEAR);
-            String sql = "INSERT INTO Tiquete(fechaTiquete, totalPlata,hora)"
-                + "values(#"+currentDate+"#,'100','00:00')";
-            statement.executeUpdate(sql);
-            Ticket ticket = getTicketInformation();
-            createTicketTime(ticket.getTicket(), "Dia");
-            TimeNumber timeNumber = getBoardNumberPricing(34, "Dia", number);
-            createSoldNumber(number, ticket.getTicket(), 34, 100);
-            int money = timeNumber.getTotalNumberAmount() - 100;
-            updateTimeNumber(34, "Dia", number, money);
-        }
-        catch(SQLException sqlex){
-            sqlex.printStackTrace();
-        }
-        finally {            
-            try {
-                if(null != connection) {                                        
-                    statement.close();                    
-                    connection.close();
-                }
-            }
-            catch (SQLException sqlex) {
-                sqlex.printStackTrace();
-            }
-        }             
-    }
-    
-    
+//                          insertar     
 /////////////////////////////////////////////////////////////////////////////////////////
     
     public void createSoldNumber(int number, int ticket,int board, int money){                       
@@ -529,7 +539,7 @@ public class ConnectionBD {
             for (int i = 0; i < numbersList.size(); i++) {
                 TimeNumber timeNumber = getBoardNumberPricing(board, time, numbersList.get(i));
                 createSoldNumber(numbersList.get(i), ticket.getTicket(), board, numbersMoneyList.get(i));
-                int money = timeNumber.getTotalActualAmount()- numbersMoneyList.get(i);
+                int money = timeNumber.getTotalNumberAmount()- numbersMoneyList.get(i);
                 updateTimeNumber(board, time, numbersList.get(i), money);
             }
         }
@@ -549,13 +559,13 @@ public class ConnectionBD {
         }             
     }
     
-    public void createTimeNumbers(int number, String time, int totalMoney, int board){                       
+    public void createTimeNumbers(int number, String time, int totalMoney, int board, int total){                       
         bdConnection();
         try {                          
             connection = DriverManager.getConnection(dbURL);             
             statement = connection.createStatement();            
-            String sql = "INSERT INTO NumerosTiempo(numero, tiempo, totalPlataNumero, tablero)"
-                    + "values('"+number+"','"+time+"','"+totalMoney+"','"+board+"')";   
+            String sql = "INSERT INTO NumerosTiempo(numero, tiempo, totalPlataNumero, tablero, totalPlata)"
+                    + "values('"+number+"','"+time+"','"+totalMoney+"','"+board+"','"+total+"')";   
             statement.executeUpdate(sql);   
         }
         catch(SQLException sqlex){
@@ -586,9 +596,23 @@ public class ConnectionBD {
                     +password+"','"+date+"','"+numberPricing+"')"; 
             statement.executeUpdate(sql);   
             Board board = getBoardInformation();
-            for (int i = 0; i < 100; i++) {
-                createTimeNumbers(i, "Dia", numberPricing, board.getBoard());
-                createTimeNumbers(i, "Noche", numberPricing, board.getBoard());
+            TimeNumber timeNumber = null;
+            for (int i = 0; i < 100; i++) {  
+                timeNumber = getBoardNumberPricing(board.getBoard(), "Dia", i);
+                if (timeNumber == null) {
+                    createTimeNumbers(i, "Dia", numberPricing, board.getBoard(), numberPricing);
+                    createTimeNumbers(i, "Noche", numberPricing, board.getBoard(), numberPricing);
+                }
+                else {
+                    if (timeNumber.getTotal() != board.getNumbersPrincing()) {
+                    createTimeNumbers(i, "Dia", numberPricing, board.getBoard(), timeNumber.getTotal());
+                    createTimeNumbers(i, "Noche", numberPricing, board.getBoard(), timeNumber.getTotal());
+                    }
+                    else {
+                        createTimeNumbers(i, "Dia", numberPricing, board.getBoard(), numberPricing);
+                        createTimeNumbers(i, "Noche", numberPricing, board.getBoard(), numberPricing);
+                    }
+                }
             }
         }
         catch(SQLException sqlex){

@@ -62,8 +62,8 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
             int number= Integer.valueOf(tfNumberTxt.getText());
             int money= Integer.valueOf(tfMoneyTxt.getText());
             if(number>= 0 && number <= 99){
-                con.updateTimeNumber(board.getBoard(), "Dia", number, money);
-                con.updateTimeNumber(board.getBoard(), "Noche", number, money);            
+                con.updateTimeNumberAdmin(board.getBoard(), "Dia", number, money);
+                con.updateTimeNumberAdmin(board.getBoard(), "Noche", number, money);            
             }   
             else{
                 JOptionPane.showMessageDialog(null, "Error número no existe");

@@ -15,15 +15,15 @@ public class TimeNumber {
     private String tiempo;
     private int totalNumberAmount;
     private int board;
-    private int totalActualAmount;
+    private int total;
 
-    public TimeNumber(int id, int numero, String tiempo, int totalNumberAmount, int board, int totalActualAmount) {
+    public TimeNumber(int id, int numero, String tiempo, int totalNumberAmount, int board, int total) {
         this.id = id;
         this.numero = numero;
         this.tiempo = tiempo;
         this.totalNumberAmount = totalNumberAmount;
         this.board = board;
-        this.totalActualAmount = totalActualAmount;
+        this.total = total;
     }
 
     public int getId() {
@@ -66,13 +66,12 @@ public class TimeNumber {
         this.board = board;
     }
 
-    public int getTotalActualAmount() {
-        return totalActualAmount;
+    public int getTotal() {
+        return total;
     }
 
-    public void setTotalActualAmount(int totalActualAmount) {
-        this.totalActualAmount = totalActualAmount;
+    public void setTotal(int total) {
+        this.total = total;
     }
-
     
 }

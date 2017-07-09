@@ -359,13 +359,13 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:        
-        ConnectionBD con= new ConnectionBD();
-        Board board = con.getBoardInformation();
+        ConnectionBD con= new ConnectionBD(); 
+        int board= con.gteBoardOfTicket(ticketIdTxt.getText());
         TicketTime ticketTime = con.getTicketTime(String.valueOf(ticket.getTicket()));
         for (int i = 0; i < list.size(); i++) {
-            TimeNumber timeNumber = con.getBoardNumberPricing(board.getBoard(),ticketTime.getTime(), list.get(i).getNumber());
+            TimeNumber timeNumber = con.getBoardNumberPricing(board,ticketTime.getTime(), list.get(i).getNumber());
             int total = timeNumber.getTotalNumberAmount() + list.get(i).getMoneySold();
-            con.updateTimeNumber(board.getBoard(), ticketTime.getTime(), list.get(i).getNumber(), total);
+            con.updateTimeNumber(board, ticketTime.getTime(), list.get(i).getNumber(), total);
         }
         con.deleteTicket(idToFindTicket);
         setAll();
