@@ -94,7 +94,7 @@ public class ConnectionBD {
             }
         }
         return false;
-    }
+    }    
     
     public List<TimeNumber>getSoldBoardNumbersDependingOnTime(String idBoard, String time, int pricing){        
         bdConnection();
@@ -229,7 +229,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();                        
-            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata,hora FROM Tiquete "
+            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'yyyy-mm-dd'),totalPlata,hora FROM Tiquete "
             + "where fechaTiquete BETWEEN #"+startDate+"# AND #"+finalDate+"#");    
             while(resultSet.next()) {                      
                 newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),resultSet.getString(4));
@@ -276,7 +276,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT TOP 1 tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata,hora FROM Tiquete order by tiquete desc");
+            resultSet = statement.executeQuery("SELECT TOP 1 tiquete,format(fechaTiquete,'yyyy-mm-dd'),totalPlata,hora FROM Tiquete order by tiquete desc");
             while(resultSet.next()) {                  
                 newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),resultSet.getString(4));
             }            
@@ -296,7 +296,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'dd/mm/yyyy'),totalPlata,hora FROM Tiquete WHERE tiquete="+id);
+            resultSet = statement.executeQuery("SELECT tiquete,format(fechaTiquete,'yyyy-mm-dd'),totalPlata,hora FROM Tiquete WHERE tiquete="+id);
             while(resultSet.next()) {                
                 newElement= new Ticket(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),resultSet.getString(4));                        
             }            
@@ -365,7 +365,7 @@ public class ConnectionBD {
         }             
     }   
     
-    public void updateTimeNumber(int idBoard, String time, int number, int money){                       
+    public void updateTimeNumber(int idBoard, String time, int number, int money){ 
         bdConnection();
         try {                                    
             connection = DriverManager.getConnection(dbURL);            

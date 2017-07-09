@@ -44,7 +44,7 @@ public class Printsupport {
     static String totalG; 
     static JTable itemsTable;
     public static  int total_item_count=0;
-    public static final String DATE_FORMAT_NOW = "HH:mm:ss a";
+    public static final String DATE_FORMAT_NOW = "yyyy-MM-dd  HH:mm:ss";
     public  static String title[] = new String[] {"",""};
 	
     public static void setItems(Object[][] printitem){
@@ -154,7 +154,7 @@ public class Printsupport {
                 }
                 else{
                     g2d.drawString("Tablero: "+ idTiketG, 10, y+20);
-                    g2d.drawString("Fecha: "+ dateG+"   "+now(), 10, y+50);
+                    g2d.drawString("Fecha: "+ now(), 10, y+50);
                 }
                 int cH = 0;
                 TableModel mod = itemsTable.getModel();
@@ -206,9 +206,11 @@ public class Printsupport {
                     if(actionG != -1){                                                        
                         g2d.drawImage(printImage.getImage(), 10, (cH+(600+rowsDown))-hammer, null);
                     }                            
-                    else{                                
-                        rowsDown-= 200;
-                        g2d.drawImage(printImage2.getImage(), 10, (cH+(600+rowsDown))-hammer, null);
+                    else{ 
+                        if(mod.getRowCount() > 50){
+                            rowsDown-= 200;
+                            g2d.drawImage(printImage2.getImage(), 10, (cH+(600+rowsDown))-hammer, null);
+                        }                        
                     }                                                        
                     return Printable.PAGE_EXISTS;
                 }
