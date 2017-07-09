@@ -109,7 +109,7 @@ public class ConnectionBD {
             while(resultSet.next()) {        
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
                         resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6)); 
-                if(newElement.getTotalNumberAmount() != pricing){
+                if(newElement.getTotalActualAmount() != newElement.getTotalNumberAmount()){
                     list.add(newElement);
                 }                
             }                        
