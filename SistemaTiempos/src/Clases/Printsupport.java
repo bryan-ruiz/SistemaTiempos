@@ -154,7 +154,7 @@ public class Printsupport {
                 }
                 else{
                     g2d.drawString("Tablero: "+ idTiketG, 10, y+20);
-                    g2d.drawString("Fecha: "+ dateG, 10, y+50);
+                    g2d.drawString("Fecha: "+ dateG+"   "+now(), 10, y+50);
                 }
                 int cH = 0;
                 TableModel mod = itemsTable.getModel();
