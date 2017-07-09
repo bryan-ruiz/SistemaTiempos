@@ -3321,9 +3321,7 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
-        lastSave= tfSelectedNumber.getText();
-        System.out.println("\n\n\nImprimirndo remove: last save "+ lastSave);        
-        System.out.println("Imprimirndo remove: valor a borrar "+ tableModel.getValueAt(jTable1.getSelectedRow(),0));
+        lastSave= tfSelectedNumber.getText();        
         if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
@@ -3363,7 +3361,7 @@ public class Selling extends javax.swing.JFrame {
             int money = Integer.parseInt(priceAct.getText());
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             if(priceTotl < money){                
-                JOptionPane.showMessageDialog(null,"ERROR el monto supera al establecido"); //Error por numero inferior..
+                JOptionPane.showMessageDialog(null,"误差量超过设定"); //Error por numero inferior..
                 return;
             }            
             priceTotl= priceTotl-money;            
@@ -3379,6 +3377,7 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnRemoveChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveChineseActionPerformed
         // TODO add your handling code here:
+        lastSave= tfSelectedNumber.getText();
         if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));

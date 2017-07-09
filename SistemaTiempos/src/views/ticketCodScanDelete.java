@@ -41,7 +41,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
     private Ticket ticket;
     private List<SoldNumbers>list;
-    private String hour;
+    private String hour, mensageAddData,menssageNotFoundTicket,menssageOk;
     private Selling currentSelling;
     private String store, lblTicket, btnSearch, lblId, lblTotal, lblTime, lblDate, btnPrint, btnDelete;
     
@@ -69,8 +69,11 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         lblTotal = spanishLanguage.getLblTotalString();
         lblTime = spanishLanguage.getLblTime();
         lblDate = spanishLanguage.getLblDate();
-        btnPrint = spanishLanguage.getBtnPrint();
+        btnPrint = spanishLanguage.getBtnPrint();        
         btnDelete = spanishLanguage.getBtnDelete();
+        mensageAddData= "Se debe de ingresar un dato";
+        menssageNotFoundTicket="El tiquete no es válido";
+        menssageOk= "El tiquete ha sido eliminado";
         setWindowToSelectedLanguage();
     }
     
@@ -84,6 +87,9 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         lblDate = chineseLanguage.getLblDate();
         btnPrint = chineseLanguage.getBtnPrint();
         btnDelete = chineseLanguage.getBtnDelete();
+        mensageAddData= "您必须输入数据";
+        menssageNotFoundTicket="该票无效";
+        menssageOk= "票务移除";
         setWindowToSelectedLanguage();
     }
     
@@ -126,14 +132,14 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     public void findIdTicket(){
         String idTicket= idFindTxt.getText();
         if(idTicket.equals("")){
-            mensaje.setText("Se debe de ingresar un dato");
+            mensaje.setText(mensageAddData);
             return;            
         }
         idToFindTicket= Integer.parseInt(idTicket);                       
         ConnectionBD con= new ConnectionBD();                                
         ticket= con.getTicketInformationFind(idToFindTicket);        
         if(ticket== null){            
-            mensaje.setText("El tiquete no es válido");
+            mensaje.setText(menssageNotFoundTicket);
             return;
         }                
         list=con.GetNumberSoldFromTiicket(idTicket);                
@@ -370,7 +376,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         con.deleteTicket(idToFindTicket);
         setAll();
         visibleFalseComponents(false);
-        mensaje.setText("El tiquete ha sido eliminado");
+        mensaje.setText(menssageOk);
         mensaje.setForeground(Color.green);
         currentSelling.removeAllItemsFromList();
         currentSelling.soldNumbersOfTableSetColors();

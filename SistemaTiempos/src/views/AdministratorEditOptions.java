@@ -24,6 +24,8 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
      */
     private String save,newBoard,password,percentage, night, morning, name, codeBar, number, money, moneyTitle;
     private Board board;
+    private String priceForManyNumbers,priceForOneNumber,numberLabel,moneyLabel,notValidValue,outOfRangeNumber, whiteSpace,okMensage;
+    
     public AdministratorEditOptions() {
         initComponents();
         getBoardDataToInform();
@@ -44,7 +46,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         String morningClosing = cbMorningHour.getSelectedItem().toString() + ":" +cbMorningMinutes.getSelectedItem().toString();
         String nightClosing = cbNightHour.getSelectedItem().toString() + ":" +cbNightMinutes.getSelectedItem().toString();
         if(isNumeric(tfPercentage.getText())== false || isNumeric(tfPriceForNumber.getText())== false){                
-            JOptionPane.showMessageDialog(null, "Error no se permite letras en valores solo numericos");
+            JOptionPane.showMessageDialog(null, notValidValue);
             return;
         }   
         int percentageNumber = Integer.parseInt(tfPercentage.getText());
@@ -56,7 +58,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, adminPassword, currentDate, priceForNumber);
         if(!tfNumberTxt.getText().isEmpty() && !tfMoneyTxt.getText().isEmpty()){            
             if(isNumeric(tfNumberTxt.getText())== false || isNumeric(tfMoneyTxt.getText())== false){
-                JOptionPane.showMessageDialog(null, "Error no se permite letras en valores numericos");
+                JOptionPane.showMessageDialog(null, notValidValue);
                 return;
             }   
             int number= Integer.valueOf(tfNumberTxt.getText());
@@ -66,15 +68,15 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                 con.updateTimeNumberAdmin(board.getBoard(), "Noche", number, money);            
             }   
             else{
-                JOptionPane.showMessageDialog(null, "Error número no existe");
+                JOptionPane.showMessageDialog(null,outOfRangeNumber );
                 return;
             }
         }
         else if(!tfNumberTxt.getText().isEmpty() || !tfMoneyTxt.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null, "Error no se puede realizar cambio de plata a número");
+            JOptionPane.showMessageDialog(null,whiteSpace);
             return;
         }
-        JOptionPane.showMessageDialog(null, "Listo");
+        JOptionPane.showMessageDialog(null, okMensage);
     }
     
     private void getBoardDataToInform() {
@@ -103,8 +105,13 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         tfPriceForNumber.setText(String.valueOf(pricing));
     }
 
+
     
     private void setAllToSelectedLanguage() {
+        lblPriceForNumbers.setText(priceForManyNumbers);
+        lbPriceForOneNumber.setText(priceForOneNumber);
+        lbNumber.setText(numberLabel);
+        lblMoney.setText(moneyLabel);        
         lblCompanyName.setText(name);
         lblMorningClosingTime.setText(morning);
         lblNightClosingTime.setText(night);
@@ -118,6 +125,15 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     
     private void setWindowToSpanish(){
         SpanishLanguage spanishLanguage = SpanishLanguage.getInstance();
+        notValidValue="Error no se permite letras en valores solo numericos";
+        outOfRangeNumber="Error número fuera de rangos";
+        whiteSpace= "Error no se puede falta dato para poder cambiar valor de numero";
+        okMensage="Se ha realizado correctamente";
+        priceForManyNumbers= "Precio de todos los numeros";
+        priceForOneNumber= "Precio para un número específico";
+        numberLabel= "Numero";
+        moneyLabel= "Plata";
+        
         save = spanishLanguage.getBtnSaveString();
         password = spanishLanguage.getLblPassword();
         percentage = spanishLanguage.getLblPercentage();
@@ -132,6 +148,16 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     
     private void setWindowToChinese(){
         ChineseLanguage chineseLanguage = ChineseLanguage.getInstance();
+        priceForManyNumbers= "所有价格数据";
+        priceForOneNumber= "钱一数";
+        numberLabel= "数";
+        moneyLabel= "银";
+        
+        notValidValue="无数值错误";
+        outOfRangeNumber="错误编号超出范围";
+        whiteSpace= "错误信息丢失";
+        okMensage="这是成功的";
+        
         save = chineseLanguage.getBtnSaveString();
         password = chineseLanguage.getLblPassword();
         percentage = chineseLanguage.getLblPercentage();
@@ -260,6 +286,10 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnSave)
+                                .addGap(51, 51, 51))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblMorningClosingTime)
@@ -271,7 +301,12 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                                     .addComponent(lbPriceForOneNumber))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(tfName, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lbNumber)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lblMoney)
+                                        .addGap(77, 77, 77))
+                                    .addComponent(tfName, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
                                     .addComponent(tfPercentage)
                                     .addComponent(tfPassword)
                                     .addComponent(tfPriceForNumber)
@@ -293,23 +328,13 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(tfNumberTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(tfMoneyTxt))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnSave)
-                                .addGap(51, 51, 51)))
+                                        .addComponent(tfMoneyTxt)))))
                         .addGap(22, 22, 22))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cbSpanish)
                         .addGap(18, 18, 18)
                         .addComponent(cbChinese)
                         .addGap(0, 0, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbNumber)
-                .addGap(56, 56, 56)
-                .addComponent(lblMoney)
-                .addGap(66, 66, 66))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
