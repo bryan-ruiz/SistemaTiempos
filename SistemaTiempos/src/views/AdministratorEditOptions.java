@@ -22,7 +22,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     /**
      * Creates new form AdministratorEditOptions
      */
-    private String save,newBoard,password,percentage, night, morning, name, codeBar;
+    private String save,newBoard,password,percentage, night, morning, name, codeBar, number, money, moneyTitle;
     private Board board;
     public AdministratorEditOptions() {
         initComponents();
@@ -53,6 +53,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         int priceForNumber = Integer.parseInt(tfPriceForNumber.getText());
         Calendar cal=Calendar.getInstance(); 
         String currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
+        con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, adminPassword, currentDate, priceForNumber);
         if(!tfNumberTxt.getText().isEmpty() && !tfMoneyTxt.getText().isEmpty()){            
             if(isNumeric(tfNumberTxt.getText())== false || isNumeric(tfMoneyTxt.getText())== false){
                 JOptionPane.showMessageDialog(null, "Error no se permite letras en valores numericos");
@@ -73,7 +74,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error no se puede realizar cambio de plata a número");
             return;
         }
-        con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, adminPassword, currentDate, priceForNumber);
         JOptionPane.showMessageDialog(null, "Listo");
     }
     
@@ -111,6 +111,9 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         lblPercentage.setText(percentage);
         lblPassword.setText(password);
         btnSave.setText(save);
+        lbNumber.setText(number);
+        lbPriceForOneNumber.setText(moneyTitle);
+        lblMoney.setText(money);
     }
     
     private void setWindowToSpanish(){
@@ -122,6 +125,9 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         morning = spanishLanguage.getLblMorningClosingString();
         name = spanishLanguage.getLblCompanyName();
         codeBar = spanishLanguage.getLblCodeBar();
+        number = spanishLanguage.getLblNumber();
+        moneyTitle = spanishLanguage.getLblMoneyTitle();
+        money = spanishLanguage.getLblMoney();
     }
     
     private void setWindowToChinese(){
@@ -133,6 +139,9 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         morning = chineseLanguage.getLblMorningClosingString();
         name = chineseLanguage.getLblCompanyName();
         codeBar = chineseLanguage.getLblCodeBar();
+        number = chineseLanguage.getLblNumber();
+        moneyTitle = chineseLanguage.getLblMoneyTitle();
+        money = chineseLanguage.getLblMoney();
     }
     
     private void setLanguageToSpanish() {
@@ -180,7 +189,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         tfNumberTxt = new javax.swing.JTextField();
         tfMoneyTxt = new javax.swing.JTextField();
         lbNumber = new javax.swing.JLabel();
-        lbMoney = new javax.swing.JLabel();
+        lblMoney = new javax.swing.JLabel();
 
         lblNameBoth1.setText("天");
 
@@ -208,7 +217,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         });
 
         bgLanguage.add(cbChinese);
-        cbChinese.setText("中國");
+        cbChinese.setText("国");
         cbChinese.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbChineseActionPerformed(evt);
@@ -240,7 +249,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
 
         lbNumber.setText("Numero");
 
-        lbMoney.setText("Plata");
+        lblMoney.setText("Plata");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -299,7 +308,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbNumber)
                 .addGap(56, 56, 56)
-                .addComponent(lbMoney)
+                .addComponent(lblMoney)
                 .addGap(66, 66, 66))
         );
         layout.setVerticalGroup(
@@ -340,7 +349,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbNumber)
-                    .addComponent(lbMoney))
+                    .addComponent(lblMoney))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPriceForOneNumber)
@@ -415,10 +424,10 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbSpanish;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel lbMoney;
     private javax.swing.JLabel lbNumber;
     private javax.swing.JLabel lbPriceForOneNumber;
     private javax.swing.JLabel lblCompanyName;
+    private javax.swing.JLabel lblMoney;
     private javax.swing.JLabel lblMorningClosingTime;
     private javax.swing.JLabel lblNameBoth1;
     private javax.swing.JLabel lblNameBoth2;

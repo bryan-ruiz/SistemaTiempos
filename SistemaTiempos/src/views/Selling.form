@@ -1973,7 +1973,7 @@
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="bgLanguage"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="&#x4e2d;&#x56fd;"/>
+        <Property name="text" type="java.lang.String" value="&#x56fd;"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbChineseActionPerformed"/>

@@ -35,7 +35,7 @@ public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;  
-    private String msAccDB = "SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "W:/SystemConfigFiles/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -103,12 +103,12 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            String query="SELECT id,numero,tiempo,totalPlataNumero,tablero from NumerosTiempo where tablero= "+idBoard+" "
+            String query="SELECT id,numero,tiempo,totalPlataNumero,tablero,totalPlataActual from NumerosTiempo where tablero= "+idBoard+" "
                     + "and tiempo= '"+time+"'";
             resultSet = statement.executeQuery(query);
             while(resultSet.next()) {        
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),
-                        resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5)); 
+                        resultSet.getString(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6)); 
                 if(newElement.getTotalNumberAmount() != pricing){
                     list.add(newElement);
                 }                
@@ -202,11 +202,11 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            resultSet = statement.executeQuery("SELECT id,numero,tiempo,totalPlataNumero,tablero FROM NumerosTiempo WHERE tablero= '"+board+
+            resultSet = statement.executeQuery("SELECT id,numero,tiempo,totalPlataNumero,tablero,totalPlataActual FROM NumerosTiempo WHERE tablero= '"+board+
                     "' AND numero = '"+ number+"' AND tiempo = '" + time+"'");
             while(resultSet.next()) {
                 newElement= new TimeNumber(resultSet.getInt(1),resultSet.getInt(2),resultSet.getString(3), resultSet.getInt(4),
-                        resultSet.getInt(5));                
+                        resultSet.getInt(5),resultSet.getInt(6));                
             }            
         }
         catch(SQLException sqlex){

@@ -16,12 +16,12 @@ public class SpanishLanguage {
             lblNightClosingString, lblPeriodString, lblDayString, lblNightString, lblMoneyString, btnSaveString, lblNumbersListString,
             btnRemoveString, lblTotalString, btnPayString, lblNumberMoneyString, btnPrint, lblCompanyName, lblPercentage, lblPassword,
             startDate, finishDate, search, lblCodeBar, btnReset, lblDay, lblMonth, lblYear, lblTicket, 
-            btnSearch, lblTime, lblDate, btnDelete;
+            btnSearch, lblTime, lblDate, btnDelete, lblNumber, lblMoney, lblMoneyTitle;
     private static SpanishLanguage instance = null;
     
     private SpanishLanguage() {
         this.passwordError = "Contraseña no valida."; 
-        this.notNumberError = "No utilice simbolos."; 
+        this.notNumberError = "Solo numeros en plata."; 
         this.btnScanCodeBar = "Escanear código de barras"; 
         this.btnTotalUniquePrint = "Impresion total único";
         this.btnStadisticsString = "Estadísticas";
@@ -54,7 +54,10 @@ public class SpanishLanguage {
         this.btnSearch = "Buscar";
         this.lblTime = "Tiempo";
         this.lblDate = "Fecha";
-        this.btnDelete = "Eliminar";        
+        this.btnDelete = "Eliminar";       
+        this.lblNumber = "Numero";
+        this.lblMoney = "Plata";
+        this.lblMoneyTitle = "Precio para numero";
     }
     
     public static SpanishLanguage getInstance() {
@@ -62,6 +65,18 @@ public class SpanishLanguage {
             instance = new SpanishLanguage();
         }
         return instance;
+    }
+
+    public String getLblNumber() {
+        return lblNumber;
+    }
+
+    public String getLblMoney() {
+        return lblMoney;
+    }
+
+    public String getLblMoneyTitle() {
+        return lblMoneyTitle;
     }
 
     public String getLblDay() {

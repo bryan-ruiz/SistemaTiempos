@@ -1884,7 +1884,7 @@ public class Selling extends javax.swing.JFrame {
         });
 
         bgLanguage.add(cbChinese);
-        cbChinese.setText("中国");
+        cbChinese.setText("国");
         cbChinese.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbChineseActionPerformed(evt);
