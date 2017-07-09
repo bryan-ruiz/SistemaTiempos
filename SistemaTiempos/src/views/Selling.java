@@ -3265,7 +3265,7 @@ public class Selling extends javax.swing.JFrame {
     }//GEN-LAST:event_cbChineseActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
-        // TODO add your handling code here:
+        
         // TODO add your handling code here:
         Calendar cal = Calendar.getInstance(); 
         String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));

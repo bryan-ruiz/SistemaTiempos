@@ -370,7 +370,7 @@ public class ConnectionBD {
         try {                                    
             connection = DriverManager.getConnection(dbURL);            
             statement = connection.createStatement();            
-            String sql = "UPDATE NumerosTiempo SET totalPlataNumero = '" + money + "' WHERE tablero= '"+idBoard+
+            String sql = "UPDATE NumerosTiempo SET totalPlataActual= '" + money + "' WHERE tablero= '"+idBoard+
                     "' AND numero = '"+ number+"' AND tiempo = '" + time+"'";  
             statement.executeUpdate(sql);   
         }
@@ -529,7 +529,7 @@ public class ConnectionBD {
             for (int i = 0; i < numbersList.size(); i++) {
                 TimeNumber timeNumber = getBoardNumberPricing(board, time, numbersList.get(i));
                 createSoldNumber(numbersList.get(i), ticket.getTicket(), board, numbersMoneyList.get(i));
-                int money = timeNumber.getTotalNumberAmount() - numbersMoneyList.get(i);
+                int money = timeNumber.getTotalActualAmount()- numbersMoneyList.get(i);
                 updateTimeNumber(board, time, numbersList.get(i), money);
             }
         }
