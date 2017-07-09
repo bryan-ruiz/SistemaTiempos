@@ -56,7 +56,12 @@ public class TicketWindowPrint extends javax.swing.JFrame {
 
     private void removeAllItemsFromList() {
         String[] headers = {"Numeros","Plata"};
-        tableModel = new DefaultTableModel(null, headers);
+        tableModel = new DefaultTableModel(null, headers){
+            @Override
+            public boolean isCellEditable (int fila, int columna) {
+                return false;
+            }
+        };
         jTable1.setModel(tableModel);
     }
     

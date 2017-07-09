@@ -28,6 +28,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import sistematiempos.ChineseLanguage;
 import sistematiempos.SpanishLanguage;
@@ -67,13 +68,9 @@ public class Selling extends javax.swing.JFrame {
     
     private void setButtonsAvailableOrNot(boolean bool) {
         btnSave.setEnabled(bool);
-        btnSaveChinese.setEnabled(bool);
-        btnRemove.setEnabled(bool);
-        btnRemoveChinese.setEnabled(bool);
+        btnSaveChinese.setEnabled(bool);        
         btnPay.setEnabled(bool);
-        btnPayChinese.setEnabled(bool);
-        btnRemoveAll.setEnabled(bool);
-        btnRemoveAllChinese.setEnabled(bool);
+        btnPayChinese.setEnabled(bool);        
         cbChinese.setEnabled(bool);
         cbSpanish.setEnabled(bool);
         cbNight.setEnabled(bool);
@@ -81,6 +78,7 @@ public class Selling extends javax.swing.JFrame {
         btnStadistics.setEnabled(bool);
         btnTotalPrintImpression.setEnabled(bool);
         btnScanBarCode.setEnabled(bool);
+        setEnableOrNotButtons(false);
     }
     
     private void setbackgroundColorToGreen(JButton buttonParam) {   
@@ -509,6 +507,7 @@ public class Selling extends javax.swing.JFrame {
         }        
     }
         
+    
     public boolean selectCheckBox(){
         if(cbMorning.isSelected() ){            
             checkBoxTimeselected= "Dia";
@@ -532,6 +531,13 @@ public class Selling extends javax.swing.JFrame {
         }
     }
     
+    private void setEnableOrNotButtons(boolean bool){
+        btnRemove.setEnabled(bool);
+        btnRemove.setEnabled(bool);
+        btnRemoveAll.setEnabled(bool);
+        btnRemoveAllChinese.setEnabled(bool);
+    }
+    
     private void getBoardDataToInform() {
         ConnectionBD con= new ConnectionBD();
         board = con.getBoardInformation();
@@ -542,6 +548,7 @@ public class Selling extends javax.swing.JFrame {
         tfNightClosingTime.setText(nightClosing);
         idBoard= String.valueOf(board.getBoard());
         pricing = board.getNumbersPrincing();
+        setEnableOrNotButtons(false);
         setCurrentTime();
         soldNumbersOfTableSetColors();
     }
@@ -715,15 +722,25 @@ public class Selling extends javax.swing.JFrame {
         int position = jTable1.getSelectedRow();
         tableModel.removeRow(position);
         jTable1.setModel(tableModel);
+        
+        if(tableModel.getRowCount() == 0){
+            setEnableOrNotButtons(false);
+        }
     }
     
     public void removeAllItemsFromList() {
+        setEnableOrNotButtons(false);
         tfSelectedNumber.setText("");
         priceAct.setText("");
         lblTotalQuantityNumber.setText("0");
         lblTotalAmount.setText("0");
         String[] headers = {lblNumbersListString,lblMoneyString};
-        tableModel = new DefaultTableModel(null, headers);
+        tableModel = new DefaultTableModel(null, headers){
+            @Override
+            public boolean isCellEditable (int fila, int columna) {
+                return false;
+            }
+        };        
         jTable1.setModel(tableModel);
     }
     
@@ -3253,6 +3270,7 @@ public class Selling extends javax.swing.JFrame {
     private void cbSpanishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSpanishActionPerformed
         // TODO add your handling code here:
         showSpanishButtons();
+        setEnableOrNotButtons(false);
         hideChineseButtons();
         setLanguageToSpanish();
     }//GEN-LAST:event_cbSpanishActionPerformed
@@ -3260,6 +3278,7 @@ public class Selling extends javax.swing.JFrame {
     private void cbChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbChineseActionPerformed
         // TODO add your handling code here:
         showChineseButtons();
+        setEnableOrNotButtons(false);
         hideSpanishButtons();
         setLanguageToChinese();
     }//GEN-LAST:event_cbChineseActionPerformed
@@ -3322,21 +3341,24 @@ public class Selling extends javax.swing.JFrame {
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         // TODO add your handling code here:
         lastSave= tfSelectedNumber.getText();        
-        if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
-            int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
-            int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
-            priceTotl= priceTotl+total;            
-            lblTotalQuantityNumber.setText(String.valueOf(priceTotl));                        
-        }
-        removeItemFromList();
-        getTotalAndShowIT();
+        try{
+            if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
+                int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
+                int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
+                priceTotl= priceTotl+total;            
+                lblTotalQuantityNumber.setText(String.valueOf(priceTotl));                        
+            }
+            removeItemFromList();        
+            getTotalAndShowIT();
+        }catch(Exception e){
+            return;
+        }        
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
        try {            
-            lastSave= tfSelectedNumber.getText();
-            System.out.println("IMPRIMIENDO guardar lastsave: "+lastSave);
+            lastSave= tfSelectedNumber.getText();            
             int money = Integer.parseInt(priceAct.getText());
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             if(priceTotl < money){                
@@ -3347,7 +3369,7 @@ public class Selling extends javax.swing.JFrame {
             lblTotalQuantityNumber.setText(String.valueOf(priceTotl));
             setPriceToNumber(money);
             getTotalAndShowIT();
-            
+            setEnableOrNotButtons(true);
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3444,27 +3466,28 @@ public class Selling extends javax.swing.JFrame {
 
     private void cbMorningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMorningActionPerformed
         // TODO add your handling code here:        
-        setCurrentTime();
+        setCurrentTime();        
         removeAllItemsFromList();        
         soldNumbersOfTableSetColors();
     }//GEN-LAST:event_cbMorningActionPerformed
 
     private void cbNightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbNightActionPerformed
         // TODO add your handling code here:
-        setCurrentTime();
+        setCurrentTime();        
         removeAllItemsFromList();
         soldNumbersOfTableSetColors();
     }//GEN-LAST:event_cbNightActionPerformed
 
     private void btnRemoveAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAllActionPerformed
         // TODO add your handling code here:
-        removeAllItemsFromList();
+        removeAllItemsFromList();        
         getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveAllActionPerformed
 
     private void btnRemoveAllChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAllChineseActionPerformed
         // TODO add your handling code here:
         removeAllItemsFromList();
+        
         getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveAllChineseActionPerformed
 

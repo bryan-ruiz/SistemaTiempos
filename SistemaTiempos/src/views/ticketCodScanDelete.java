@@ -15,13 +15,8 @@ import Clases.TimeNumber;
 import java.awt.Color;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sistematiempos.ChineseLanguage;
 import sistematiempos.SpanishLanguage;
@@ -99,7 +94,12 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     
     private void removeAllItemsFromList() {
         String[] headers = {"Numeros","Plata"};
-        tableModel = new DefaultTableModel(null, headers);
+        tableModel = new DefaultTableModel(null, headers){
+            @Override
+            public boolean isCellEditable (int fila, int columna) {
+                return false;
+            }
+        };
         jTable1.setModel(tableModel);
     }
     
