@@ -44,7 +44,7 @@ public class Printsupport {
     static String totalG; 
     static JTable itemsTable;
     public static  int total_item_count=0;
-    public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss a";
+    public static final String DATE_FORMAT_NOW = "HH:mm:ss a";
     public  static String title[] = new String[] {"",""};
 	
     public static void setItems(Object[][] printitem){
@@ -203,9 +203,8 @@ public class Printsupport {
                         rowsDown += 130;
                     }
                     g2d.drawImage(printImage2.getImage(), 10, 10, null);
-                    if(actionG != -1){                                
-                        g2d.drawImage(printImage2.getImage(), 10, (cH+(600+rowsDown))-hammer, null);
-                        g2d.drawImage(printImage.getImage(), 10, (cH+(700+rowsDown))-hammer, null);
+                    if(actionG != -1){                                                        
+                        g2d.drawImage(printImage.getImage(), 10, (cH+(600+rowsDown))-hammer, null);
                     }                            
                     else{                                
                         rowsDown-= 200;
