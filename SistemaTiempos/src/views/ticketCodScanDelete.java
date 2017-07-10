@@ -17,8 +17,12 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import sistematiempos.ChineseLanguage;
 import sistematiempos.SpanishLanguage;
@@ -38,13 +42,14 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
     private Ticket ticket;
     private List<SoldNumbers>list;
-    private String hour, mensageAddData,menssageNotFoundTicket,menssageOk;
+    private String hour, mensageAddData,menssageNotFoundTicket,menssageOk,menssageCantBuyNumber;
     private Selling currentSelling;
-    private String store, lblTicket, btnSearch, lblId, lblTotal, lblTime, lblDate, btnPrint, btnDelete;
+    private String store, lblTicket, btnSearch, lblId, lblTotal, lblTime, lblDate, btnPrint, btnDelete,dayHour;
     
     public ticketCodScanDelete() {
         initComponents();
         visibleFalseComponents(false); 
+        jPanel1.setVisible(false);
     }
     
     @Override
@@ -78,6 +83,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         mensageAddData= "Se debe de ingresar un dato";
         menssageNotFoundTicket="El tiquete no es válido";
         menssageOk= "El tiquete ha sido eliminado";
+        menssageCantBuyNumber= "Error no se puede comprar numero";
         setWindowToSelectedLanguage();
     }
     
@@ -119,6 +125,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         timeTxt.setText("");
         totalTxt.setText("");        
         mensaje.setText("");
+        jPanel1.setVisible(false);
         numbersList= new DefaultListModel();
         moneyList= new DefaultListModel();
         removeAllItemsFromList();
@@ -126,6 +133,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     
     public void visibleFalseComponents(boolean bool){
         labelDate.setVisible(bool);
+        butonBuy.setVisible(bool);
         dateTxt.setVisible(bool);    
         labelIdTicket.setVisible(bool);
         ticketIdTxt.setVisible(bool);
@@ -167,7 +175,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         totalTxt.setText(String.valueOf(ticket.getTicketTotalAmount())); 
         TicketTime tiempo= con.getTicketTime(idTicket);
         timeTxt.setText(tiempo.getTime());                      
-        dateTxt.setText(ticket.getDate());                                 
+        dateTxt.setText(ticket.getDate()+"   "+ticket.getTimeHour()); 
         ticketIdTxt.setText(idTicket);  
         hour= ticket.getTimeHour();
         visibleFalseComponents(true);
@@ -181,6 +189,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         idFindTxt = new javax.swing.JTextField();
         labelTicket = new javax.swing.JLabel();
         findTicketButton = new javax.swing.JButton();
@@ -197,6 +206,11 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        butonBuy = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        radButtonDay = new javax.swing.JRadioButton();
+        radButtonNigth = new javax.swing.JRadioButton();
+        buyTicketNowButton = new javax.swing.JButton();
         mensaje = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -272,11 +286,11 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             .addGroup(panelLayout.createSequentialGroup()
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLayout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelLayout.createSequentialGroup()
                         .addGap(93, 93, 93)
-                        .addComponent(deleteButton)))
+                        .addComponent(deleteButton))
+                    .addGroup(panelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
@@ -288,7 +302,51 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                 .addComponent(deleteButton))
         );
 
-        mensaje.setForeground(new java.awt.Color(255, 0, 0));
+        butonBuy.setText("Comprar");
+        butonBuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                butonBuyActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(radButtonDay);
+        radButtonDay.setText("Dia");
+
+        buttonGroup1.add(radButtonNigth);
+        radButtonNigth.setText("Noche");
+
+        buyTicketNowButton.setText("Realizar Compra");
+        buyTicketNowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyTicketNowButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radButtonDay)
+                    .addComponent(radButtonNigth)
+                    .addComponent(buyTicketNowButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(radButtonDay)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radButtonNigth)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(buyTicketNowButton)
+                .addContainerGap())
+        );
+
+        mensaje.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -301,67 +359,79 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                 .addComponent(idFindTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(findTicketButton)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addComponent(printButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(labelDate)
-                            .addComponent(labelTime)
-                            .addComponent(labelTotal)
-                            .addComponent(labelIdTicket))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(75, 75, 75)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(labelTime)
+                                    .addComponent(labelTotal)
+                                    .addComponent(labelIdTicket)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(labelDate))
+                                    .addComponent(printButton))))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(dateTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                            .addComponent(timeTxt, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ticketIdTxt, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(totalTxt, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(timeTxt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                                .addComponent(ticketIdTxt, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(totalTxt, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(dateTxt, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(butonBuy)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
+                        .addContainerGap()
                         .addComponent(mensaje)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ticketIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelIdTicket))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTotal)
+                    .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelTime)
+                    .addComponent(timeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelDate)
+                    .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(printButton)
+                        .addComponent(butonBuy))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(findTicketButton)
                     .addComponent(idFindTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTicket))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                        .addComponent(mensaje)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ticketIdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelIdTicket))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelTotal)
-                            .addComponent(totalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelTime)
-                            .addComponent(timeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(labelDate)
-                            .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(86, 86, 86)
-                        .addComponent(printButton)
-                        .addGap(44, 44, 44))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(mensaje)
+                    .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -387,7 +457,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         setAll();
         visibleFalseComponents(false);
         mensaje.setText(menssageOk);
-        mensaje.setForeground(Color.green);
+        mensaje.setForeground(Color.blue);
         currentSelling.removeAllItemsFromList();
         currentSelling.soldNumbersOfTableSetColors();
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -407,6 +477,117 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             ex.printStackTrace();
         }
     }//GEN-LAST:event_printButtonActionPerformed
+
+    private List<Integer>moneyTable,numberTable;
+    private int hourTicket, minuts, seconds, pricing;
+    private void butonBuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_butonBuyActionPerformed
+        // TODO add your handling code here:
+        jPanel1.setVisible(true);
+    }//GEN-LAST:event_butonBuyActionPerformed
+
+    
+    private boolean verifyHour(int currentHour, int appHour,int currentMinute,int appMinute){
+        boolean error;
+        if (currentHour < appHour) {
+            error = false;
+        }
+        else if (currentHour == appHour) {
+            if (currentMinute < appMinute) {
+                error = false;
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "fuera de tiempo");
+                error = true;
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "fuera de tiempo");
+            error = true;
+        }
+        return error;
+    }
+    
+    
+    
+    private void buyTicketNowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyTicketNowButtonActionPerformed
+        // TODO add your handling code here:
+        ConnectionBD con= new ConnectionBD(); 
+        Board board= con.getBoardInformation();
+        String time= "";
+        
+        Calendar cal = Calendar.getInstance(); 
+        String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
+        String minute = String.valueOf(cal.get(cal.MINUTE));
+        String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE); 
+        boolean isAtTime;
+        
+        if(radButtonDay.isSelected()){
+            String morningSplitHour[] = board.getDayClose().split(":");
+            int appHour = Integer.parseInt(morningSplitHour[0]);
+            int currentHour = Integer.parseInt(hour);
+            int appMinute = Integer.parseInt(morningSplitHour[1]);
+            int currentMinute = Integer.parseInt(minute);
+            time= "Dia";            
+            isAtTime=verifyHour(currentHour, appHour,currentMinute,appMinute);
+            System.out.println(isAtTime);
+        }
+        else if(radButtonNigth.isSelected()){
+            String morningSplitHour[] = board.getNightClose().split(":");
+            int appHour = Integer.parseInt(morningSplitHour[0]);
+            int currentHour = Integer.parseInt(hour);
+            int appMinute = Integer.parseInt(morningSplitHour[1]);
+            int currentMinute = Integer.parseInt(minute);
+            time= "Noche";            
+            isAtTime=verifyHour(currentHour, appHour,currentMinute,appMinute);
+            System.out.println(isAtTime);
+        }
+        else{
+            mensaje.setForeground(Color.red);
+            mensaje.setText("Seleccione el tiempo");
+            return;
+        }
+        
+        if(isAtTime != false){
+            return;
+        }
+        
+        int moneyForThisRow;
+        int numberForThisRow;
+        TimeNumber number;
+        moneyTable = new ArrayList<>();
+        numberTable = new ArrayList<>();
+        
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            moneyForThisRow= Integer.parseInt((String) tableModel.getValueAt(i, 1));            
+            numberForThisRow = Integer.parseInt((String) tableModel.getValueAt(i, 0));            
+            number= con.getBoardNumberPricing(board.getBoard(), time, numberForThisRow);            
+            if(number.getTotalNumberAmount() >= moneyForThisRow){
+                moneyTable.add(moneyForThisRow);
+                numberTable.add(numberForThisRow);                
+            }
+            else{
+                mensaje.setForeground(Color.red);
+                mensaje.setText(menssageCantBuyNumber+ numberForThisRow);
+                return;
+            }
+        }         
+        String currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
+        int totalValue = Integer.parseInt(totalTxt.getText());
+        Calendar calendario = new GregorianCalendar();
+        hourTicket =calendario.get(Calendar.HOUR_OF_DAY);
+        minuts = calendario.get(Calendar.MINUTE);
+        seconds = calendario.get(Calendar.SECOND);
+        dayHour= hour+": "+minuts+": "+seconds; 
+        con.createTicket(totalValue, time, numberTable, moneyTable, board.getBoard(),dayHour);
+        currentSelling.removeAllItemsFromList();
+        currentSelling.soldNumbersOfTableSetColors();
+        jPanel1.setVisible(false);
+        butonBuy.setVisible(false);
+        deleteButton.setVisible(false);
+        findTicketButton.setVisible(false);
+        mensaje.setForeground(Color.blue);
+        mensaje.setText("Imprima el tiquete");        
+    }//GEN-LAST:event_buyTicketNowButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -444,10 +625,14 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton butonBuy;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton buyTicketNowButton;
     private javax.swing.JTextField dateTxt;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton findTicketButton;
     private javax.swing.JTextField idFindTxt;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelDate;
@@ -458,6 +643,8 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private javax.swing.JLabel mensaje;
     private javax.swing.JPanel panel;
     private javax.swing.JButton printButton;
+    private javax.swing.JRadioButton radButtonDay;
+    private javax.swing.JRadioButton radButtonNigth;
     private javax.swing.JTextField ticketIdTxt;
     private javax.swing.JTextField timeTxt;
     private javax.swing.JTextField totalTxt;

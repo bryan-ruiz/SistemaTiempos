@@ -604,6 +604,7 @@ public class Selling extends javax.swing.JFrame {
         seconds = calendario.get(Calendar.SECOND);
         dayHour= hour+": "+minuts+": "+seconds;        
         con.createTicket(totalValue, boardCurrentTime, numberTable, moneyTable, board.getBoard(),dayHour);
+        
     }
     
     private void setAllToSelectedLanguage() {
@@ -741,7 +742,7 @@ public class Selling extends javax.swing.JFrame {
     public void removeAllItemsFromList() {
         setEnableOrNotButtons(false);
         tfSelectedNumber.setText("");
-        priceAct.setText("");
+        //priceAct.setText("");
         lblTotalQuantityNumber.setText("0");
         lblTotalAmount.setText("0");
         String[] headers = {lblNumbersListString,lblMoneyString};
