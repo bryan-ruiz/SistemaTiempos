@@ -8,6 +8,8 @@ package views;
 import BD.ConnectionBD;
 import Clases.Board;
 import Clases.Ticket;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.List;
 import sistematiempos.ChineseLanguage;
 import sistematiempos.SpanishLanguage;
@@ -45,7 +47,14 @@ private void getDaysOfComboBox(){
             yearEnd.addItem(String.valueOf(i));
         }
     }
-    
+
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+        return retValue;
+    }
+
     private boolean getFinalAndInitialDates(){
         if(Integer.parseInt(monthBegin.getSelectedItem().toString())== 2 &&
             Integer.parseInt(dayBegin.getSelectedItem().toString()) > 28 ||
@@ -166,6 +175,7 @@ private void getDaysOfComboBox(){
         tfPercentage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(getIconImage());
         setResizable(false);
 
         lblMonth.setText("mes");

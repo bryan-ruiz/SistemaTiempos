@@ -13,6 +13,8 @@ import Clases.SoldNumbers;
 import Clases.Ticket;
 import Clases.TicketTime;
 import Clases.TimeNumber;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.IOException;
@@ -52,6 +54,13 @@ public class TicketWindowPrint extends javax.swing.JFrame {
             actionSelected= action;
             showInformationPay(action);
         }
+    }
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+        return retValue;
     }
 
     private void removeAllItemsFromList() {
@@ -201,6 +210,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
         hourTxt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(getIconImage());
         setResizable(false);
 
         printButton.setText("Imprimir");

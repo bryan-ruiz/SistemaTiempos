@@ -8,7 +8,10 @@ package views;
 import BD.ConnectionBD;
 import Clases.Board;
 import Clases.TimeNumber;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.Calendar;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import sistematiempos.SpanishLanguage;
@@ -30,7 +33,14 @@ public class Login extends javax.swing.JFrame {
     
     public Login() {
         initComponents();
-        //++deleteAll();
+        
+    }
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+        return retValue;
     }
     
     private void getBoardPassword() {
@@ -65,6 +75,7 @@ public class Login extends javax.swing.JFrame {
         btnAccess = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         setResizable(false);
 
         etPassword.addActionListener(new java.awt.event.ActionListener() {

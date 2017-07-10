@@ -35,7 +35,7 @@ public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;  
-    private String msAccDB = "SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -357,7 +357,7 @@ public class ConnectionBD {
 /////////////////////////////////////////////////////////////////////////////////////////
     
     public void updateBoard(int idBoard, String morningClosingTime, String nightClosingTime, 
-            String companyName, int percentage, String password, String date, int pricing){                       
+            String companyName, int percentage, String password, String date, int pricing, boolean justOne){                       
         bdConnection();
         try {            
             connection = DriverManager.getConnection(dbURL);             
@@ -366,10 +366,12 @@ public class ConnectionBD {
                     "', comercio = '"+companyName+"', porcentajeEstadistico = '"+percentage+"', contrasena = '" + password + "', fecha = '" + date + "', precioNumeros = '" + pricing + "' WHERE tablero = " + idBoard;                        
             statement.executeUpdate(sql); 
             Board board = getBoardInformation();
-            for (int i = 0; i < 100; i++) {
-                updateTimeNumberAdmin(board.getBoard(), "Dia", i, pricing);
-                updateTimeNumberAdmin(board.getBoard(), "Noche", i, pricing);
-            }
+            if (justOne == false) {
+                for (int i = 0; i < 100; i++) {
+                    updateTimeNumberAdmin(board.getBoard(), "Dia", i, pricing);
+                    updateTimeNumberAdmin(board.getBoard(), "Noche", i, pricing);
+                }
+            }            
         }
         catch(SQLException sqlex){
             sqlex.printStackTrace();

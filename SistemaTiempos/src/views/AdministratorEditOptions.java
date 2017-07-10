@@ -8,7 +8,10 @@ package views;
 import BD.ConnectionBD;
 import Clases.Board;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.Calendar;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import sistematiempos.ChineseLanguage;
 import sistematiempos.SpanishLanguage;
@@ -22,7 +25,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     /**
      * Creates new form AdministratorEditOptions
      */
-    private String save,newBoard,password,percentage, night, morning, name, codeBar, number, money, moneyTitle;
+    private String save,newBoard,password,percentage, night, morning, name, codeBar, number, money, moneyTitle, oneOne;
     private Board board;
     private String priceForManyNumbers,priceForOneNumber,numberLabel,moneyLabel,notValidValue,outOfRangeNumber, whiteSpace,okMensage;
     
@@ -32,6 +35,13 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         setLanguageToSpanish();
     }
     
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+        return retValue;
+    }
+    
     private static boolean isNumeric(String cadena){
 	try {
 		Integer.parseInt(cadena);
@@ -39,7 +49,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
 	} catch (NumberFormatException nfe){
 		return false;
 	}
-}
+    }
     
     private void updateBoardInformation() {
         ConnectionBD con= new ConnectionBD();
@@ -55,7 +65,12 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         int priceForNumber = Integer.parseInt(tfPriceForNumber.getText());
         Calendar cal=Calendar.getInstance(); 
         String currentDate =cal.get(cal.DATE)+"/"+(cal.get(cal.MONTH)+1)+"/"+cal.get(cal.YEAR);
-        con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, adminPassword, currentDate, priceForNumber);
+        if (unoUno.isSelected()) {
+            con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, adminPassword, currentDate, priceForNumber, true);
+        }
+        else {
+            con.updateBoard(board.getBoard(), morningClosing, nightClosing, companyName, percentageNumber, adminPassword, currentDate, priceForNumber, false);
+        }
         if(!tfNumberTxt.getText().isEmpty() && !tfMoneyTxt.getText().isEmpty()){            
             if(isNumeric(tfNumberTxt.getText())== false || isNumeric(tfMoneyTxt.getText())== false){
                 JOptionPane.showMessageDialog(null, notValidValue);
@@ -121,6 +136,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         lbNumber.setText(number);
         lbPriceForOneNumber.setText(moneyTitle);
         lblMoney.setText(money);
+        unoUno.setText(oneOne);
     }
     
     private void setWindowToSpanish(){
@@ -133,6 +149,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         priceForOneNumber= "Precio para un número específico";
         numberLabel= "Numero";
         moneyLabel= "Plata";
+        oneOne = "Uno a Uno";
         
         save = spanishLanguage.getBtnSaveString();
         password = spanishLanguage.getLblPassword();
@@ -148,15 +165,16 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     
     private void setWindowToChinese(){
         ChineseLanguage chineseLanguage = ChineseLanguage.getInstance();
-        priceForManyNumbers= "所有价格数据";
+        priceForManyNumbers= "号码购买上限";
         priceForOneNumber= "钱一数";
-        numberLabel= "数";
+        numberLabel= "号码";
         moneyLabel= "银";
-        
         notValidValue="无数值错误";
         outOfRangeNumber="错误编号超出范围";
         whiteSpace= "错误信息丢失";
         okMensage="这是成功的";
+        
+        oneOne = "一个号码上限";
         
         save = chineseLanguage.getBtnSaveString();
         password = chineseLanguage.getLblPassword();
@@ -216,12 +234,14 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         tfMoneyTxt = new javax.swing.JTextField();
         lbNumber = new javax.swing.JLabel();
         lblMoney = new javax.swing.JLabel();
+        unoUno = new javax.swing.JCheckBox();
 
         lblNameBoth1.setText("天");
 
         lblNameBoth2.setText("天");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setIconImage(getIconImage());
         setResizable(false);
 
         lblCompanyName.setText("Nombre del comercio:");
@@ -243,7 +263,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         });
 
         bgLanguage.add(cbChinese);
-        cbChinese.setText("国");
+        cbChinese.setText("中国");
         cbChinese.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbChineseActionPerformed(evt);
@@ -277,64 +297,66 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
 
         lblMoney.setText("Plata");
 
+        unoUno.setText("Uno a Uno");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSave)
+                .addGap(74, 74, 74))
             .addGroup(layout.createSequentialGroup()
                 .addGap(84, 84, 84)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnSave)
-                                .addGap(51, 51, 51))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblMorningClosingTime)
-                                    .addComponent(lblNightClosingTime)
-                                    .addComponent(lblCompanyName)
-                                    .addComponent(lblPercentage)
-                                    .addComponent(lblPassword)
-                                    .addComponent(lblPriceForNumbers)
-                                    .addComponent(lbPriceForOneNumber))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lbNumber)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lblMoney)
-                                        .addGap(77, 77, 77))
-                                    .addComponent(tfName, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
-                                    .addComponent(tfPercentage)
-                                    .addComponent(tfPassword)
-                                    .addComponent(tfPriceForNumber)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(cbMorningHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cbMorningMinutes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(cbNightHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jLabel2)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cbNightMinutes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(tfNumberTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(tfMoneyTxt)))))
-                        .addGap(22, 22, 22))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(cbSpanish)
                         .addGap(18, 18, 18)
                         .addComponent(cbChinese)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblMorningClosingTime)
+                            .addComponent(lblNightClosingTime)
+                            .addComponent(lblCompanyName)
+                            .addComponent(lblPercentage)
+                            .addComponent(lblPassword)
+                            .addComponent(lblPriceForNumbers)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(unoUno)
+                                .addComponent(lbPriceForOneNumber)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfName, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                            .addComponent(tfPercentage)
+                            .addComponent(tfPassword)
+                            .addComponent(tfPriceForNumber)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(tfNumberTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(tfMoneyTxt))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lbNumber)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblMoney)
+                                .addGap(73, 73, 73))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(cbMorningHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbMorningMinutes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(cbNightHour, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cbNightMinutes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(22, 22, 22))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -371,18 +393,19 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPriceForNumbers)
                     .addComponent(tfPriceForNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbNumber)
-                    .addComponent(lblMoney))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lblMoney)
+                    .addComponent(unoUno))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPriceForOneNumber)
                     .addComponent(tfNumberTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfMoneyTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
+                .addGap(18, 18, 18)
                 .addComponent(btnSave)
-                .addContainerGap())
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -399,7 +422,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     }//GEN-LAST:event_cbChineseActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:        
+        // TODO add your handling code here:   
         updateBoardInformation();
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -466,5 +489,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     private javax.swing.JPasswordField tfPassword;
     private javax.swing.JTextField tfPercentage;
     private javax.swing.JTextField tfPriceForNumber;
+    private javax.swing.JCheckBox unoUno;
     // End of variables declaration//GEN-END:variables
 }

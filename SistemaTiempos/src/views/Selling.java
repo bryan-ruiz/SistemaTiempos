@@ -14,6 +14,9 @@ import Clases.Ticket;
 import Clases.TimeNumber;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -64,7 +67,14 @@ public class Selling extends javax.swing.JFrame {
     public Selling() {
         initComponents();
         getBoardDataToInform();  
-    }           
+    }     
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+        return retValue;
+    }
     
     private void setButtonsAvailableOrNot(boolean bool) {
         btnSave.setEnabled(bool);
@@ -87,7 +97,7 @@ public class Selling extends javax.swing.JFrame {
             buttonParam.setBackground(Color.GREEN);
         }
         else if(checkBoxTimeselected.equals("Noche")){
-            buttonParam.setBackground(new Color(106, 115, 237)); //CAMBIAR COLOR A UN AZUL MAS CLARO
+            buttonParam.setBackground(new Color(83, 140, 226));
         }             
     }
     
@@ -934,6 +944,7 @@ public class Selling extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setIconImage(getIconImage());
         setSize(new java.awt.Dimension(0, 0));
 
         btn00.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -1901,7 +1912,7 @@ public class Selling extends javax.swing.JFrame {
         });
 
         bgLanguage.add(cbChinese);
-        cbChinese.setText("国");
+        cbChinese.setText("中国");
         cbChinese.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbChineseActionPerformed(evt);
@@ -3279,7 +3290,7 @@ public class Selling extends javax.swing.JFrame {
         // TODO add your handling code here:
         showChineseButtons();
         setEnableOrNotButtons(false);
-        hideSpanishButtons();
+        hideSpanishButtons(); 
         setLanguageToChinese();
     }//GEN-LAST:event_cbChineseActionPerformed
 
@@ -3370,6 +3381,8 @@ public class Selling extends javax.swing.JFrame {
             setPriceToNumber(money);
             getTotalAndShowIT();
             setEnableOrNotButtons(true);
+            Rectangle r = jTable1.getCellRect( jTable1.getRowCount()-1, 0, true);
+            jScrollPane2.getViewport().scrollRectToVisible (r);
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3379,7 +3392,7 @@ public class Selling extends javax.swing.JFrame {
     private void btnSaveChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChineseActionPerformed
         // TODO add your handling code here:
         try {
-            lastSave= tfSelectedNumber.getText();
+            lastSave= tfSelectedNumber.getText();            
             int money = Integer.parseInt(priceAct.getText());
             int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
             if(priceTotl < money){                
@@ -3390,7 +3403,9 @@ public class Selling extends javax.swing.JFrame {
             lblTotalQuantityNumber.setText(String.valueOf(priceTotl));
             setPriceToNumber(money);
             getTotalAndShowIT();
-            
+            setEnableOrNotButtons(true);
+            Rectangle r = jTable1.getCellRect( jTable1.getRowCount()-1, 0, true);
+            jScrollPane2.getViewport().scrollRectToVisible (r);
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3399,15 +3414,19 @@ public class Selling extends javax.swing.JFrame {
 
     private void btnRemoveChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveChineseActionPerformed
         // TODO add your handling code here:
-        lastSave= tfSelectedNumber.getText();
-        if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
-            int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
-            int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
-            priceTotl= priceTotl+total;            
-            lblTotalQuantityNumber.setText(String.valueOf(priceTotl));                        
+        lastSave= tfSelectedNumber.getText();        
+        try{
+            if(lastSave.equals(tableModel.getValueAt(jTable1.getSelectedRow(),0))){                        
+                int priceTotl=Integer.parseInt(lblTotalQuantityNumber.getText());
+                int total = Integer.parseInt((String) tableModel.getValueAt(jTable1.getSelectedRow(), 1));
+                priceTotl= priceTotl+total;            
+                lblTotalQuantityNumber.setText(String.valueOf(priceTotl));                        
+            }
+            removeItemFromList();        
+            getTotalAndShowIT();
+        }catch(Exception e){
+            return;
         }
-        removeItemFromList();
-        getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveChineseActionPerformed
 
     private void btnPayChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayChineseActionPerformed
@@ -3443,23 +3462,23 @@ public class Selling extends javax.swing.JFrame {
                 error = false;
             }
             else {
-                JOptionPane.showMessageDialog(null, "fuera de tiempo");
+                JOptionPane.showMessageDialog(null, "推出时间");
                 error = true;
             }
         }
         else {
-            JOptionPane.showMessageDialog(null, "fuera de tiempo");
+            JOptionPane.showMessageDialog(null, "推出时间");
             error = true;
         }
         if (tableModel.getRowCount() == 0) {
             error = true;
-            JOptionPane.showMessageDialog(null, "seleccione numero");
+            JOptionPane.showMessageDialog(null, "选择一个号码");
         }
         if (error == false) {
             createTicketForPurchase();
             soldNumbersOfTableSetColors();
             setButtonsAvailableOrNot(false);
-            JOptionPane.showMessageDialog(null, "Pago listo. Imprima el tiquete.");
+            JOptionPane.showMessageDialog(null, "打印");
             isTicketPaid = true;
         }
     }//GEN-LAST:event_btnPayChineseActionPerformed
@@ -3487,7 +3506,6 @@ public class Selling extends javax.swing.JFrame {
     private void btnRemoveAllChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveAllChineseActionPerformed
         // TODO add your handling code here:
         removeAllItemsFromList();
-        
         getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveAllChineseActionPerformed
 
@@ -3514,7 +3532,12 @@ public class Selling extends javax.swing.JFrame {
             isTicketPaid = false;
         }
         else {
-            JOptionPane.showMessageDialog(null, "Primero pague un tiquete.");
+            if (language == "spanish") {
+                JOptionPane.showMessageDialog(null, "Primero pague un tiquete.");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "首先你付出");
+            }
         }
     }//GEN-LAST:event_printButtonActionPerformed
 
