@@ -19,17 +19,17 @@ public class ChineseLanguage {
     
     private ChineseLanguage() {
         this.passwordError = "密码错误."; 
-        this.notNumberError = "不可用符号."; 
+        this.notNumberError = "请选择价钱"; 
         this.btnScanCodeBar = "订单搜索"; 
         this.btnTotalUniquePrint = "打印总单";
         this.btnStadisticsString = "统计";
-        this.lblPercentage = "赔率:";
+        this.lblPercentage = "倍率:";
         this.lblMorningClosingString = "上午结束时间:";
         this.lblNightClosingString = "晚上结束时间:";
         this.lblPeriodString = "选择时段:";
         this.lblDayString = "上午";  
         this.lblNightString = "晚上";
-        this.lblMoneyString = "钱"; 
+        this.lblMoneyString = "价钱"; 
         this.btnSaveString = "添加";
         this.lblNumbersListString = "号码";
         this.btnRemoveString = "删除号码";
@@ -38,7 +38,7 @@ public class ChineseLanguage {
         this.lblNumberMoneyString = "此号码还可以下";
         this.btnPrint = "打印";
         this.lblCompanyName = "生意名称:"; 
-        this.lblPercentage = "赔率:";
+        this.lblPercentage = "倍率:";
         this.lblPassword = "密码:";
         this.startDate = "开始日期: ";
         this.finishDate = "结束日期: ";
@@ -48,14 +48,14 @@ public class ChineseLanguage {
         this.lblDay = "上午";
         this.lblMonth = "月";
         this.lblYear = "年";
-        this.lblTicket = "车票";
+        this.lblTicket = "订单号";
         this.btnSearch = "搜索";
         this.lblTime = "时间";
         this.lblDate = "日期";
-        this.btnDelete = "清除";   
-        this.lblNumber = "数";
-        this.lblMoney = "钱";
-        this.lblMoneyTitle = "价格数";
+        this.btnDelete = "删除订单";   
+        this.lblNumber = "号码";
+        this.lblMoney = "价钱";
+        this.lblMoneyTitle = "";
     }
 
     public String getLblNumber() {

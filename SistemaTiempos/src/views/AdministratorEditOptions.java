@@ -124,7 +124,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     
     private void setAllToSelectedLanguage() {
         lblPriceForNumbers.setText(priceForManyNumbers);
-        lbPriceForOneNumber.setText(priceForOneNumber);
         lbNumber.setText(numberLabel);
         lblMoney.setText(moneyLabel);        
         lblCompanyName.setText(name);
@@ -134,7 +133,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         lblPassword.setText(password);
         btnSave.setText(save);
         lbNumber.setText(number);
-        lbPriceForOneNumber.setText(moneyTitle);
         lblMoney.setText(money);
         unoUno.setText(oneOne);
     }
@@ -166,15 +164,14 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     private void setWindowToChinese(){
         ChineseLanguage chineseLanguage = ChineseLanguage.getInstance();
         priceForManyNumbers= "号码购买上限";
-        priceForOneNumber= "钱一数";
+        priceForOneNumber= "一码价钱";
         numberLabel= "号码";
-        moneyLabel= "银";
-        notValidValue="无数值错误";
-        outOfRangeNumber="错误编号超出范围";
+        moneyLabel= "号码";
+        notValidValue="无效号码";
+        outOfRangeNumber="错误号码超出范围";
         whiteSpace= "错误信息丢失";
-        okMensage="这是成功的";
-        
-        oneOne = "一个号码上限";
+        okMensage="添加成功";
+        oneOne = "选择每个号码价钱上限";
         
         save = chineseLanguage.getBtnSaveString();
         password = chineseLanguage.getLblPassword();
@@ -229,7 +226,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lblPriceForNumbers = new javax.swing.JLabel();
         tfPriceForNumber = new javax.swing.JTextField();
-        lbPriceForOneNumber = new javax.swing.JLabel();
         tfNumberTxt = new javax.swing.JTextField();
         tfMoneyTxt = new javax.swing.JTextField();
         lbNumber = new javax.swing.JLabel();
@@ -291,8 +287,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
 
         lblPriceForNumbers.setText("Precio para numeros:");
 
-        lbPriceForOneNumber.setText("Precio para numero");
-
         lbNumber.setText("Numero");
 
         lblMoney.setText("Plata");
@@ -323,9 +317,7 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                             .addComponent(lblPercentage)
                             .addComponent(lblPassword)
                             .addComponent(lblPriceForNumbers)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(unoUno)
-                                .addComponent(lbPriceForOneNumber)))
+                            .addComponent(unoUno))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tfName, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
@@ -400,7 +392,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
                     .addComponent(unoUno))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbPriceForOneNumber)
                     .addComponent(tfNumberTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfMoneyTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -473,7 +464,6 @@ public class AdministratorEditOptions extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lbNumber;
-    private javax.swing.JLabel lbPriceForOneNumber;
     private javax.swing.JLabel lblCompanyName;
     private javax.swing.JLabel lblMoney;
     private javax.swing.JLabel lblMorningClosingTime;

@@ -60,7 +60,7 @@ private void getDaysOfComboBox(){
             Integer.parseInt(dayBegin.getSelectedItem().toString()) > 28 ||
             Integer.parseInt(monthEnd.getSelectedItem().toString())== 2 && 
             Integer.parseInt(dayEnd.getSelectedItem().toString()) > 28){                        
-                menssage.setText("ERROR mes 2 no tiene mas de 28 días");                
+                menssage.setText("ERROR mes 2 no tiene mas de 28 días");   
                 return false;
         }         
         if(Integer.parseInt(monthBegin.getSelectedItem().toString())== 4 ||

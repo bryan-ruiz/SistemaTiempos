@@ -44,7 +44,8 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private List<SoldNumbers>list;
     private String hour, mensageAddData,menssageNotFoundTicket,menssageOk,menssageCantBuyNumber;
     private Selling currentSelling;
-    private String store, lblTicket, btnSearch, lblId, lblTotal, lblTime, lblDate, btnPrint, btnDelete,dayHour;
+    private String store, lblTicket, btnSearch, lblId, lblTotal, lblTime, lblDate, btnPrint, btnDelete,dayHour,
+            messageDay, messageNight, buy, doPurachase;
     
     public ticketCodScanDelete() {
         initComponents();
@@ -68,6 +69,10 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         labelDate.setText(lblDate);
         printButton.setText(btnPrint);
         deleteButton.setText(btnDelete);
+        butonBuy.setText(buy);
+        radButtonDay.setText(messageDay);
+        radButtonNigth.setText(messageNight);
+        buyTicketNowButton.setText(doPurachase);
     }
     
     public void setLanguageToSpanish() {
@@ -84,6 +89,12 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         menssageNotFoundTicket="El tiquete no es válido";
         menssageOk= "El tiquete ha sido eliminado";
         menssageCantBuyNumber= "Error no se puede comprar numero";
+        
+        messageDay = spanishLanguage.getLblDay();
+        messageNight = spanishLanguage.getLblNightString();
+        buy = "Comprar";
+        doPurachase = "Realizar compra";
+        
         setWindowToSelectedLanguage();
     }
     
@@ -97,9 +108,16 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         lblDate = chineseLanguage.getLblDate();
         btnPrint = chineseLanguage.getBtnPrint();
         btnDelete = chineseLanguage.getBtnDelete();
-        mensageAddData= "您必须输入数据";
-        menssageNotFoundTicket="该票无效";
-        menssageOk= "票务移除";
+        mensageAddData= "购买现在号码";
+        menssageNotFoundTicket="搜索错误";
+        menssageOk= "删除成功";
+        
+        buy = "购买当天";
+        doPurachase = "确定购买";
+        
+        messageDay = chineseLanguage.getLblDay();
+        messageNight = chineseLanguage.getLblNightString();
+        
         setWindowToSelectedLanguage();
     }
     
