@@ -35,7 +35,7 @@ public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
     private ResultSet resultSet = null;  
-    private String msAccDB = "SISTEMA_NUMEROS.MDB";
+    private String msAccDB = "W:/SystemConfigFilesProvidedToToSistemaChinos/SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){

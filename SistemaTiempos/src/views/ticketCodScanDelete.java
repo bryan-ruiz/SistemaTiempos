@@ -45,8 +45,8 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private String hour, mensageAddData,menssageNotFoundTicket,menssageOk,menssageCantBuyNumber;
     private Selling currentSelling;
     private String store, lblTicket, btnSearch, lblId, lblTotal, lblTime, lblDate, btnPrint, btnDelete,dayHour,
-            messageDay, messageNight, buy, doPurachase;
-    
+            messageDay, messageNight, buy, doPurachase, messageToShow, timeOut, printTicket;
+    private String dayDate= "";
     public ticketCodScanDelete() {
         initComponents();
         visibleFalseComponents(false); 
@@ -56,7 +56,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+                getImage("W:/SystemConfigFilesProvidedToToSistemaChinos/icono.png");
         return retValue;
     }
     
@@ -94,12 +94,17 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         messageNight = spanishLanguage.getLblNightString();
         buy = "Comprar";
         doPurachase = "Realizar compra";
-        
+        messageToShow = spanishLanguage.getLblPeriodString();
+        timeOut = "Fuera de tiempo";
+        printTicket = spanishLanguage.getBtnPrint();
         setWindowToSelectedLanguage();
     }
     
     public void setLanguageToChinese() {
+        
+        timeOut = "推出时间";
         ChineseLanguage chineseLanguage = ChineseLanguage.getInstance();
+        printTicket = chineseLanguage.getBtnPrint();
         lblTicket = chineseLanguage.getLblTicket();
         btnSearch = chineseLanguage.getBtnSearch();
         lblId = chineseLanguage.getLblTicket();
@@ -111,13 +116,12 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         mensageAddData= "购买现在号码";
         menssageNotFoundTicket="搜索错误";
         menssageOk= "删除成功";
-        
-        buy = "购买当天";
+        buy = "重新购买";
         doPurachase = "确定购买";
-        
+        menssageCantBuyNumber= "你可以不买";
         messageDay = chineseLanguage.getLblDay();
         messageNight = chineseLanguage.getLblNightString();
-        
+        messageToShow = chineseLanguage.getLblPeriodString();
         setWindowToSelectedLanguage();
     }
     
@@ -133,7 +137,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                 return false;
             }
         };
-        jTable1.setModel(tableModel);
+        jTable2.setModel(tableModel);
     }
     
     public void setAll(){
@@ -152,6 +156,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     public void visibleFalseComponents(boolean bool){
         labelDate.setVisible(bool);
         butonBuy.setVisible(bool);
+        findTicketButton.setVisible(true);
         dateTxt.setVisible(bool);    
         labelIdTicket.setVisible(bool);
         ticketIdTxt.setVisible(bool);
@@ -192,10 +197,27 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         }        
         totalTxt.setText(String.valueOf(ticket.getTicketTotalAmount())); 
         TicketTime tiempo= con.getTicketTime(idTicket);
-        timeTxt.setText(tiempo.getTime());                      
-        dateTxt.setText(ticket.getDate()+"   "+ticket.getTimeHour()); 
+        timeTxt.setText(tiempo.getTime());      
+        
+        String morningSplitHour[] = ticket.getTimeHour().split(": ");
+            String splitHour = morningSplitHour[0];
+            String splitMinute = morningSplitHour[1];
+            String splitSecond = morningSplitHour[2];
+            if (morningSplitHour[0].length() == 1) {
+                splitHour = "0"+morningSplitHour[0];
+            }
+            if (morningSplitHour[1].length() == 1) {
+                splitMinute = "0"+morningSplitHour[1];
+            }
+            if (morningSplitHour[2].length() == 1) {
+                splitSecond = "0"+morningSplitHour[2];
+            }
+            String finaHour = splitHour+": "+splitMinute+": "+splitSecond;
+        
+        dateTxt.setText(ticket.getDate()+"  "+finaHour); 
+        dayDate= ticket.getDate();
         ticketIdTxt.setText(idTicket);  
-        hour= ticket.getTimeHour();
+        hour= finaHour;
         visibleFalseComponents(true);
     }
     /**
@@ -223,7 +245,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         panel = new javax.swing.JPanel();
         deleteButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable2 = new javax.swing.JTable();
         butonBuy = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         radButtonDay = new javax.swing.JRadioButton();
@@ -273,8 +295,8 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -295,7 +317,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                 "Title 1", "Title 2"
             }
         ));
-        jScrollPane3.setViewportView(jTable1);
+        jScrollPane3.setViewportView(jTable2);
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -363,8 +385,6 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                 .addComponent(buyTicketNowButton)
                 .addContainerGap())
         );
-
-        mensaje.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -482,18 +502,48 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         // TODO add your handling code here: 
+        
         Printsupport ps=new Printsupport();
-        Object printitem [][]=ps.getTableData(jTable1,ticketIdTxt.getText(),store,timeTxt.getText(),dateTxt.getText(), hour,
+        if(isInBuy == false){
+            
+            Object printitem [][]=ps.getTableData(jTable2,ticketIdTxt.getText(),store,timeTxt.getText(),dayDate, hour,
                 0, totalTxt.getText());
-        ps.setItems(printitem);
+            ps.setItems(printitem);
+        }
+        else{
+            ConnectionBD con= new ConnectionBD();
+            Ticket ticket= con.getTicketInformation();
+            int board= con.gteBoardOfTicket(String.valueOf(ticket.getTicket()));
+            TicketTime ticketTime = con.getTicketTime(String.valueOf(ticket.getTicket()));    
+            String morningSplitHour[] = ticket.getTimeHour().split(": ");
+            String splitHour = morningSplitHour[0];
+            String splitMinute = morningSplitHour[1];
+            String splitSecond = morningSplitHour[2];
+            if (morningSplitHour[0].length() == 1) {
+                splitHour = "0"+morningSplitHour[0];
+            }
+            if (morningSplitHour[1].length() == 1) {
+                splitMinute = "0"+morningSplitHour[1];
+            }
+            if (morningSplitHour[2].length() == 1) {
+                splitSecond = "0"+morningSplitHour[2];
+            }
+            String finaHour = splitHour+": "+splitMinute+": "+splitSecond;
+            Object printitem [][]=ps.getTableData(jTable2,String.valueOf(ticket.getTicket()),store,time,ticket.getDate(), finaHour,
+                0, String.valueOf(ticket.getTicketTotalAmount()));
+            ps.setItems(printitem);
+        }
         PrinterJob pj = PrinterJob.getPrinterJob();
         pj.setPrintable(new Printsupport.MyPrintable(),ps.getPageFormat(pj));
         try {
             pj.print();
+            time= "";
+            isInBuy= false;
         }
         catch (PrinterException ex) {
             ex.printStackTrace();
         }
+        visibleFalseComponents(true);
     }//GEN-LAST:event_printButtonActionPerformed
 
     private List<Integer>moneyTable,numberTable;
@@ -514,24 +564,25 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
                 error = false;
             }
             else {
-                JOptionPane.showMessageDialog(null, "fuera de tiempo");
+                mensaje.setText(timeOut);
                 error = true;
             }
         }
         else {
-            JOptionPane.showMessageDialog(null, "fuera de tiempo");
+            mensaje.setText(timeOut);
             error = true;
         }
         return error;
     }
     
     
-    
+    boolean isInBuy= false;
+    String time= "";
     private void buyTicketNowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyTicketNowButtonActionPerformed
         // TODO add your handling code here:
         ConnectionBD con= new ConnectionBD(); 
         Board board= con.getBoardInformation();
-        String time= "";
+        time= "";
         
         Calendar cal = Calendar.getInstance(); 
         String hour = String.valueOf(cal.get(cal.HOUR_OF_DAY));
@@ -561,7 +612,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         }
         else{
             mensaje.setForeground(Color.red);
-            mensaje.setText("Seleccione el tiempo");
+            mensaje.setText(messageToShow);
             return;
         }
         
@@ -585,7 +636,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
             }
             else{
                 mensaje.setForeground(Color.red);
-                mensaje.setText(menssageCantBuyNumber+ numberForThisRow);
+                mensaje.setText(menssageCantBuyNumber + "  " + numberForThisRow);
                 return;
             }
         }         
@@ -604,7 +655,8 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         deleteButton.setVisible(false);
         findTicketButton.setVisible(false);
         mensaje.setForeground(Color.blue);
-        mensaje.setText("Imprima el tiquete");        
+        mensaje.setText(printTicket);        
+        isInBuy= true;
     }//GEN-LAST:event_buyTicketNowButtonActionPerformed
 
     /**
@@ -652,7 +704,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
     private javax.swing.JTextField idFindTxt;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel labelDate;
     private javax.swing.JLabel labelIdTicket;
     private javax.swing.JLabel labelTicket;

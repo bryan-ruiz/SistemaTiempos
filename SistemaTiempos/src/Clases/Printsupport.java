@@ -39,9 +39,9 @@ public class Printsupport {
     static String dateG;
     static String hourG;        
     static int actionG;
-    static ImageIcon printImage = new javax.swing.ImageIcon("codigoBarras.png");
-    static ImageIcon printImage2 = new javax.swing.ImageIcon("firma.png");
-    static String totalG; 
+    static ImageIcon printImage = new javax.swing.ImageIcon("W:/SystemConfigFilesProvidedToToSistemaChinos/codigoBarras.png");
+    static ImageIcon printImage2 = new javax.swing.ImageIcon("W:/SystemConfigFilesProvidedToToSistemaChinos/firma.png");
+    static String totalG;
     static JTable itemsTable;
     public static  int total_item_count=0;
     public static final String DATE_FORMAT_NOW = "yyyy-MM-dd  HH:mm:ss";

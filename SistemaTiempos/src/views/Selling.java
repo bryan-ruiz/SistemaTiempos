@@ -63,6 +63,7 @@ public class Selling extends javax.swing.JFrame {
             btnRemoveString, lblTotalString, btnPayString, lblNumberMoneyString, language, boardCurrentTime, btnReset,
             btnPrint;
     private boolean isTicketPaid = false;
+    private boolean changeNumber = false;
     
     public Selling() {
         initComponents();
@@ -72,7 +73,7 @@ public class Selling extends javax.swing.JFrame {
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+                getImage("W:/SystemConfigFilesProvidedToToSistemaChinos/icono.png");
         return retValue;
     }
     
@@ -543,7 +544,7 @@ public class Selling extends javax.swing.JFrame {
     
     private void setEnableOrNotButtons(boolean bool){
         btnRemove.setEnabled(bool);
-        btnRemove.setEnabled(bool);
+        btnRemoveChinese.setEnabled(bool);
         btnRemoveAll.setEnabled(bool);
         btnRemoveAllChinese.setEnabled(bool);
     }
@@ -3384,6 +3385,7 @@ public class Selling extends javax.swing.JFrame {
             setEnableOrNotButtons(true);
             Rectangle r = jTable1.getCellRect( jTable1.getRowCount()-1, 0, true);
             jScrollPane2.getViewport().scrollRectToVisible (r);
+            changeNumber = true;
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3407,6 +3409,7 @@ public class Selling extends javax.swing.JFrame {
             setEnableOrNotButtons(true);
             Rectangle r = jTable1.getCellRect( jTable1.getRowCount()-1, 0, true);
             jScrollPane2.getViewport().scrollRectToVisible (r);
+            changeNumber = true;
         }
         catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, notNumberErrorString);
@@ -3516,7 +3519,22 @@ public class Selling extends javax.swing.JFrame {
             ConnectionBD con= new ConnectionBD();
             Ticket ticket= con.getTicketInformation();
             Printsupport ps=new Printsupport();
-            Object printitem [][]=ps.getTableData(jTable1,String.valueOf(ticket.getTicket()),board.getStore(),boardCurrentTime,ticket.getDate(), ticket.getTimeHour(),
+            String morningSplitHour[] = ticket.getTimeHour().split(": ");
+            String splitHour = morningSplitHour[0];
+            String splitMinute = morningSplitHour[1];
+            String splitSecond = morningSplitHour[2];
+            if (morningSplitHour[0].length() == 1) {
+                splitHour = "0"+morningSplitHour[0];
+            }
+            if (morningSplitHour[1].length() == 1) {
+                splitMinute = "0"+morningSplitHour[1];
+            }
+            if (morningSplitHour[2].length() == 1) {
+                splitSecond = "0"+morningSplitHour[2];
+            }
+            String finaHour = splitHour+": "+splitMinute+": "+splitSecond;
+
+            Object printitem [][]=ps.getTableData(jTable1,String.valueOf(ticket.getTicket()),board.getStore(),boardCurrentTime,ticket.getDate(), finaHour,
                     0, String.valueOf(ticket.getTicketTotalAmount()));
             ps.setItems(printitem);
             PrinterJob pj = PrinterJob.getPrinterJob();

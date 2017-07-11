@@ -35,6 +35,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     /**
      * Creates new form VentanaTiquete
      */
+    
     private String language;
     private int pricing, totalAmount= 0;
     private Board board;
@@ -59,7 +60,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+                getImage("W:/SystemConfigFilesProvidedToToSistemaChinos/icono.png");
         return retValue;
     }
 
@@ -151,7 +152,7 @@ public class TicketWindowPrint extends javax.swing.JFrame {
             totalAmount= totalAmount+ (board.getNumbersPrincing() -(list.get(i).getTotalNumberAmount()));
             String[] row = new String[2];
             row[0] = String.valueOf(list.get(i).getNumero());            
-            String showIt = String.valueOf(board.getNumbersPrincing() -(list.get(i).getTotalNumberAmount()));
+            String showIt = String.valueOf(list.get(i).getTotal() -(list.get(i).getTotalNumberAmount()));
             row[1] = showIt;
             tableModel.addRow(row);            
         }                 

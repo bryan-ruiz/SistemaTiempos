@@ -39,7 +39,7 @@ public class Login extends javax.swing.JFrame {
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
-                getImage("W:/SystemConfigFilesProvidedByBranLabsToSistemaChinos/icono.png");
+                getImage("W:/SystemConfigFilesProvidedToToSistemaChinos/icono.png");
         return retValue;
     }
     
