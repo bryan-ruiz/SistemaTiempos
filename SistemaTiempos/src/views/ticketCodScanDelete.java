@@ -185,10 +185,15 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         list=con.GetNumberSoldFromTiicket(idTicket);                
         for (int i = 0; i < list.size(); i++) {
             String[] row = new String[2];
-            row[0] = String.valueOf(list.get(i).getNumber());            
+            String numberToConvert = String.valueOf(list.get(i).getNumber());
+            if (numberToConvert.length() == 1) {
+                numberToConvert = "0"+numberToConvert;
+            }
+            row[0] = numberToConvert;         
             String showIt = String.valueOf((list.get(i).getMoneySold()));
             row[1] = showIt;
             tableModel.addRow(row);                                 
+        
         }
         if(list.size()>0){
             int idBoard= list.get(0).getBoard();
@@ -575,6 +580,49 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         return error;
     }
     
+    private void printOnceTicketIsPaid() {
+        Printsupport ps=new Printsupport();
+        if(isInBuy == false){
+            
+            Object printitem [][]=ps.getTableData(jTable2,ticketIdTxt.getText(),store,timeTxt.getText(),dayDate, hour,
+                0, totalTxt.getText());
+            ps.setItems(printitem);
+        }
+        else{
+            ConnectionBD con= new ConnectionBD();
+            Ticket ticket= con.getTicketInformation();
+            int board= con.gteBoardOfTicket(String.valueOf(ticket.getTicket()));
+            TicketTime ticketTime = con.getTicketTime(String.valueOf(ticket.getTicket()));    
+            String morningSplitHour[] = ticket.getTimeHour().split(": ");
+            String splitHour = morningSplitHour[0];
+            String splitMinute = morningSplitHour[1];
+            String splitSecond = morningSplitHour[2];
+            if (morningSplitHour[0].length() == 1) {
+                splitHour = "0"+morningSplitHour[0];
+            }
+            if (morningSplitHour[1].length() == 1) {
+                splitMinute = "0"+morningSplitHour[1];
+            }
+            if (morningSplitHour[2].length() == 1) {
+                splitSecond = "0"+morningSplitHour[2];
+            }
+            String finaHour = splitHour+": "+splitMinute+": "+splitSecond;
+            Object printitem [][]=ps.getTableData(jTable2,String.valueOf(ticket.getTicket()),store,time,ticket.getDate(), finaHour,
+                0, String.valueOf(ticket.getTicketTotalAmount()));
+            ps.setItems(printitem);
+        }
+        PrinterJob pj = PrinterJob.getPrinterJob();
+        pj.setPrintable(new Printsupport.MyPrintable(),ps.getPageFormat(pj));
+        try {
+            pj.print();
+            time= "";
+            isInBuy= false;
+        }
+        catch (PrinterException ex) {
+            ex.printStackTrace();
+        }
+        visibleFalseComponents(true);
+    }
     
     boolean isInBuy= false;
     String time= "";
@@ -657,6 +705,7 @@ public class ticketCodScanDelete extends javax.swing.JFrame {
         mensaje.setForeground(Color.blue);
         mensaje.setText(printTicket);        
         isInBuy= true;
+        printOnceTicketIsPaid();
     }//GEN-LAST:event_buyTicketNowButtonActionPerformed
 
     /**

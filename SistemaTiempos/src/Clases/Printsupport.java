@@ -39,8 +39,9 @@ public class Printsupport {
     static String dateG;
     static String hourG;        
     static int actionG;
-    static ImageIcon printImage = new javax.swing.ImageIcon("W:/SystemConfigFilesProvidedToToSistemaChinos/codigoBarras.png");
-    static ImageIcon printImage2 = new javax.swing.ImageIcon("W:/SystemConfigFilesProvidedToToSistemaChinos/firma.png");
+    //W:/SystemConfigFilesProvidedToToSistemaChinos/W:/SystemConfigFilesProvidedToToSistemaChinos/
+    static ImageIcon printImage = new javax.swing.ImageIcon("codigoBarras.png");
+    static ImageIcon printImage2 = new javax.swing.ImageIcon("firma.png");
     static String totalG;
     static JTable itemsTable;
     public static  int total_item_count=0;
@@ -131,7 +132,8 @@ public class Printsupport {
     public static String now() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
-        return sdf.format(cal.getTime());
+        String hora = cal.get(cal.HOUR_OF_DAY)+":"+cal.get(cal.MINUTE)+":"+cal.get(cal.SECOND);
+        return dateG + "  " +hora;
     }
 
     public static class MyPrintable implements Printable {
@@ -150,7 +152,7 @@ public class Printsupport {
                 g2d.drawString("Tiempo: "+ timeG, 10, y+35);
                 if(actionG!= -1){
                     g2d.drawString("Tiquete: "+ idTiketG, 10, y+20);
-                    g2d.drawString("Fecha: "+ dateG+"   "+hourG, 10, y+50);
+                    g2d.drawString("Fecha: "+ dateG+"  "+hourG, 10, y+50);
                 }
                 else{
                     g2d.drawString("Tablero: "+ idTiketG, 10, y+20);
@@ -168,12 +170,14 @@ public class Printsupport {
                     g2d.drawString("Numero  "+itemid, 10, cH);
                     g2d.drawString("  "+itemname,80, cH);            	                              
                 }	                                        
-                g2d.drawString("Total:   "+ totalG,30, cH+15);
+                g2d.drawString("Total:   "+ totalG,30, cH+17);
+                
                 if(actionG != -1){
-                    g2d.drawString("** TIENE 7 DIAS PARA COBRAR **",10, cH+35);
-                    g2d.drawString("** REVISE ANTES DE PAGAR **",10, cH+50);
-                    g2d.drawString("** NO SE ACEPTAN RECLAMOS **",10, cH+65);
-                    g2d.drawString("** SIN TIQUETE NO HAY PAGO **",10, cH+80);
+                    g2d.drawString("** TIENE 7 DIAS PARA COBRAR **",10, cH+37);
+                    g2d.drawString("** REVISE ANTES DE PAGAR **",10, cH+52);
+                    g2d.drawString("** NO SE ACEPTAN RECLAMOS **",10, cH+67);
+                    g2d.drawString("** SIN TIQUETE NO HAY PAGO **",10, cH+82);
+                    
                 }                                                                                
                 if (pageIndex == 0) {
                     double pageWidth = pageFormat.getImageableWidth();
@@ -203,13 +207,90 @@ public class Printsupport {
                         rowsDown += 130;
                     }
                     g2d.drawImage(printImage2.getImage(), 10, 10, null);
-                    if(actionG != -1){                                                        
-                        g2d.drawImage(printImage.getImage(), 10, (cH+(600+rowsDown))-hammer, null);
+                    if(actionG != -1){ 
+                        if (mod.getRowCount() == 64) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 24) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 34) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 29) {
+                            rowsDown = rowsDown + 70;
+                        }
+                        else if (mod.getRowCount() == 37) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 39) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 67) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 69) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 42) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 44) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 47) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 49) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 52) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 54) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 55) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 57) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 59) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 60) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 62) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 99) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() == 100) {
+                            rowsDown = rowsDown + 90;
+                        }
+                        else if (mod.getRowCount() > 65 && mod.getRowCount() < 81) {
+                            rowsDown = rowsDown + ((mod.getRowCount() - 65)*5);
+                        }
+                        else if (mod.getRowCount() >= 81 && mod.getRowCount() < 90) {
+                            if (mod.getRowCount() >= 85 && mod.getRowCount() < 90) {
+                                rowsDown = rowsDown + ((mod.getRowCount() - 65)*3);
+                            }
+                            else {
+                                rowsDown = rowsDown + ((mod.getRowCount() - 65)*4);
+                            }
+                        }
+                        else if (mod.getRowCount() >= 90 && mod.getRowCount() < 99) {
+                            rowsDown = rowsDown + ((mod.getRowCount() - 65)) * 3;
+                        }
+                        g2d.drawImage(printImage.getImage(), 10, (cH+(602+rowsDown))-hammer, null);
                     }                            
                     else{ 
                         if(mod.getRowCount() > 50){
                             rowsDown-= 200;
-                            g2d.drawImage(printImage2.getImage(), 10, (cH+(600+rowsDown))-hammer, null);
+                            g2d.drawImage(printImage2.getImage(), 10, (cH+(602+rowsDown))-hammer, null);
                         }                        
                     }                                                        
                     return Printable.PAGE_EXISTS;

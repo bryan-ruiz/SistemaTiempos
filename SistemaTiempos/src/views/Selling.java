@@ -77,6 +77,52 @@ public class Selling extends javax.swing.JFrame {
         return retValue;
     }
     
+    private void printOnceTicketIsPaid() {
+        if (isTicketPaid) {
+            ConnectionBD con= new ConnectionBD();
+            Ticket ticket= con.getTicketInformation();
+            Printsupport ps=new Printsupport();
+            String morningSplitHour[] = ticket.getTimeHour().split(": ");
+            String splitHour = morningSplitHour[0];
+            String splitMinute = morningSplitHour[1];
+            String splitSecond = morningSplitHour[2];
+            if (morningSplitHour[0].length() == 1) {
+                splitHour = "0"+morningSplitHour[0];
+            }
+            if (morningSplitHour[1].length() == 1) {
+                splitMinute = "0"+morningSplitHour[1];
+            }
+            if (morningSplitHour[2].length() == 1) {
+                splitSecond = "0"+morningSplitHour[2];
+            }
+            String finaHour = splitHour+": "+splitMinute+": "+splitSecond;
+
+            Object printitem [][]=ps.getTableData(jTable1,String.valueOf(ticket.getTicket()),board.getStore(),boardCurrentTime,ticket.getDate(), finaHour,
+                    0, String.valueOf(ticket.getTicketTotalAmount()));
+            ps.setItems(printitem);
+            PrinterJob pj = PrinterJob.getPrinterJob();
+            pj.setPrintable(new MyPrintable(),ps.getPageFormat(pj));
+            try {
+                pj.print();
+                removeAllItemsFromList();
+                getTotalAndShowIT();
+                setButtonsAvailableOrNot(true);
+            }
+            catch (PrinterException ex) {
+                ex.printStackTrace();
+            }
+            isTicketPaid = false;
+        }
+        else {
+            if (language == "spanish") {
+                JOptionPane.showMessageDialog(null, "Primero pague un tiquete.");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "首先你付出");
+            }
+        }
+    }
+    
     private void setButtonsAvailableOrNot(boolean bool) {
         btnSave.setEnabled(bool);
         btnSaveChinese.setEnabled(bool);        
@@ -628,7 +674,7 @@ public class Selling extends javax.swing.JFrame {
         btnPayChinese.setText(btnPayString);
         btnRemoveAll.setText(btnReset);
         btnRemoveAllChinese.setText(btnReset);
-        printButton.setText(btnPrint);
+        //printButton.setText(btnPrint);
         removeAllItemsFromList();
     }
     
@@ -942,7 +988,6 @@ public class Selling extends javax.swing.JFrame {
         btnRemoveAllChinese = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         tfSelectedNumber = new javax.swing.JLabel();
-        printButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -2045,13 +2090,6 @@ public class Selling extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        printButton.setText("Imprimir");
-        printButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                printButtonActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -2327,9 +2365,7 @@ public class Selling extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnRemoveAll)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnRemoveAllChinese)
-                                .addGap(18, 18, 18)
-                                .addComponent(printButton))))
+                                .addComponent(btnRemoveAllChinese))))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2393,8 +2429,8 @@ public class Selling extends javax.swing.JFrame {
                             .addComponent(priceAct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSaveChinese, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTotalQuantityNumber)
                             .addComponent(lblNumberMoney))
                         .addGap(18, 18, 18)
@@ -2415,8 +2451,7 @@ public class Selling extends javax.swing.JFrame {
                             .addComponent(btnPay)
                             .addComponent(btnPayChinese)
                             .addComponent(btnRemoveAll)
-                            .addComponent(btnRemoveAllChinese)
-                            .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnRemoveAllChinese))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 14, Short.MAX_VALUE)
@@ -3286,6 +3321,8 @@ public class Selling extends javax.swing.JFrame {
         setEnableOrNotButtons(false);
         hideChineseButtons();
         setLanguageToSpanish();
+        ConnectionBD con= new ConnectionBD();
+        con.createLanguage("spanish");
     }//GEN-LAST:event_cbSpanishActionPerformed
 
     private void cbChineseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbChineseActionPerformed
@@ -3294,6 +3331,8 @@ public class Selling extends javax.swing.JFrame {
         setEnableOrNotButtons(false);
         hideSpanishButtons(); 
         setLanguageToChinese();
+        ConnectionBD con= new ConnectionBD();
+        con.createLanguage("chinese");
     }//GEN-LAST:event_cbChineseActionPerformed
 
     private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
@@ -3346,8 +3385,9 @@ public class Selling extends javax.swing.JFrame {
             createTicketForPurchase();
             soldNumbersOfTableSetColors();
             setButtonsAvailableOrNot(false);
-            JOptionPane.showMessageDialog(null, "Pago listo. Imprima el tiquete.");
+            //JOptionPane.showMessageDialog(null, "Pago listo. Imprima el tiquete.");
             isTicketPaid = true;
+            printOnceTicketIsPaid();
         }
     }//GEN-LAST:event_btnPayActionPerformed
 
@@ -3466,12 +3506,12 @@ public class Selling extends javax.swing.JFrame {
                 error = false;
             }
             else {
-                JOptionPane.showMessageDialog(null, "推出时间");
+                JOptionPane.showMessageDialog(null, "截止时间已过");
                 error = true;
             }
         }
         else {
-            JOptionPane.showMessageDialog(null, "推出时间");
+            JOptionPane.showMessageDialog(null, "截止时间已过");
             error = true;
         }
         if (tableModel.getRowCount() == 0) {
@@ -3482,8 +3522,9 @@ public class Selling extends javax.swing.JFrame {
             createTicketForPurchase();
             soldNumbersOfTableSetColors();
             setButtonsAvailableOrNot(false);
-            JOptionPane.showMessageDialog(null, "打印");
+            //JOptionPane.showMessageDialog(null, "打印");
             isTicketPaid = true;
+            printOnceTicketIsPaid();
         }
     }//GEN-LAST:event_btnPayChineseActionPerformed
 
@@ -3512,53 +3553,6 @@ public class Selling extends javax.swing.JFrame {
         removeAllItemsFromList();
         getTotalAndShowIT();
     }//GEN-LAST:event_btnRemoveAllChineseActionPerformed
-
-    private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
-        // TODO add your handling code here:
-        if (isTicketPaid) {
-            ConnectionBD con= new ConnectionBD();
-            Ticket ticket= con.getTicketInformation();
-            Printsupport ps=new Printsupport();
-            String morningSplitHour[] = ticket.getTimeHour().split(": ");
-            String splitHour = morningSplitHour[0];
-            String splitMinute = morningSplitHour[1];
-            String splitSecond = morningSplitHour[2];
-            if (morningSplitHour[0].length() == 1) {
-                splitHour = "0"+morningSplitHour[0];
-            }
-            if (morningSplitHour[1].length() == 1) {
-                splitMinute = "0"+morningSplitHour[1];
-            }
-            if (morningSplitHour[2].length() == 1) {
-                splitSecond = "0"+morningSplitHour[2];
-            }
-            String finaHour = splitHour+": "+splitMinute+": "+splitSecond;
-
-            Object printitem [][]=ps.getTableData(jTable1,String.valueOf(ticket.getTicket()),board.getStore(),boardCurrentTime,ticket.getDate(), finaHour,
-                    0, String.valueOf(ticket.getTicketTotalAmount()));
-            ps.setItems(printitem);
-            PrinterJob pj = PrinterJob.getPrinterJob();
-            pj.setPrintable(new MyPrintable(),ps.getPageFormat(pj));
-            try {
-                pj.print();
-                removeAllItemsFromList();
-                getTotalAndShowIT();
-                setButtonsAvailableOrNot(true);
-            }
-            catch (PrinterException ex) {
-                ex.printStackTrace();
-            }
-            isTicketPaid = false;
-        }
-        else {
-            if (language == "spanish") {
-                JOptionPane.showMessageDialog(null, "Primero pague un tiquete.");
-            }
-            else {
-                JOptionPane.showMessageDialog(null, "首先你付出");
-            }
-        }
-    }//GEN-LAST:event_printButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3740,7 +3734,6 @@ public class Selling extends javax.swing.JFrame {
     private javax.swing.JLabel lblTotalAmount;
     private javax.swing.JLabel lblTotalQuantityNumber;
     private javax.swing.JTextField priceAct;
-    private javax.swing.JButton printButton;
     private javax.swing.JLabel tfMorningClosingTime;
     private javax.swing.JLabel tfNightClosingTime;
     private javax.swing.JLabel tfSelectedNumber;

@@ -34,8 +34,8 @@ import java.util.Date;
 public class ConnectionBD {
     private Connection connection = null;
     private Statement statement = null;
-    private ResultSet resultSet = null;  
-    private String msAccDB = "W:/SystemConfigFilesProvidedToToSistemaChinos/SISTEMA_NUMEROS.MDB";
+    private ResultSet resultSet = null;  //W:/SystemConfigFilesProvidedToToSistemaChinos/
+    private String msAccDB = "SISTEMA_NUMEROS.MDB";
     private String dbURL = "jdbc:ucanaccess://" + msAccDB;                 
     
     public void bdConnection(){
@@ -168,8 +168,9 @@ public class ConnectionBD {
             closeConnectionGet();    
         }        
         return list;
-    }                    
-        
+    }
+    
+    
     public Board getBoardInformation(){        
         bdConnection();
         Board newElement= null;
@@ -178,6 +179,52 @@ public class ConnectionBD {
             statement = connection.createStatement();            
             resultSet = statement.executeQuery("SELECT TOP 1 tablero,cierreDia,cierreNoche,comercio,porcentajeEstadistico,"
                     + "contrasena,fecha,precioNumeros FROM Tablero order by tablero desc");
+            while(resultSet.next()) {
+                newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
+                        resultSet.getString(3), resultSet.getString(4),
+                        resultSet.getInt(5), resultSet.getString(6), 
+                        resultSet.getString(7), resultSet.getInt(8)); 
+            }            
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            closeConnectionGet();    
+        }        
+        return newElement;
+    }
+    
+    
+    public String getLanguage(){        
+        bdConnection();
+        String newElement= null;
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            resultSet = statement.executeQuery("SELECT TOP 1 asd FROM ASD order by Id desc");
+            while(resultSet.next()) {
+                newElement= resultSet.getString(1); 
+            }            
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            closeConnectionGet();    
+        }        
+        return newElement;
+    }
+        
+    public Board getBoardInformationByDate(String date){        
+        bdConnection();
+        Board newElement= null;
+        try {                                    
+            connection = DriverManager.getConnection(dbURL);            
+            statement = connection.createStatement();            
+            date = date +"'";
+            resultSet = statement.executeQuery("SELECT tablero,cierreDia,cierreNoche,comercio,porcentajeEstadistico,"
+                    + "contrasena,fecha,precioNumeros FROM Tablero WHERE fecha= '"+date);
             while(resultSet.next()) {
                 newElement= new Board(resultSet.getInt(1), resultSet.getString(2),
                         resultSet.getString(3), resultSet.getString(4),
@@ -586,6 +633,31 @@ public class ConnectionBD {
         }             
     }
     
+    public void createLanguage(String language){                       
+        bdConnection();
+        try {                          
+            connection = DriverManager.getConnection(dbURL);             
+            statement = connection.createStatement();    
+            String sql = "INSERT INTO ASD(asd)"
+                    + "values('"+language+"')";   
+            statement.executeUpdate(sql);  
+        }
+        catch(SQLException sqlex){
+            sqlex.printStackTrace();
+        }
+        finally {            
+            try {
+                if(null != connection) {                                        
+                    statement.close();                    
+                    connection.close();
+                }
+            }
+            catch (SQLException sqlex) {
+                sqlex.printStackTrace();
+            }
+        }             
+    }
+    
     public void createBoard(String morningClosing, String nightClose, String companyName, int percentage,
             String password, String date, int numberPricing){                       
         bdConnection();
@@ -602,8 +674,16 @@ public class ConnectionBD {
             for (int i = 0; i < 100; i++) {  
                 timeNumber = getBoardNumberPricing(board.getBoard(), "Dia", i);
                 if (timeNumber == null) {
-                    createTimeNumbers(i, "Dia", numberPricing, board.getBoard(), numberPricing);
-                    createTimeNumbers(i, "Noche", numberPricing, board.getBoard(), numberPricing);
+                    if ((board.getBoard() - 1) > 0) {
+                        timeNumber = getBoardNumberPricing(board.getBoard() - 1, "Dia", i);
+                        createTimeNumbers(i, "Dia", timeNumber.getTotal(), board.getBoard(), timeNumber.getTotal());
+                        timeNumber = getBoardNumberPricing(board.getBoard() - 1, "Noche", i);
+                        createTimeNumbers(i, "Noche", timeNumber.getTotal(), board.getBoard(), timeNumber.getTotal());
+                    }
+                    else {
+                        createTimeNumbers(i, "Dia", numberPricing, board.getBoard(), numberPricing);
+                        createTimeNumbers(i, "Noche", numberPricing, board.getBoard(), numberPricing);
+                    }
                 }
                 else {
                     if (timeNumber.getTotal() != board.getNumbersPrincing()) {
